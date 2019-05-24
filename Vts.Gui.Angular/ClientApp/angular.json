@@ -28,7 +28,8 @@
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
-              "src/assets/plot.js"
+              "src/assets/plot.js",
+              "src/assets/flot/jquery.flot.js"
             ],
             "es5BrowserSupport": true
           },

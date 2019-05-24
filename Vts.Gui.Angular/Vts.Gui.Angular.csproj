@@ -16,6 +16,8 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.1.9" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     <PackageReference Include="VirtualPhotonics.Vts" Version="4.7.0" />
   </ItemGroup>
 
@@ -23,6 +25,10 @@
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
     <Content Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Handlers\VtsHandler.ashx.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,6 +40,7 @@
     <None Remove="ClientApp\src\app\range\range.model.ts" />
     <None Remove="ClientApp\src\app\solution-domain\independent-axis.model.ts" />
     <None Remove="ClientApp\src\app\solution-domain\solution-domain.model.ts" />
+    <None Remove="Handlers\VtsHandler.ashx" />
   </ItemGroup>
 
   <ItemGroup>

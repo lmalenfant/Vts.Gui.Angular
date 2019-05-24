@@ -9,7 +9,7 @@ import { ModelAnalysisType } from '../model-analysis-type/model-analysis-type.mo
 import * as $ from 'jquery';
 declare const generatePlot: any;
 declare const createTabAndPane: any;
-declare const generatePlot: any;
+declare const plot: any;
 
 @Component({
   selector: 'app-forward-solver-analysis',
@@ -53,7 +53,7 @@ export class ForwardSolverAnalysisComponent {
   };
   modelAnalysisType: ModelAnalysisType = { value: 'R' };
 
-  url = "Handlers/VtsHandler.ashx";
+  url = "api/Vts";
   currentPlotObject = [];
 
   constructor() {
@@ -73,8 +73,8 @@ export class ForwardSolverAnalysisComponent {
     console.log(JSON.stringify(fsSettings));
     $.ajax({
       type: "POST",
-      contentType: "thislication/json",
-      url: this.url + "?action=getdata",
+      contentType: "application/json",
+      url: this.url,
       data: JSON.stringify(fsSettings),
       dataType: "json",
       success: function (data) {
