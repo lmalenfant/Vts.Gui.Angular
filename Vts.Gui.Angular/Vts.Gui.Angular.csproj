@@ -16,12 +16,40 @@
     <PackageReference Include="Microsoft.AspNetCore.App" />
     <PackageReference Include="Microsoft.AspNetCore.Razor.Design" Version="2.1.2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="2.1.1" />
+    <PackageReference Include="VirtualPhotonics.Vts" Version="4.7.0" />
   </ItemGroup>
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
     <Content Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="ClientApp\src\app\forward-solver-engine\forward-solver-engine-list.ts" />
+    <None Remove="ClientApp\src\app\forward-solver-engine\forward-solver-engine.model.ts" />
+    <None Remove="ClientApp\src\app\forward-solver-engine\gaussian-beam.model.ts" />
+    <None Remove="ClientApp\src\app\model-analysis-type\model-analysis-type.model.ts" />
+    <None Remove="ClientApp\src\app\optical-properties\optical-properties.model.ts" />
+    <None Remove="ClientApp\src\app\range\range.model.ts" />
+    <None Remove="ClientApp\src\app\solution-domain\independent-axis.model.ts" />
+    <None Remove="ClientApp\src\app\solution-domain\solution-domain.model.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\forward-solver-engine\forward-solver-engine-list.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\forward-solver-engine\forward-solver-engine.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\forward-solver-engine\gaussian-beam.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\model-analysis-type\model-analysis-type.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\optical-properties\optical-properties.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\range\range.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\solution-domain\independent-axis.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\solution-domain\solution-domain.model.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="ClientApp\src\app\shared\" />
+    <Folder Include="Handlers\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

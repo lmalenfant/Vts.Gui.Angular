@@ -3,19 +3,33 @@
   <h1>
     Welcome to {{ title }}!
   </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
 </div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/cli">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
-
+<div id="header">
+  <p></p>
+</div>
+<div id="content">
+  <div id="input-column" class="col-sm-5 col-md-5">
+    <ul id="input-tabs" class="nav nav-tabs">
+      <li class="active"><a role="tab" data-toggle="tab" href="#pane-fs">Forward Solver/Analysis</a></li>
+      <li><a role="tab" data-toggle="tab" href="#pane-is" style="display: none;">Inverse Solver Panel</a></li>
+    </ul>
+    <div id="input-content" class="tab-content">
+      <div id="pane-fs" class="tab-pane active">
+        <div class="panel">
+          <app-forward-solver-analysis></app-forward-solver-analysis>
+        </div>
+      </div>
+      <div id="pane-is" class="tab-pane">
+        <div class="panel">
+          <app-inverse-solver></app-inverse-solver>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="plot-column" class="col-sm-7 col-md-7">
+    <ul id="plot-tabs" class="nav nav-tabs"></ul>
+    <div id="plot-content" class="tab-content">
+    </div>
+  </div>
+</div>
 <router-outlet></router-outlet>
