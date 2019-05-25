@@ -21,7 +21,7 @@
     Independent Axis:&nbsp;
     <input name="IndependentAxis" type="radio" [(ngModel)]="independentAxes.label" value="{{independentAxes.second}}" (click)="changeUnits(2)" />&nbsp;{{independentAxes.first}}&nbsp;
     <input name="IndependentAxis" type="radio" [(ngModel)]="independentAxes.label" value="{{independentAxes.first}}" (click)="changeUnits(1)" />&nbsp;{{independentAxes.second}}&nbsp;&nbsp;&nbsp;at&nbsp;&nbsp;
-    <div class="input-group axis">
+    <div class="input-group input-group-sm axis">
       <div class="input-group-prepend">
         <span class="input-group-text">{{independentAxes.label}}</span>
       </div>

@@ -1,4 +1,4 @@
-﻿var plot;
+var plot;
 var colorArray = [];
 
 function selectCheckboxes(value) {
@@ -9,10 +9,10 @@ function selectCheckboxes(value) {
 }
 
 function closeTab(id) {
-    if (app.currentPlotObject) {
-        $.each(app.currentPlotObject, function(key, plotObject) {
+  if (ForwardSolverAnalysisComponent.currentPlotObject) {
+    $.each(ForwardSolverAnalysisComponent.currentPlotObject, function(key, plotObject) {
             if (plotObject.id === id) {
-                app.currentPlotObject.splice(key, 1);
+              ForwardSolverAnalysisComponent.currentPlotObject.splice(key, 1);
                 return false;
             }
             return true;
@@ -23,10 +23,10 @@ function closeTab(id) {
 }
 
 function deletePlot(id, key) {
-    if (app.currentPlotObject) {
+  if (ForwardSolverAnalysisComponent.currentPlotObject) {
         console.log(id);
         console.log(key);
-        $.each(app.currentPlotObject, function (i, plotObject) {
+    $.each(ForwardSolverAnalysisComponent.currentPlotObject, function (i, plotObject) {
             if (plotObject.id === id) {
                 console.log(plotObject);
                 plotObject.plotlist.splice(key, 1); //remove the plot
@@ -43,15 +43,15 @@ function createTabAndPane(id, plotObject) {
     if ($('#placeholder-' + id).length) {
         $('#pane-' + id).remove();
     } else {
-        $('#plot-tabs li').removeClass('active');
-        $('#plot-tabs').append('<li id="tab-' + id + '" class="active"><a role="tab" data-toggle="tab" href="#pane-' + id + '">' +
-            plotObject.detector + '&nbsp;&nbsp;<i class="glyphicon glyphicon-remove" onclick="closeTab(\'' + id + '\');"></i></a></li>');
+        $('#plot-tabs li a').removeClass('active');
+        $('#plot-tabs').append('<li id="tab-' + id + '" class="nav-item"><a class="nav-link active" role="tab" data-toggle="tab" href="#pane-' + id + '">' +
+          plotObject.detector + '&nbsp;&nbsp;<i class="fas fa-times" onclick="closeTab(\'' + id + '\');"></i></a></li>');
     }
     $('#plot-content').append('<div id="pane-' + id +
-        '" class="tab-pane"><div class="plot-container col-xs-12 col-sm-12 col-md-10"><div id="placeholder-' + id +
+        '" class="tab-pane fade"><div class="plot-container col"><div id="placeholder-' + id +
         '" class="plot-placeholder"></div></div><div id="choices-' + id +
-        '" class="plot-choices col-xs-12 col-sm-12 col-md-2"></div><div id="spacing-' + id +
-        '" class="col-xs-12 col-sm-12 col-md-12">X-Axis: <input checked="true" id="xAxisLinear-' + id + '" type="radio" name="xAxis-' + id +
+        '" class="plot-choices col"></div><div id="spacing-' + id +
+        '" class="col">X-Axis: <input checked="true" id="xAxisLinear-' + id + '" type="radio" name="xAxis-' + id +
         '" value="0" /><label for="xAxisLinear' + id + '">&nbsp;Linear&nbsp;</label>' +
         '<input id="xAxisLog-' + id + '" type="radio" name="xAxis-' + id +
         '" value="1" /><label for="xAxisLog-' + id + '">&nbsp;Log10</label><br/>' +
@@ -64,7 +64,9 @@ function createTabAndPane(id, plotObject) {
         plotAccordingToChoices(id, plotObject);
     });
     $('#plot-column .tab-pane').removeClass('active');
+    $('#plot-column .tab-pane').removeClass('show');
     $('#pane-' + id).addClass('active');
+  $('#pane-' + id).addClass('show');
 }
 
 function generatePlot(id, plotObject) {
@@ -95,7 +97,7 @@ function generatePlot(id, plotObject) {
             key + "' style='border-image: none; width: 10px; height: 10px; overflow: hidden;'></div></div></td>" +
             "<td style='padding-right: 5px; vertical-align: top;'><input type='checkbox' name='" + key +
             "' checked='checked' id='id" + key + "'></input></td><td style='padding-right: 5px; vertical-align: top;'>" +
-            "<label for='id" + key + "'>" + val.label + "</label>&nbsp;&nbsp;<i class=\"glyphicon glyphicon-remove\" onclick=\"deletePlot('" + id + "', '" + key + "');\"></i></td></tr>");
+          "<label for='id" + key + "'>" + val.label + "</label>&nbsp;&nbsp;<i class=\"fas fa-times\" onclick=\"deletePlot('" + id + "', '" + key + "');\"></i></td></tr>");
     });
     choiceContainer.append('</table>');
 

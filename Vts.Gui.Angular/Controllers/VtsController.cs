@@ -63,9 +63,9 @@ namespace Vts.Gui.Angular.Controllers
                         var independentAxis = vtsSettings["independentAxes"]["label"];
                         if (independentAxis == "t")
                         {
-                            var rho = new DoubleRange(double.Parse(vtsSettings["range"]["startValue"]), double.Parse(vtsSettings["range"]["endValue"]), int.Parse(vtsSettings["range"]["numberValue"]));
-                            var time = double.Parse(vtsSettings["independentAxes"]["value"]);
-                            results = ROfRhoAndTime(Enum.Parse(typeof(ForwardSolverType), fs), op, rho, time);
+                            var rho = new DoubleRange((double)vtsSettings["range"]["startValue"], (double)vtsSettings["range"]["endValue"], (int)vtsSettings["range"]["numberValue"]);
+                            var time = (double)vtsSettings["independentAxes"]["value"];
+                            results = ROfRhoAndTime(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, rho, time);
                             var independentValues = rho.AsEnumerable().ToArray();
                             var rhos = independentValues.Skip(1).Zip(independentValues.Take(independentValues.Length - 1), (first, second) => (first + second) / 2).ToArray();
                             var rOfRhoPoints = rhos.Zip(results, (x, y) => new Point(x, y));
@@ -76,9 +76,9 @@ namespace Vts.Gui.Angular.Controllers
                         }
                         else
                         {
-                            var time = new DoubleRange(double.Parse(vtsSettings["range"]["startValue"]), double.Parse(vtsSettings["range"]["endValue"]), int.Parse(vtsSettings["range"]["numberValue"]));
-                            var rho = double.Parse(vtsSettings["independentAxes"]["value"]);
-                            results = ROfRhoAndTime(Enum.Parse(typeof(ForwardSolverType), fs), op, rho, time);
+                            var time = new DoubleRange((double)vtsSettings["range"]["startValue"], (double)vtsSettings["range"]["endValue"], (int)vtsSettings["range"]["numberValue"]);
+                            var rho = (double)vtsSettings["independentAxes"]["value"];
+                            results = ROfRhoAndTime(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, rho, time);
                             var independentValues = time.AsEnumerable().ToArray();
                             var times = independentValues.Skip(1).Zip(independentValues.Take(independentValues.Length - 1), (first, second) => (first + second) / 2).ToArray();
                             var dataPoints = times.Zip(results, (x, y) => new Point(x, y));
@@ -94,9 +94,9 @@ namespace Vts.Gui.Angular.Controllers
                         var independentAxis = vtsSettings["independentAxes"]["label"];
                         if (independentAxis == "ft")
                         {
-                            var rho = new DoubleRange(double.Parse(vtsSettings["range"]["startValue"]), double.Parse(vtsSettings["range"]["endValue"]), int.Parse(vtsSettings["range"]["numberValue"]));
-                            var ft = double.Parse(vtsSettings["independentAxes"]["value"]);
-                            results = ROfRhoAndFt(Enum.Parse(typeof(ForwardSolverType), fs), op, rho, ft);
+                            var rho = new DoubleRange((double)vtsSettings["range"]["startValue"], (double)vtsSettings["range"]["endValue"], (int)vtsSettings["range"]["numberValue"]);
+                            var ft = (double)vtsSettings["independentAxes"]["value"];
+                            results = ROfRhoAndFt(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, rho, ft);
                             var independentValues = rho.AsEnumerable().ToArray();
                             var rhos = independentValues.Skip(1).Zip(independentValues.Take(independentValues.Length - 1), (first, second) => (first + second) / 2).ToArray();
                             var realPoints = rhos.Zip(results, (x, y) => new Point(x, y.Real));
@@ -110,9 +110,9 @@ namespace Vts.Gui.Angular.Controllers
                         }
                         else
                         {
-                            var ft = new DoubleRange(double.Parse(vtsSettings["range"]["startValue"]), double.Parse(vtsSettings["range"]["endValue"]), int.Parse(vtsSettings["range"]["numberValue"]));
-                            var rho = double.Parse(vtsSettings["independentAxes"]["value"]);
-                            results = ROfRhoAndFt(Enum.Parse(typeof(ForwardSolverType), fs), op, rho, ft);
+                            var ft = new DoubleRange((double)vtsSettings["range"]["startValue"], (double)vtsSettings["range"]["endValue"], (int)vtsSettings["range"]["numberValue"]);
+                            var rho = (double)vtsSettings["independentAxes"]["value"];
+                            results = ROfRhoAndFt(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, rho, ft);
                             var independentValues = ft.AsEnumerable().ToArray();
                             var times = independentValues.Skip(1).Zip(independentValues.Take(independentValues.Length - 1), (first, second) => (first + second) / 2).ToArray();
                             var realPoints = times.Zip(results, (x, y) => new Point(x, y.Real));
@@ -127,7 +127,7 @@ namespace Vts.Gui.Angular.Controllers
                     }
                     else if (sd == "roffx")
                     {
-                        var fx = new DoubleRange(double.Parse(vtsSettings["range"]["startValue"]), double.Parse(vtsSettings["range"]["endValue"]), int.Parse(vtsSettings["range"]["numberValue"]));
+                        var fx = new DoubleRange((double)vtsSettings["range"]["startValue"], (double)vtsSettings["range"]["endValue"], (int)vtsSettings["range"]["numberValue"]);
                         IEnumerable<double> results = null;
                         results = ROfFx(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, fx);
                         var independentValues = fx.AsEnumerable().ToArray();
@@ -145,9 +145,9 @@ namespace Vts.Gui.Angular.Controllers
                         var independentAxis = vtsSettings["independentAxes"]["label"];
                         if (independentAxis == "t")
                         {
-                            var fx = new DoubleRange(double.Parse(vtsSettings["range"]["startValue"]), double.Parse(vtsSettings["range"]["endValue"]), int.Parse(vtsSettings["range"]["numberValue"]));
-                            var time = double.Parse(vtsSettings["independentAxes"]["value"]);
-                            results = ROfFxAndTime(Enum.Parse(typeof(ForwardSolverType), fs), op, fx, time);
+                            var fx = new DoubleRange((double)vtsSettings["range"]["startValue"], (double)vtsSettings["range"]["endValue"], (int)vtsSettings["range"]["numberValue"]);
+                            var time = (double)vtsSettings["independentAxes"]["value"];
+                            results = ROfFxAndTime(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, fx, time);
                             var independentValues = fx.AsEnumerable().ToArray();
                             var fxs = independentValues.Skip(1).Zip(independentValues.Take(independentValues.Length - 1), (first, second) => (first + second) / 2).ToArray();
                             var rOfFxPoints = fxs.Zip(results, (x, y) => new Point(x, y));
@@ -158,9 +158,9 @@ namespace Vts.Gui.Angular.Controllers
                         }
                         else
                         {
-                            var time = new DoubleRange(double.Parse(vtsSettings["range"]["startValue"]), double.Parse(vtsSettings["range"]["endValue"]), int.Parse(vtsSettings["range"]["numberValue"]));
-                            var fx = double.Parse(vtsSettings["independentAxes"]["value"]);
-                            results = ROfFxAndTime(Enum.Parse(typeof(ForwardSolverType), fs), op, fx, time);
+                            var time = new DoubleRange((double)vtsSettings["range"]["startValue"], (double)vtsSettings["range"]["endValue"], (int)vtsSettings["range"]["numberValue"]);
+                            var fx = (double)vtsSettings["independentAxes"]["value"];
+                            results = ROfFxAndTime(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, fx, time);
                             var independentValues = time.AsEnumerable().ToArray();
                             var times = independentValues.Skip(1).Zip(independentValues.Take(independentValues.Length - 1), (first, second) => (first + second) / 2).ToArray();
                             var dataPoints = times.Zip(results, (x, y) => new Point(x, y));
@@ -176,9 +176,9 @@ namespace Vts.Gui.Angular.Controllers
                         var independentAxis = vtsSettings["independentAxes"]["label"];
                         if (independentAxis == "ft")
                         {
-                            var fx = new DoubleRange(double.Parse(vtsSettings["range"]["startValue"]), double.Parse(vtsSettings["range"]["endValue"]), int.Parse(vtsSettings["range"]["numberValue"]));
-                            var ft = double.Parse(vtsSettings["independentAxes"]["value"]);
-                            results = ROfFxAndFt(Enum.Parse(typeof(ForwardSolverType), fs), op, fx, ft);
+                            var fx = new DoubleRange((double)vtsSettings["range"]["startValue"], (double)vtsSettings["range"]["endValue"], (int)vtsSettings["range"]["numberValue"]);
+                            var ft = (double)vtsSettings["independentAxes"]["value"];
+                            results = ROfFxAndFt(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, fx, ft);
                             var independentValues = fx.AsEnumerable().ToArray();
                             var fxs = independentValues.Skip(1).Zip(independentValues.Take(independentValues.Length - 1), (first, second) => (first + second) / 2).ToArray();
                             var realPoints = fxs.Zip(results, (x, y) => new Point(x, y.Real));
@@ -192,9 +192,9 @@ namespace Vts.Gui.Angular.Controllers
                         }
                         else
                         {
-                            var ft = new DoubleRange(double.Parse(vtsSettings["range"]["startValue"]), double.Parse(vtsSettings["range"]["endValue"]), int.Parse(vtsSettings["range"]["numberValue"]));
-                            var fx = double.Parse(vtsSettings["independentAxes"]["value"]);
-                            results = ROfFxAndFt(Enum.Parse(typeof(ForwardSolverType), fs), op, fx, ft);
+                            var ft = new DoubleRange((double)vtsSettings["range"]["startValue"], (double)vtsSettings["range"]["endValue"], (int)vtsSettings["range"]["numberValue"]);
+                            var fx = (double)vtsSettings["independentAxes"]["value"];
+                            results = ROfFxAndFt(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, fx, ft);
                             var independentValues = ft.AsEnumerable().ToArray();
                             var times = independentValues.Skip(1).Zip(independentValues.Take(independentValues.Length - 1), (first, second) => (first + second) / 2).ToArray();
                             var realPoints = times.Zip(results, (x, y) => new Point(x, y.Real));
@@ -202,8 +202,8 @@ namespace Vts.Gui.Angular.Controllers
                             var realPlot = new PlotData { Data = realPoints, Label = "ROfFxAndFt" };
                             var imagPlot = new PlotData { Data = imagPoints, Label = "ROfFxAndFt" };
                             var fxPlot = new Plots { id = "ROfFxAndFtFixedFx", detector = "R(fx,ft)", legend = "R(fx,ft)", xaxis = "Time", yaxis = "Reflectance", plotlist = new List<PlotDataJson>() };
-                            fxPlot.plotlist.Add(new PlotDataJson { data = realPlot.Data.Select(item => new List<double> { item.X, item.Y }).ToList(), label = fs + " μa=" + op.Mua + " μs'=" + op.Musp + " fx=" + fx + "(real)" });
-                            fxPlot.plotlist.Add(new PlotDataJson { data = imagPlot.Data.Select(item => new List<double> { item.X, item.Y }).ToList(), label = fs + " μa=" + op.Mua + " μs'=" + op.Musp + " fx=" + fx + "(imag)" });
+                            fxPlot.plotlist.Add(new PlotDataJson { data = realPlot.Data.Select(item => new List<double> { item.X, item.Y }).ToList(), label = fs.ToString() + " μa=" + op.Mua + " μs'=" + op.Musp + " fx=" + fx + "(real)" });
+                            fxPlot.plotlist.Add(new PlotDataJson { data = imagPlot.Data.Select(item => new List<double> { item.X, item.Y }).ToList(), label = fs.ToString() + " μa=" + op.Mua + " μs'=" + op.Musp + " fx=" + fx + "(imag)" });
                             msg = JsonConvert.SerializeObject(fxPlot);
                         }
                     }

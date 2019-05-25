@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ForwardSolverEngine } from '../forward-solver-engine/forward-solver-engine.model';
 import { GaussianBeam } from '../forward-solver-engine/gaussian-beam.model';
 import { SolutionDomain } from '../solution-domain/solution-domain.model';
@@ -6,10 +6,8 @@ import { IndependentAxis } from '../solution-domain/independent-axis.model';
 import { Range } from '../range/range.model';
 import { OpticalProperties } from '../optical-properties/optical-properties.model';
 import { ModelAnalysisType } from '../model-analysis-type/model-analysis-type.model';
-import * as $ from 'jquery';
-declare const generatePlot: any;
-declare const createTabAndPane: any;
-declare const plot: any;
+import { PlotService } from '../services/plot.service';
+import { PlotObject } from '../plot/plot-object.model';
 
 @Component({
   selector: 'app-forward-solver-analysis',
@@ -17,7 +15,7 @@ declare const plot: any;
   styleUrls: ['./forward-solver-analysis.component.css']
 })
 /** forward-solver-analysis component*/
-export class ForwardSolverAnalysisComponent {
+export class ForwardSolverAnalysisComponent implements OnInit {
   forwardSolverEngine: ForwardSolverEngine = { value: 'DistributedPointSourceSDA', display: 'Standard Diffusion (Analytic: Distributed Point Source)' };
   gaussianBeam: GaussianBeam = {
     show: false,
@@ -53,11 +51,15 @@ export class ForwardSolverAnalysisComponent {
   };
   modelAnalysisType: ModelAnalysisType = { value: 'R' };
 
-  url = "api/Vts";
-  currentPlotObject = [];
+  plotObject: PlotObject;
+  //plotObjects: Array<PlotObject>;
 
-  constructor() {
+  constructor(private plotData: PlotService) {
 
+  }
+
+  ngOnInit() {
+    this.plotData.newPlotObject.subscribe(plotObject => this.plotObject = plotObject);
   }
 
   onSubmit() {
@@ -71,41 +73,9 @@ export class ForwardSolverAnalysisComponent {
     };
     console.log(fsSettings);
     console.log(JSON.stringify(fsSettings));
-    $.ajax({
-      type: "POST",
-      contentType: "application/json",
-      url: this.url,
-      data: JSON.stringify(fsSettings),
-      dataType: "json",
-      success: function (data) {
-        var isPlotted = false;
-        if (this.currentPlotObject) {
-          $.each(this.currentPlotObject, function (key, plotObject) {
-            if (plotObject.id === data.id) {
-              //for complex plots there will be multiple plots
-              $.each(data.plotlist, function (i, plot) {
-                this.currentPlotObject[key].plotlist.push(plot);
-              });
-              generatePlot(this.currentPlotObject[key].id, this.currentPlotObject[key]);
-              $('#plot-tabs li').removeClass('active');
-              $('#plot-column .tab-pane').removeClass('active');
-              $('#pane-' + this.currentPlotObject[key].id).addClass('active');
-              $('#tab-' + this.currentPlotObject[key].id).addClass('active');
-              isPlotted = true;
-            }
-          });
-        }
-        if (!isPlotted) {
-          var plotObject = data;
-          createTabAndPane(plotObject.id, plotObject);
-          generatePlot(plotObject.id, plotObject);
-          this.currentPlotObject.push(plotObject);
-        }
-      },
-      error: function (xhr, ajaxOptions, thrownError) {
-        alert(xhr.status + ", " + ajaxOptions + ", " + thrownError);
-      }
+    this.plotData.getPlotData(fsSettings).subscribe((data: any) => {
+      this.plotObject = data;
+      this.plotData.addNewPlot(this.plotObject);
     });
   }
-
 }

@@ -11,6 +11,9 @@ import { InverseSolverComponent } from './inverse-solver/inverse-solver.componen
 import { ForwardSolverAnalysisComponent } from './forward-solver-analysis/forward-solver-analysis.component';
 import { ModelAnalysisTypeComponent } from './model-analysis-type/model-analysis-type.component';
 import { ForwardSolverEngineComponent } from './forward-solver-engine/forward-solver-engine.component';
+import { PlotComponent } from './plot/plot.component';
+import { PlotService } from './services/plot.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -21,14 +24,16 @@ import { ForwardSolverEngineComponent } from './forward-solver-engine/forward-so
     InverseSolverComponent,
     ForwardSolverAnalysisComponent,
     ModelAnalysisTypeComponent,
-    ForwardSolverEngineComponent
+    ForwardSolverEngineComponent,
+    PlotComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    FormsModule
+    FormsModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [PlotService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

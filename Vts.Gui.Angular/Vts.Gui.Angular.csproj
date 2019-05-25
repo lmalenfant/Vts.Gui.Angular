@@ -28,19 +28,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="Handlers\VtsHandler.ashx.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="ClientApp\src\app\forward-solver-engine\forward-solver-engine-list.ts" />
     <None Remove="ClientApp\src\app\forward-solver-engine\forward-solver-engine.model.ts" />
     <None Remove="ClientApp\src\app\forward-solver-engine\gaussian-beam.model.ts" />
     <None Remove="ClientApp\src\app\model-analysis-type\model-analysis-type.model.ts" />
     <None Remove="ClientApp\src\app\optical-properties\optical-properties.model.ts" />
+    <None Remove="ClientApp\src\app\plot\plot-object.model.ts" />
     <None Remove="ClientApp\src\app\range\range.model.ts" />
     <None Remove="ClientApp\src\app\solution-domain\independent-axis.model.ts" />
     <None Remove="ClientApp\src\app\solution-domain\solution-domain.model.ts" />
-    <None Remove="Handlers\VtsHandler.ashx" />
   </ItemGroup>
 
   <ItemGroup>
@@ -49,6 +45,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\forward-solver-engine\gaussian-beam.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\model-analysis-type\model-analysis-type.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\optical-properties\optical-properties.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\plot\plot-object.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\range\range.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\solution-domain\independent-axis.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\solution-domain\solution-domain.model.ts" />
@@ -56,7 +53,6 @@
 
   <ItemGroup>
     <Folder Include="ClientApp\src\app\shared\" />
-    <Folder Include="Handlers\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
