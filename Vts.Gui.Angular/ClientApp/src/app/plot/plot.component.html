@@ -1,6 +1,6 @@
 <div id="plot-column" class="col">
   <ul id="plot-tabs" class="nav nav-tabs">
-    <li *ngFor="let plotObject of plotObjects" id="tab-{{plotObject.id}}" class="nav-item" (click)="updatePlots()">
+    <li *ngFor="let plotObject of plotObjects" id="tab-{{plotObject.id}}" class="nav-item">
       <a class="nav-link" role="tab" data-toggle="tab" href="#pane-{{plotObject.id}}">
         {{plotObject.detector}}&nbsp;&nbsp;<a (click)="closeTab(plotObject)">x</a>
       </a>
@@ -9,13 +9,12 @@
   <div id="plot-content" class="tab-content">
     <div *ngFor="let plotObject of plotObjects" id="pane-{{plotObject.id}}" role="tabpanel" class="tab-pane fade">
       <div class="plot-container col">
-        <div id="placeholder-{{plotObject.id}}" class="plot-placeholder" style="padding: 0px; position: relative;">
-        </div>
+        <div id="placeholder-{{plotObject.id}}" class="plot-placeholder" style="padding: 0px; position: relative;"></div>
       </div>
       <div id="choices-{{plotObject.id}}" class="plot-choices col">
         <p>{{plotObject.legend}}</p>
         <table>
-          <tr *ngFor="let plot of plotObject.plotlist; let i = index">
+          <tr *ngFor="let plot of plotObject.plotlist; let i = index" #plotChoices>
             <td style="padding-right: 5px; vertical-align: top;">
               <div style="padding: 1px; border: 1px solid lightgrey; border-image: none;">
                 <div id="color-{{i}}" style="border-image: none 100% / 1 / 0 stretch; width: 10px; height: 10px; overflow: hidden; background-color: rgb(237, 194, 64);"></div>

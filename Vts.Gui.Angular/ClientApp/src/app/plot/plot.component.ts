@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, ViewChildren, QueryList, AfterViewInit } from '@angular/core';
 import { PlotObject } from './plot-object.model';
 import { PlotService } from '../services/plot.service';
 import * as $ from 'jquery';
@@ -21,22 +21,25 @@ export class PlotComponent implements OnInit, OnChanges {
 
   }
 
+  @ViewChildren('plotChoices') choices: QueryList<any>;
+
+  ngAfterViewInit() {
+    this.choices.changes.subscribe(c => {
+      this.plotNewData(this.plotObjects[this.plotObjects.length - 1]);
+      console.log('changes detected');
+    });
+  }
+
   ngOnInit() {
     this.plotData.currentPlotObjects.subscribe(plotObjects => {
       this.plotObjects = plotObjects;
       if (typeof (this.plotObjects) !== 'undefined' && this.plotObjects.length > 1) {
-        this.plotNewData(this.plotObjects[this.plotObjects.length - 1]);
       }
     });
     this.plotData.newPlotObject.subscribe(plotObject => this.plotObject = plotObject);
   }
 
   ngOnChanges() {
-    console.log('changes detected');
-  }
-
-  updatePlots() {
-    this.plotNewData(this.plotObjects[this.plotObjects.length - 1]);
   }
 
   plotNewData(plotObject) {
