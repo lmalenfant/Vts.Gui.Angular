@@ -74,8 +74,8 @@ export class ForwardSolverAnalysisComponent implements OnInit {
     console.log(fsSettings);
     console.log(JSON.stringify(fsSettings));
     this.plotData.getPlotData(fsSettings).subscribe((data: any) => {
-      this.plotObject = data;
-      this.plotData.addNewPlot(this.plotObject);
+      //this.plotObject = data;
+      this.plotData.addNewPlot(data);
     });
   }
 }

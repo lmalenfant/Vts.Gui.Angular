@@ -30,13 +30,24 @@ export class PlotService {
   }
 
   addNewPlot(data: PlotObject) {
-    this.singlePlotDataSource.next(data);
     if (typeof (this.plotObjects) === 'undefined') {
       this.plotObjects = [data];
     } else {
-      this.plotObjects.push(data);
+      let createNewTab = true;
+      this.plotObjects.forEach(function (plotObject) {
+        if (plotObject.id === data.id) {
+          data.plotlist.forEach(function (item) {
+            plotObject.plotlist.push(item);
+          });
+          createNewTab = false;
+        }
+      });
+      if (createNewTab) {
+        this.plotObjects.push(data);
+      }
     }
     this.updatePlotData(this.plotObjects);
+    this.singlePlotDataSource.next(data);
   }
 
   updatePlotData(data: Array<PlotObject>) {

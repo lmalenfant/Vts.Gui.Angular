@@ -2,6 +2,7 @@ import { Component, OnInit, OnChanges } from '@angular/core';
 import { PlotObject } from './plot-object.model';
 import { PlotService } from '../services/plot.service';
 import * as $ from 'jquery';
+declare const plotAccordingToChoices: any;
 
 @Component({
   selector: 'app-plot',
@@ -10,118 +11,116 @@ import * as $ from 'jquery';
 })
 /** plot component*/
 export class PlotComponent implements OnInit, OnChanges {
+  colorArray: Array<number> = [];
+  plot;
   plotObject: PlotObject;
-
   plotObjects: Array<PlotObject> = [this.plotObject];
 
-  colorArray = [];
-  plot;
 
   constructor(private plotData: PlotService) {
 
   }
 
   ngOnInit() {
-    this.plotData.currentPlotObjects.subscribe(plotObjects => this.plotObjects = plotObjects);
-    this.plotData.newPlotObject.subscribe(plotObject => {
-      this.plotObject = plotObject;
-      if (Object.keys(this.plotObject).length !== 0) {
-        this.updatePlotPanels(this.plotObject);
+    this.plotData.currentPlotObjects.subscribe(plotObjects => {
+      this.plotObjects = plotObjects;
+      if (typeof (this.plotObjects) !== 'undefined' && this.plotObjects.length > 1) {
+        this.plotNewData(this.plotObjects[this.plotObjects.length - 1]);
       }
     });
+    this.plotData.newPlotObject.subscribe(plotObject => this.plotObject = plotObject);
   }
 
   ngOnChanges() {
     console.log('changes detected');
   }
 
-  updatePlotPanels(plotObject) {
-    this.generatePlot(plotObject);
+  updatePlots() {
+    this.plotNewData(this.plotObjects[this.plotObjects.length - 1]);
+  }
+
+  plotNewData(plotObject) {
+    this.updatePlotPanels();
     var selector = '#pane-' + plotObject.id;
     $('#tab-' + plotObject.id + ' a').addClass('active');
     $(selector).addClass('active');
     $(selector).addClass('show');
+    this.generatePlot(plotObject);
   }
 
-  closeTab(plot) {
+  updatePlotPanels() {
+    $('#plot-tabs li a').removeClass('active');
+    $('#plot-column .tab-pane').removeClass('active');
+    $('#plot-column .tab-pane').removeClass('show');
+  }
+
+  closeTab(plot: PlotObject) {
+    var self = this;
     if (this.plotObjects) {
-      $.each(this.plotObjects, function (key, plotObject) {
+      this.plotObjects.forEach(function (plotObject: PlotObject, key) {
         if (plotObject.id === plot.id) {
-          this.plotObjects.splice(key, 1);
-          return false;
+          self.plotObjects.splice(key, 1);
         }
-        return true;
       });
+      this.plotData.updatePlotData(this.plotObjects);
     }
-    $('#pane-' + plot.id).remove();
-    $('#tab-' + plot.id).remove();
   }
 
-  deletePlot(plot, key) {
+  deletePlot(plot: PlotObject, key) {
+    var self = this;
     if (this.plotObjects) {
-      console.log(plot.id);
-      console.log(key);
-      this.plotObjects.forEach(function (plotObject) {
+      this.plotObjects.forEach(function (plotObject: PlotObject) {
         if (plotObject.id === plot.id) {
           console.log(plotObject);
           plotObject.plotlist.splice(key, 1); //remove the plot
-          this.colorArray.splice(key, 1); //delete the color from the color array so the colors remain aligned with the plots
-          this.generatePlot(plot.id, plotObject);
-          return false;
+          self.colorArray.splice(key, 1); //delete the color from the color array so the colors remain aligned with the plots
         }
-        return true;
       });
+      this.plotData.updatePlotData(this.plotObjects);
     }
   }
 
   generatePlot(plotObject) {
+    var self = this;
     var id = plotObject.id;
     var datasets = plotObject.plotlist;
     var i = 0;
-    //datasets.forEach(function (key, val) {
-    //  if (Object.keys(this.colorArray).length !== 0) {
-    //    val.color = this.colorArray[key]; //if a value exists pull it from the color array
-    //  } else {
-    //    if (this.colorArray.length > 0) {
-    //      i = this.colorArray[this.colorArray.length - 1] + 1;
-    //    }
-    //    val.color = i;
-    //    this.colorArray.push(i); //create a color array so colors remain with plots when deleting plots
-    //  }
-    //  ++i;
-    //});
-
-    var placeholder = $("#placeholder-" + id);
-    placeholder.html("");
-    // insert checkboxes 
-    var choiceContainer = $("#choices-" + id);
-    choiceContainer.html("");
-    choiceContainer.prepend('<p>' + plotObject.legend + '</p><table>');
-    //$.each(datasets, function (key, val) {
-    //  choiceContainer.append("<tr><td style='padding-right: 5px; vertical-align: top;'>" +
-    //    "<div style='padding: 1px; border: 1px solid lightgrey; border-image: none;'><div id='color-" +
-    //    key + "' style='border-image: none; width: 10px; height: 10px; overflow: hidden;'></div></div></td>" +
-    //    "<td style='padding-right: 5px; vertical-align: top;'><input type='checkbox' name='" + key +
-    //    "' checked='checked' id='id" + key + "'></input></td><td style='padding-right: 5px; vertical-align: top;'>" +
-    //    "<label for='id" + key + "'>" + val.label + "</label>&nbsp;&nbsp;<i class=\"fas fa-times\" onclick=\"deletePlot('" + id + "', '" + key + "');\"></i></td></tr>");
-    //});
-    //choiceContainer.append('</table>');
-
-    $("#choices-" + id + " input").bind('click', function () {
-      this.plotAccordingToChoices(plotObject);
+    datasets.forEach(function (val, key) {
+      if (typeof (self.colorArray[key]) !== 'undefined') {
+        val.color = self.colorArray[key]; //if a value exists pull it from the color array
+      } else {
+        if (self.colorArray.length > 0) {
+          i = self.colorArray[self.colorArray.length - 1] + 1;
+        }
+        val.color = i;
+        self.colorArray.push(i); //create a color array so colors remain with plots when deleting plots
+      }    
+      ++i;
     });
 
-    this.plotAccordingToChoices(plotObject);
+    var choiceContainer = $("#choices-" + id);
+    var placeholder = $("#placeholder-" + id);
+    placeholder.html("");
+
+    $("#choices-" + id + " input").bind('click', function () {
+      this.plot = plotAccordingToChoices(plotObject);
+    });
+
+    if (placeholder) {
+      this.plot = plotAccordingToChoices(plotObject);
+    }
     if (i < 2) {
       //hide the checkbox
       $("#choices-" + id + " input").hide();
     }
 
     //set checkbox colors
-    //var series = this.plot.getData();
-    //choiceContainer.find("input").each(function (key) {
-    //  choiceContainer.find("#color-" + key).css("background-color", series[key].color);
-    //});
+    if (typeof (this.plot) !== 'undefined') {
+      var series = this.plot.getData();
+      choiceContainer.find("input").each(function (key) {
+        choiceContainer.find("#color-" + key).css("background-color", series[key].color);
+      });
+    }
 
     placeholder.bind("plothover", function (event, pos, item) {
       var str = "(" + pos.x.toFixed(2) + ", " + pos.y.toFixed(2) + ")";

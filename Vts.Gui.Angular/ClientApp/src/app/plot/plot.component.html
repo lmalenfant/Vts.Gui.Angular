@@ -1,8 +1,8 @@
 <div id="plot-column" class="col">
   <ul id="plot-tabs" class="nav nav-tabs">
-    <li *ngFor="let plotObject of plotObjects" id="tab-{{plotObject.id}}" class="nav-item">
+    <li *ngFor="let plotObject of plotObjects" id="tab-{{plotObject.id}}" class="nav-item" (click)="updatePlots()">
       <a class="nav-link" role="tab" data-toggle="tab" href="#pane-{{plotObject.id}}">
-        {{plotObject.detector}}&nbsp;&nbsp;<i class="fas fa-times" (click)="closeTab(plotObject)"></i>
+        {{plotObject.detector}}&nbsp;&nbsp;<a (click)="closeTab(plotObject)">x</a>
       </a>
     </li>
   </ul>
@@ -13,19 +13,19 @@
         </div>
       </div>
       <div id="choices-{{plotObject.id}}" class="plot-choices col">
-        <p>{{plotObject.detector}}</p>
+        <p>{{plotObject.legend}}</p>
         <table>
-          <tr>
+          <tr *ngFor="let plot of plotObject.plotlist; let i = index">
             <td style="padding-right: 5px; vertical-align: top;">
               <div style="padding: 1px; border: 1px solid lightgrey; border-image: none;">
-                <div id="color-0" style="border-image: none 100% / 1 / 0 stretch; width: 10px; height: 10px; overflow: hidden; background-color: rgb(237, 194, 64);"></div>
+                <div id="color-{{i}}" style="border-image: none 100% / 1 / 0 stretch; width: 10px; height: 10px; overflow: hidden; background-color: rgb(237, 194, 64);"></div>
               </div>
             </td>
             <td style="padding-right: 5px; vertical-align: top;">
-              <input type="checkbox" name="0" checked="checked" id="id0" disabled="" style="display: none;">
+              <input type="checkbox" name="{{i}}" checked="checked" id="id{{i}}">
             </td>
             <td style="padding-right: 5px; vertical-align: top;">
-              <label for="id0">{{plotObject.legend}}</label>&nbsp;&nbsp;<i class="fas fa-times" (click)="deletePlot(plotObject, '0');"></i>
+              <label for="id{{i}}">{{plot.label}}</label>&nbsp;&nbsp;<a (click)="deletePlot(plotObject, i);">x</a>
             </td>
           </tr>
         </table>
@@ -40,4 +40,5 @@
       </div>
     </div>
   </div>
-</div>
+  <div id="plot-placeholder" style="display: none"></div>
+ </div>
