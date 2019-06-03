@@ -2,9 +2,9 @@
 Angular 7 Application with .NET Core
 
 ## Prerequisites:
-Node.js
-npm package manager
-Angular CLI
+* Node.js
+* npm package manager
+* Angular CLI
 
 https://angular.io/guide/setup-local
 
