@@ -1,7 +1,7 @@
 # Vts.Gui.Angular
 Angular 7 Application with .NET Core
 
-Prerequisites:
+## Prerequisites:
 Node.js
 npm package manager
 Angular CLI
