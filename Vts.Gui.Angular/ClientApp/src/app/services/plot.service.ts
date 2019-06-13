@@ -20,11 +20,16 @@ export class PlotService {
   private singlePlotDataSource = new BehaviorSubject(new PlotObject);
   newPlotObject = this.singlePlotDataSource.asObservable();
 
-  url = "api/Vts";
+  url = "api/v1/values";
+  //url = "https://vtsapi.azurewebsites.net/api/v1/values";
 
   getPlotData(fsSettings) {
     const options = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json', 'dataType': 'JSON' }),
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'dataType': 'JSON',
+        'X-API-KEY': '$RFGT%^H',
+      }),
     }
     return this.http.post(this.url, JSON.stringify(fsSettings), options);
   }
@@ -35,9 +40,9 @@ export class PlotService {
     } else {
       let createNewTab = true;
       this.plotObjects.forEach(function (plotObject) {
-        if (plotObject.id === data.id) {
-          data.plotlist.forEach(function (item) {
-            plotObject.plotlist.push(item);
+        if (plotObject.Id === data.Id) {
+          data.PlotList.forEach(function (item) {
+            plotObject.PlotList.push(item);
           });
           createNewTab = false;
         }

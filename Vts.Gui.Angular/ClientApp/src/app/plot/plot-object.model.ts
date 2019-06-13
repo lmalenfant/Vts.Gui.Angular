@@ -1,8 +1,8 @@
 export class PlotObject {
-  id: string;
-  detector: string;
-  plotlist: Array<Object>;
-  legend: string;
-  xaxis: string;
-  yaxis: string;
+  Id: string;
+  Detector: string;
+  PlotList: Array<Object>;
+  Legend: string;
+  XAxis: string;
+  YAxis: string;
 }

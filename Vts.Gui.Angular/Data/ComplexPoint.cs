@@ -1,19 +1,21 @@
-﻿namespace Vts.Api.Data
+﻿using System.Numerics;
+
+namespace Vts.Api.Data
 {
     /// <summary>
-    /// Point class with double X and Y values.
+    /// Complex Point class with double X and Complex Y values.
     /// </summary>
-    public class Point
+    public class ComplexPoint
     {
         public double X { get; set; }
-        public double Y { get; set; }
+        public Complex Y { get; set; }
 
         /// <summary>
-        /// Constructor for Point
+        /// Constructor for ComplexPoint
         /// </summary>
         /// <param name="x">x value</param>
         /// <param name="y">y value</param>
-        public Point(double x, double y)
+        public ComplexPoint(double x, Complex y)
         {
             X = x;
             Y = y;

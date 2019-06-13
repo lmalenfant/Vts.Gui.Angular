@@ -26,7 +26,7 @@ export class PlotComponent implements OnInit, OnChanges {
   ngAfterViewInit() {
     this.choices.changes.subscribe(c => {
       if (this.lastActionId === "") {
-        this.updatePlotData(this.plotObject.id); //if last action is not set, this a new plot
+        this.updatePlotData(this.plotObject.Id); //if last action is not set, this a new plot
       } else {
         this.updatePlotData(this.lastActionId); //last action is set to the solution domain on delete
         this.lastActionId = "";
@@ -55,7 +55,7 @@ export class PlotComponent implements OnInit, OnChanges {
     $(selector).addClass('active');
     $(selector).addClass('show');
     this.plotObjects.forEach(plotObject => {
-      if (plotObject.id === solutionDomain) {
+      if (plotObject.Id === solutionDomain) {
         this.generatePlot(plotObject);
       }
     });
@@ -71,7 +71,7 @@ export class PlotComponent implements OnInit, OnChanges {
     var self = this;
     if (this.plotObjects) {
       this.plotObjects.forEach(function (plotObject: PlotObject, key) {
-        if (plotObject.id === plot.id) {
+        if (plotObject.Id === plot.Id) {
           self.plotObjects.splice(key, 1);
         }
       });
@@ -83,21 +83,21 @@ export class PlotComponent implements OnInit, OnChanges {
     var self = this;
     if (this.plotObjects) {
       this.plotObjects.forEach(function (plotObject: PlotObject) {
-        if (plotObject.id === plot.id) {
+        if (plotObject.Id === plot.Id) {
           console.log(plotObject);
-          plotObject.plotlist.splice(key, 1); //remove the plot
+          plotObject.PlotList.splice(key, 1); //remove the plot
           self.colorArray.splice(key, 1); //delete the color from the color array so the colors remain aligned with the plots
         }
       });
       this.plotData.updatePlotData(this.plotObjects);
-      this.lastActionId = plot.id;
+      this.lastActionId = plot.Id;
     }
   }
 
   generatePlot(plotObject) {
     var self = this;
-    var id = plotObject.id;
-    var datasets = plotObject.plotlist;
+    var id = plotObject.Id;
+    var datasets = plotObject.PlotList;
     var i = 0;
     datasets.forEach(function (val, key) {
       if (typeof (self.colorArray[key]) !== 'undefined') {
@@ -148,7 +148,7 @@ export class PlotComponent implements OnInit, OnChanges {
         var x = item.datapoint[0].toFixed(4),
           y = item.datapoint[1].toFixed(4);
 
-        $("#tooltip").html(plotObject.legend + " = " + item.series.label + " (" + x + ", " + y + ")")
+        $("#tooltip").html(plotObject.Legend + " = " + item.series.label + " (" + x + ", " + y + ")")
           .css({ top: item.pageY + 5, left: item.pageX + 5 })
           .fadeIn(200);
       } else {

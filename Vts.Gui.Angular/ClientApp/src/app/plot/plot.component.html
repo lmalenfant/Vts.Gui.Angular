@@ -1,20 +1,20 @@
 <div id="plot-column" class="col">
   <ul id="plot-tabs" class="nav nav-tabs">
-    <li *ngFor="let plotObject of plotObjects" id="tab-{{plotObject.id}}" class="nav-item">
-      <a class="nav-link" role="tab" data-toggle="tab" href="#pane-{{plotObject.id}}">
-        {{plotObject.detector}}&nbsp;&nbsp;<i class="fas fa-times" (click)="closeTab(plotObject)"></i>
+    <li *ngFor="let plotObject of plotObjects" id="tab-{{plotObject.Id}}" class="nav-item">
+      <a class="nav-link" role="tab" data-toggle="tab" href="#pane-{{plotObject.Id}}">
+        {{plotObject.Detector}}&nbsp;&nbsp;<i class="fas fa-times" (click)="closeTab(plotObject)"></i>
       </a>
     </li>
   </ul>
   <div id="plot-content" class="tab-content">
-    <div *ngFor="let plotObject of plotObjects" id="pane-{{plotObject.id}}" role="tabpanel" class="tab-pane fade">
+    <div *ngFor="let plotObject of plotObjects" id="pane-{{plotObject.Id}}" role="tabpanel" class="tab-pane fade">
       <div class="plot-container col">
-        <div id="placeholder-{{plotObject.id}}" class="plot-placeholder" style="padding: 0px; position: relative;"></div>
+        <div id="placeholder-{{plotObject.Id}}" class="plot-placeholder" style="padding: 0px; position: relative;"></div>
       </div>
-      <div id="choices-{{plotObject.id}}" class="plot-choices col">
-        <p>{{plotObject.legend}}</p>
+      <div id="choices-{{plotObject.Id}}" class="plot-choices col">
+        <p>{{plotObject.Legend}}</p>
         <table>
-          <tr class="{{plotObject.id}}" *ngFor="let plot of plotObject.plotlist; let i = index" #plotChoices>
+          <tr class="{{plotObject.Id}}" *ngFor="let plot of plotObject.PlotList; let i = index" #plotChoices>
             <td style="padding-right: 5px; vertical-align: top;">
               <div style="padding: 1px; border: 1px solid lightgrey; border-image: none;">
                 <div id="color-{{i}}" style="border-image: none 100% / 1 / 0 stretch; width: 10px; height: 10px; overflow: hidden;"></div>
@@ -24,18 +24,18 @@
               <input type="checkbox" name="{{i}}" checked="checked" id="id{{i}}">
             </td>
             <td style="padding-right: 5px; vertical-align: top;">
-              <label for="id{{i}}">{{plot.label}}</label>&nbsp;&nbsp;<i class="fas fa-times" (click)="deletePlot(plotObject, i);"></i>
+              <label for="id{{i}}">{{plot.Label}}</label>&nbsp;&nbsp;<i class="fas fa-times" (click)="deletePlot(plotObject, i);"></i>
             </td>
           </tr>
         </table>
       </div>
-      <div id="spacing-{{plotObject.id}}" class="col">
-        X-Axis: <input checked="checked" id="xAxisLinear-{{plotObject.id}}" type="radio" name="xAxis-{{plotObject.id}}" value="0">
-        <label for="xAxisLinear{{plotObject.id}}">&nbsp;Linear&nbsp;</label>
-        <input id="xAxisLog-{{plotObject.id}}" type="radio" name="xAxis-{{plotObject.id}}" value="1"><label for="xAxisLog-{{plotObject.id}}">&nbsp;Log10</label><br>
-        Y-Axis: <input checked="checked" id="yAxisLinear-{{plotObject.id}}" type="radio" name="yAxis-{{plotObject.id}}" value="0">
-        <label for="yAxisLinear{{plotObject.id}}">&nbsp;Linear&nbsp;</label>
-        <input id="yAxisLog-{{plotObject.id}}" type="radio" name="yAxis-{{plotObject.id}}" value="1"><label for="yAxisLog-{{plotObject.id}}">&nbsp;Log10</label>
+      <div id="spacing-{{plotObject.Id}}" class="col">
+        X-Axis: <input checked="checked" id="xAxisLinear-{{plotObject.Id}}" type="radio" name="xAxis-{{plotObject.Id}}" value="0">
+        <label for="xAxisLinear{{plotObject.Id}}">&nbsp;Linear&nbsp;</label>
+        <input id="xAxisLog-{{plotObject.Id}}" type="radio" name="xAxis-{{plotObject.Id}}" value="1"><label for="xAxisLog-{{plotObject.Id}}">&nbsp;Log10</label><br>
+        Y-Axis: <input checked="checked" id="yAxisLinear-{{plotObject.Id}}" type="radio" name="yAxis-{{plotObject.Id}}" value="0">
+        <label for="yAxisLinear{{plotObject.Id}}">&nbsp;Linear&nbsp;</label>
+        <input id="yAxisLog-{{plotObject.Id}}" type="radio" name="yAxis-{{plotObject.Id}}" value="1"><label for="yAxisLog-{{plotObject.Id}}">&nbsp;Log10</label>
       </div>
     </div>
   </div>
