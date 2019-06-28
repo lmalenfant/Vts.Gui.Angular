@@ -1,6 +1,6 @@
 export class OpticalProperties {
   mua: number;
-  mus: number;
+  musp: number;
   g: number;
   n: number;
 }
