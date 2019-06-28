@@ -2,26 +2,26 @@
 <div class="range form-inline">
   <div class="input-group input-group-sm mr-sm-2 ml-sm-2">
     <div class="input-group-prepend">
-      <span class="input-group-text">{{range.startLabel}}</span>
+      <span id="startLabel" class="input-group-text">{{range.startLabel}}</span>
     </div>
-    <input name="startValue" type="text" class="form-control" [(ngModel)]="range.startValue" />
+    <input id="startValue" name="startValue" type="text" class="form-control" [(ngModel)]="range.startValue" />
     <div class="input-group-append">
-      <span class="input-group-text">{{range.startLabelUnits}}</span>
+      <span id="startUnits" class="input-group-text">{{range.startLabelUnits}}</span>
     </div>
   </div>
   <div class="input-group input-group-sm mr-sm-2">
     <div class="input-group-prepend">
-      <span class="input-group-text">{{range.endLabel}}</span>
+      <span id="endLabel" class="input-group-text">{{range.endLabel}}</span>
     </div>
-    <input name="endValue" type="text" class="form-control" [(ngModel)]="range.endValue" />
+    <input id="endValue" name="endValue" type="text" class="form-control" [(ngModel)]="range.endValue" />
     <div class="input-group-append">
-      <span class="input-group-text">{{range.endLabelUnits}}</span>
+      <span id="endUnits" class="input-group-text">{{range.endLabelUnits}}</span>
     </div>
   </div>
   <div class="input-group input-group-sm">
     <div class="input-group-prepend">
-      <span class="input-group-text">{{range.numberLabel}}</span>
+      <span id="numberLabel" class="input-group-text">{{range.numberLabel}}</span>
     </div>
-    <input name="numberValue" type="text" class="form-control number" [(ngModel)]="range.numberValue" />
+    <input id="numberValue" name="numberValue" type="text" class="form-control number" [(ngModel)]="range.numberValue" />
   </div>
 </div>

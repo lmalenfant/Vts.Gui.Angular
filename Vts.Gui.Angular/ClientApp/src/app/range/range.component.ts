@@ -10,10 +10,6 @@ import { Range } from './range.model';
 export class RangeComponent implements OnInit {
   @Input() range: Range;
 
-  constructor() {
-
-  }
-
   ngOnInit() {
   }
 }

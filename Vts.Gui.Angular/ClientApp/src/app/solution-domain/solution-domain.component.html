@@ -23,11 +23,11 @@
     <input name="IndependentAxis" type="radio" [(ngModel)]="independentAxes.label" value="{{independentAxes.first}}" (click)="changeUnits(1)" />&nbsp;{{independentAxes.second}}&nbsp;&nbsp;&nbsp;at&nbsp;&nbsp;
     <div class="input-group input-group-sm axis">
       <div class="input-group-prepend">
-        <span class="input-group-text">{{independentAxes.label}}</span>
+        <span id="independentAxisLabel" class="input-group-text">{{independentAxes.label}}</span>
       </div>
-      <input type="text" class="form-control" [(ngModel)]="independentAxes.value" />
+      <input id="independentAxisValue" type="text" class="form-control" [(ngModel)]="independentAxes.value" />
       <div class="input-group-append">
-        <span class="input-group-text">{{independentAxes.units}}</span>
+        <span id="independentAxisUnits" class="input-group-text">{{independentAxes.units}}</span>
       </div>
     </div>
   </div>
