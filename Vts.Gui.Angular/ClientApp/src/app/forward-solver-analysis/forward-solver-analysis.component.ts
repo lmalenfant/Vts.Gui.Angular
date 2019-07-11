@@ -44,6 +44,7 @@ export class ForwardSolverAnalysisComponent implements OnInit {
     numberValue: 19
   };
   opticalProperties: OpticalProperties = {
+    title: 'Optical Properties',
     mua: 0.01,
     musp: 1,
     g: 0.8,

@@ -1,0 +1,45 @@
+<form name="form2">
+   <!-- <div class="pull-right"><button id="File" type="submit" class="btn btn-primary" (click)="onClick()">Get File</button></div>
+ -->
+  <!-- Forward Solver Engine -->
+   <div class="heading">Fwd Solver</div>
+  <app-forward-solver-engine [forwardSolverEngineList]="fsEngineList" [gaussianBeam]="gaussianBeam" [forwardSolverEngine]="forwardSolverEngine"></app-forward-solver-engine>
+
+  <!-- Inverse Solver Engine -->
+   <div class="heading">Inv Solver</div>
+  <app-forward-solver-engine [forwardSolverEngineList]="isEngineList" [gaussianBeam]="inverseGaussianBeam" [forwardSolverEngine]="inverseSolverEngine"></app-forward-solver-engine>
+   <br /><br />
+
+  <!-- Solution Domain selection -->
+  <app-solution-domain [independentAxes]="independentAxes" [solutionDomain]="solutionDomain" [range]="range"></app-solution-domain> 
+  <br /><br /> 
+
+  <!-- Optimization Parameters -->
+  <app-optimization-parameters [optimizationParameters]="optimizationParameters"></app-optimization-parameters>
+
+  <!-- Optimizer Type -->
+  <app-optimizer-type [optimizerType]="optimizerType"></app-optimizer-type>
+  <br /><br /> 
+
+  <!-- Forward Simulation Optical Property settings -->
+  <app-optical-properties [opticalProperties]="forwardOpticalProperties"></app-optical-properties>
+  
+  <br /><br />
+
+  <!-- Initial Guess Optical Property settings -->
+  <app-optical-properties [opticalProperties]="initialGuessOpticalProperties"></app-optical-properties>
+  <br /><br /> 
+
+  <div class="pull-right">
+    <!-- should the following text box be in a separate class? -->
+    <div class="input-group input-group-sm w-25">
+      <div class="input-group-prepend">
+        <span class="input-group-text">% noise</span>
+      </div>
+      <input id="noiseValue" name="noiseValue" type="text" class="form-control" [(ngModel)]="noiseValue"/>
+    </div> 
+    <button id="Measured" type="submit" class="btn btn-primary" (click)="plotMeasured()">Plot Measured Data</button>&nbsp;
+    <button id="InitialGuess" type="submit" class="btn btn-primary" (click)="plotInitialGuess()">Plot Initial Guess</button>&nbsp;
+    <button id="Simulation" type="submit" class="btn btn-primary" (click)="runInverse()">Run Inverse Solver</button>
+  </div>
+</form>

@@ -12,7 +12,7 @@ import { ForwardSolverEngineList } from './forward-solver-engine-list';
 export class ForwardSolverEngineComponent {
   @Input() forwardSolverEngine: ForwardSolverEngine;
   @Input() gaussianBeam: GaussianBeam;
-  forwardSolverEngineList = ForwardSolverEngineList;
+  @Input('forwardSolverEngineList') forwardSolverEngineList = ForwardSolverEngineList;
 
   constructor() {
 
