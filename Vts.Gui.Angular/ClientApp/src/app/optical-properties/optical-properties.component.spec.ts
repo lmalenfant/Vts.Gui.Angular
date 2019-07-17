@@ -17,6 +17,7 @@ describe('optical-properties component', () => {
       testHostFixture = TestBed.createComponent(TestHostComponent);
       testHostComponent = testHostFixture.componentInstance;
       testHostComponent.opticalPropertiesComponent.opticalProperties = {
+        title: "Optical Properties",
         mua: 0.01,
         musp: 1,
         g: 0.8,
@@ -56,40 +57,40 @@ describe('optical-properties component', () => {
     it('should allow mua to be changed to 0.1', async(() => {
       testHostFixture.whenStable().then(() => {
         const testElement = testHostFixture.debugElement.query(By.css('#mua'));
-        testElement.nativeElement.value = '0.1';
+        testElement.nativeElement.value = 0.1;
         testElement.nativeElement.dispatchEvent(new Event('input'));
         testHostFixture.detectChanges();
-        expect(testHostComponent.opticalPropertiesComponent.opticalProperties.mua).toBe('0.1');
+        expect(testHostComponent.opticalPropertiesComponent.opticalProperties.mua.toString()).toBe('0.1');
       });
     }));
 
     it('should allow mus` to be changed to 2', async(() => {
       testHostFixture.whenStable().then(() => {
         const testElement = testHostFixture.debugElement.query(By.css('#musp'));
-        testElement.nativeElement.value = '2';
+        testElement.nativeElement.value = 2;
         testElement.nativeElement.dispatchEvent(new Event('input'));
         testHostFixture.detectChanges();
-        expect(testHostComponent.opticalPropertiesComponent.opticalProperties.musp).toBe('2');
+        expect(testHostComponent.opticalPropertiesComponent.opticalProperties.musp.toString()).toBe('2');
       });
     }));
 
     it('should allow g to be changed to 0.9', async(() => {
       testHostFixture.whenStable().then(() => {
         const testElement = testHostFixture.debugElement.query(By.css('#g'));
-        testElement.nativeElement.value = '0.9';
+        testElement.nativeElement.value = 0.9;
         testElement.nativeElement.dispatchEvent(new Event('input'));
         testHostFixture.detectChanges();
-        expect(testHostComponent.opticalPropertiesComponent.opticalProperties.g).toBe('0.9');
+        expect(testHostComponent.opticalPropertiesComponent.opticalProperties.g.toString()).toBe('0.9');
       });
     }));
 
     it('should allow n to be changed to 1.1', async(() => {
       testHostFixture.whenStable().then(() => {
         const testElement = testHostFixture.debugElement.query(By.css('#n'));
-        testElement.nativeElement.value = '1.1';
+        testElement.nativeElement.value = 1.1;
         testElement.nativeElement.dispatchEvent(new Event('input'));
         testHostFixture.detectChanges();
-        expect(testHostComponent.opticalPropertiesComponent.opticalProperties.n).toBe('1.1');
+        expect(testHostComponent.opticalPropertiesComponent.opticalProperties.n.toString()).toBe('1.1');
       });
     }));
 

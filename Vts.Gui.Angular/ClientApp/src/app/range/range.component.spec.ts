@@ -87,30 +87,30 @@ describe('range component', () => {
     it('should allow the start value to be changed to 0.25', async(() => {
       testHostFixture.whenStable().then(() => {
         const testElement = testHostFixture.debugElement.query(By.css('#startValue'));
-        testElement.nativeElement.value = '0.25';
+        testElement.nativeElement.value = 0.25;
         testElement.nativeElement.dispatchEvent(new Event('input'));
         testHostFixture.detectChanges();
-        expect(testHostComponent.rangeComponent.range.startValue).toBe('0.25');
+        expect(testHostComponent.rangeComponent.range.startValue.toString()).toBe('0.25');
       });
     }));
 
     it('should allow the end value to be changed to 5.25', async(() => {
       testHostFixture.whenStable().then(() => {
         const testElement = testHostFixture.debugElement.query(By.css('#endValue'));
-        testElement.nativeElement.value = '5.25';
+        testElement.nativeElement.value = 5.25;
         testElement.nativeElement.dispatchEvent(new Event('input'));
         testHostFixture.detectChanges();
-        expect(testHostComponent.rangeComponent.range.endValue).toBe('5.25');
+        expect(testHostComponent.rangeComponent.range.endValue.toString()).toBe('5.25');
       });
     }));
 
     it('should allow the number value to be changed to 29', async(() => {
       testHostFixture.whenStable().then(() => {
         const testElement = testHostFixture.debugElement.query(By.css('#numberValue'));
-        testElement.nativeElement.value = '29';
+        testElement.nativeElement.value = 29;
         testElement.nativeElement.dispatchEvent(new Event('input'));
         testHostFixture.detectChanges();
-        expect(testHostComponent.rangeComponent.range.numberValue).toBe('29');
+        expect(testHostComponent.rangeComponent.range.numberValue.toString()).toBe('29');
       });
     }));
 

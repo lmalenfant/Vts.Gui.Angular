@@ -10,7 +10,7 @@ describe('optimizer-type component', () => {
 
     beforeEach(async(() => {
       TestBed.configureTestingModule({
-        declarations: [OptimizationParametersComponent, TestHostComponent],
+        declarations: [OptimizerTypeComponent, TestHostComponent],
         imports: [FormsModule],
         schemas: [NO_ERRORS_SCHEMA]    
       })
@@ -23,15 +23,14 @@ describe('optimizer-type component', () => {
     }));
 
     it('should have a title of Optimizer Type', async(() => {
-      testHostComponent.optimizerTypeComponent.solutionDomain = { value: "levenbergmarquardt" };
+      testHostComponent.optimizerTypeComponent.optimizerType = { value: "levenbergmarquardt" };
       testHostFixture.detectChanges();
-      const heading = testHostFixture.debugElement.query(By.css('.heading'));
-      expect(heading.nativeElement.innerText).toEqual('Optimizer Type'); //This is a bad test because the value is hard-coded
+      expect(testHostComponent.optimizerTypeComponent.optimizerType.value).toBe('levenbergmarquardt');
     }));
 
     @Component({
         selector: `host-component`,
-        template: `<app-solution-domain></app-optimizer-type>`,
+        template: `<app-optimizer-type></app-optimizer-type>`,
       })
       class TestHostComponent {
         @ViewChild(OptimizerTypeComponent)

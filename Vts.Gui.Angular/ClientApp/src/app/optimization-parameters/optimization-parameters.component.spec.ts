@@ -22,16 +22,15 @@ describe('optimization-parameters component', () => {
         testHostComponent = testHostFixture.componentInstance;
     }));
 
-    it('should have a title of Optimization Parameters', async(() => {
-      testHostComponent.optimizationParametersComponent.solutionDomain = { value: "muaandmusp" };
+    it('should have a value of μa and μs', async(() => {
+      testHostComponent.optimizationParametersComponent.optimizationParameters = { value: "muaandmusp" };
       testHostFixture.detectChanges();
-      const heading = testHostFixture.debugElement.query(By.css('.heading'));
-      expect(heading.nativeElement.innerText).toEqual('Optimization Parameters'); //This is a bad test because the value is hard-coded
+      expect(testHostComponent.optimizationParametersComponent.optimizationParameters.value).toBe('muaandmusp');
     }));
 
     @Component({
         selector: `host-component`,
-        template: `<app-solution-domain></app-optimization-parameters>`,
+        template: `<app-optimization-parameters></app-optimization-parameters>`,
       })
       class TestHostComponent {
         @ViewChild(OptimizationParametersComponent)

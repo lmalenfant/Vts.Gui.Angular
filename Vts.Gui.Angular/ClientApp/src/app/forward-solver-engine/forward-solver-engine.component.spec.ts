@@ -56,10 +56,10 @@ describe('forward-solver-engine component', () => {
         expect(testHostComponent.forwardSolverEngineComponent.gaussianBeam.show).toBe(true);
         testHostFixture.whenStable().then(() => {
           const testElement = testHostFixture.debugElement.query(By.css('#gaussianBeamDiameter'));
-          testElement.nativeElement.value = '2';
+          testElement.nativeElement.value = 2;
           testElement.nativeElement.dispatchEvent(new Event('input'));
           testHostFixture.detectChanges();
-          expect(testHostComponent.forwardSolverEngineComponent.gaussianBeam.diameter).toBe('2');
+          expect(testHostComponent.forwardSolverEngineComponent.gaussianBeam.diameter.toString()).toBe('2');
         });
       });
     }));
