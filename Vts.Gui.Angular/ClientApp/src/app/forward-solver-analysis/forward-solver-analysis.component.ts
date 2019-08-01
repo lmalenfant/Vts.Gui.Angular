@@ -8,6 +8,7 @@ import { OpticalProperties } from '../optical-properties/optical-properties.mode
 import { ModelAnalysisType } from '../model-analysis-type/model-analysis-type.model';
 import { PlotService } from '../services/plot.service';
 import { PlotObject } from '../plot/plot-object.model';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'app-forward-solver-analysis',
@@ -75,7 +76,8 @@ export class ForwardSolverAnalysisComponent implements OnInit {
     console.log(fsSettings);
     console.log(JSON.stringify(fsSettings));
     this.plotData.getPlotData(fsSettings).subscribe((data: any) => {
-      //this.plotObject = data;
+      //set the plot grouping based on the checkbox value
+      this.plotData.groupPlots = $("#group-plots").is(":checked");
       this.plotData.addNewPlot(data);
     });
   }

@@ -10,7 +10,7 @@ declare const plotAccordingToChoices: any;
   styleUrls: ['./plot.component.css']
 })
 /** plot component*/
-export class PlotComponent implements OnInit, OnChanges {
+export class PlotComponent implements OnInit {
   colorArray: Array<number> = [];
   plot;
   plotObject: PlotObject;
@@ -32,7 +32,6 @@ export class PlotComponent implements OnInit, OnChanges {
         this.lastActionId = "";
       }
       console.log(c);
-      console.log('changes detected');
     });
   }
 
@@ -43,9 +42,7 @@ export class PlotComponent implements OnInit, OnChanges {
       }
     });
     this.plotData.newPlotObject.subscribe(plotObject => this.plotObject = plotObject);
-  }
-
-  ngOnChanges() {
+    this.plotData.groupPlots = $("#group-plots").is(":checked");
   }
 
   updatePlotData(solutionDomain) {

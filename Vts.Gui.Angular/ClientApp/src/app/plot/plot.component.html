@@ -6,6 +6,7 @@
       </a>
     </li>
   </ul>
+  <div><input type="checkbox" name="group-plots" id="group-plots" checked="checked" /><label for="group-plots">&nbsp;Group Plots</label></div>
   <div id="plot-content" class="tab-content">
     <div *ngFor="let plotObject of plotObjects" id="pane-{{plotObject.Id}}" role="tabpanel" class="tab-pane fade">
       <div class="plot-container col">

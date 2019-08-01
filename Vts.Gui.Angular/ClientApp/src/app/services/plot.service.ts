@@ -7,6 +7,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Injectable()
 export class PlotService {
   plotObjects: Array<PlotObject>;
+  groupPlots: boolean;
   constructor(private http: HttpClient) {
   }
 
@@ -35,6 +36,10 @@ export class PlotService {
   }
 
   addNewPlot(data: PlotObject) {
+    if (this.groupPlots) {
+      data.Id = data.YAxis + data.XAxis;
+      data.Detector = "R(" + data.XAxis + ")"
+    }
     if (typeof (this.plotObjects) === 'undefined') {
       this.plotObjects = [data];
     } else {
