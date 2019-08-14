@@ -22,7 +22,7 @@ describe('plot service', () => {
             // set the test parameters
             let paramData = { }; // don't need to pass actual data because the return data is fake
             // call the service
-            service.getPlotData(paramData).subscribe((data: any) => {
+            service.getPlotData(paramData, "values").subscribe((data: any) => {
                 expect(data.Detector).toBe("R(ρ)");
                 expect(data.XAxis).toBe("ρ");
                 expect(data.YAxis).toBe("Reflectance");

@@ -75,7 +75,7 @@ export class ForwardSolverAnalysisComponent implements OnInit {
     };
     console.log(fsSettings);
     console.log(JSON.stringify(fsSettings));
-    this.plotData.getPlotData(fsSettings).subscribe((data: any) => {
+    this.plotData.getPlotData(fsSettings, "forward").subscribe((data: any) => {
       //set the plot grouping based on the checkbox value
       this.plotData.groupPlots = $("#group-plots").is(":checked");
       this.plotData.addNewPlot(data);

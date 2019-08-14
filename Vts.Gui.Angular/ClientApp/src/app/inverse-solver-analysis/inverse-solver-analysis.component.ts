@@ -1,4 +1,4 @@
-﻿import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {FormsModule} from '@angular/forms'
 import { ForwardSolverEngine } from '../forward-solver-engine/forward-solver-engine.model';
 import { InverseSolverEngineList } from './inverse-solver-analysis-list';
@@ -99,7 +99,7 @@ export class InverseSolverAnalysisComponent implements OnInit {
     };
     console.log(fsSettings);
     console.log(JSON.stringify(fsSettings));
-    this.plotData.getPlotData(fsSettings).subscribe((data: any) => {
+    this.plotData.getPlotData(fsSettings, "inverse").subscribe((data: any) => {
       //this.plotObject = data;
       this.plotData.addNewPlot(data);
     });
@@ -116,7 +116,7 @@ export class InverseSolverAnalysisComponent implements OnInit {
     };
     console.log(igSettings);
     console.log(JSON.stringify(igSettings));
-    this.plotData.getPlotData(igSettings).subscribe((data: any) => {
+    this.plotData.getPlotData(igSettings, "forward").subscribe((data: any) => {
       //this.plotObject = data;
       this.plotData.addNewPlot(data);
     });
@@ -134,7 +134,7 @@ export class InverseSolverAnalysisComponent implements OnInit {
     };
     console.log(inSettings);
     console.log(JSON.stringify(inSettings));
-    this.plotData.getPlotData(inSettings).subscribe((data: any) => {
+    this.plotData.getPlotData(inSettings, "inverse").subscribe((data: any) => {
       //this.plotObject = data;
       this.plotData.addNewPlot(data);
     });

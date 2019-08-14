@@ -31,7 +31,7 @@ describe('plot component', () => {
                 // set the test parameters
                 let paramData = { };
                 // call the service
-                service.getPlotData(paramData).subscribe((data: any) => {
+                service.getPlotData(paramData, "values").subscribe((data: any) => {
                     console.log('getPlotData in plot test');
                     component.plotObject = data;
                     component.plotObjects = [data];
