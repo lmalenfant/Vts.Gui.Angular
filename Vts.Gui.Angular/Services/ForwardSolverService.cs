@@ -20,14 +20,13 @@ namespace Vts.Api.Services
                 var fs = vtsSettings["forwardSolverEngine"];
                 var msg = "";
                 var op = new OpticalProperties((double)vtsSettings["opticalProperties"]["mua"], (double)vtsSettings["opticalProperties"]["musp"], (double)vtsSettings["opticalProperties"]["g"], (double)vtsSettings["opticalProperties"]["n"]);
+                var xaxis = new DoubleRange((double)vtsSettings["range"]["startValue"], (double)vtsSettings["range"]["endValue"], (int)vtsSettings["range"]["numberValue"]);
+                var independentValues = xaxis.AsEnumerable().ToArray();
                 if (sd == "rofrho")
                 {
-                    var rho = new DoubleRange((double)vtsSettings["range"]["startValue"], (double)vtsSettings["range"]["endValue"], (int)vtsSettings["range"]["numberValue"]);
                     IEnumerable<double> results = null;
-                    results = ROfRho(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, rho);
-                    var independentValues = rho.AsEnumerable().ToArray();
+                    results = ROfRho(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, xaxis);
                     var rhos = independentValues.Skip(1).Zip(independentValues.Take(independentValues.Length - 1), (first, second) => (first + second) / 2).ToArray();
-
                     var rOfRhoPoints = rhos.Zip(results, (x, y) => new Point(x, y));
                     var rOfRhoPlot = new PlotData { Data = rOfRhoPoints, Label = "ROfRho" };
                     var rhoPlot = new Plots { Id = "ROfRho", Detector = "R(ρ)", Legend = "R(ρ)", XAxis = "ρ", YAxis = "Reflectance", PlotList = new List<PlotDataJson>() };
@@ -40,10 +39,8 @@ namespace Vts.Api.Services
                     var independentAxis = vtsSettings["independentAxes"]["label"];
                     if (independentAxis == "t")
                     {
-                        var rho = new DoubleRange((double)vtsSettings["range"]["startValue"], (double)vtsSettings["range"]["endValue"], (int)vtsSettings["range"]["numberValue"]);
                         var time = (double)vtsSettings["independentAxes"]["value"];
-                        results = ROfRhoAndTime(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, rho, time);
-                        var independentValues = rho.AsEnumerable().ToArray();
+                        results = ROfRhoAndTime(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, xaxis, time);
                         var rhos = independentValues.Skip(1).Zip(independentValues.Take(independentValues.Length - 1), (first, second) => (first + second) / 2).ToArray();
                         var rOfRhoPoints = rhos.Zip(results, (x, y) => new Point(x, y));
                         var rOfRhoPlot = new PlotData { Data = rOfRhoPoints, Label = "ROfRhoAndTime" };
@@ -53,11 +50,9 @@ namespace Vts.Api.Services
                     }
                     else
                     {
-                        var time = new DoubleRange((double)vtsSettings["range"]["startValue"], (double)vtsSettings["range"]["endValue"], (int)vtsSettings["range"]["numberValue"]);
                         var rho = (double)vtsSettings["independentAxes"]["value"];
-                        results = ROfRhoAndTime(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, rho, time);
-                        var independentValues = time.AsEnumerable().ToArray();
-                        var times = independentValues.Skip(1).Zip(independentValues.Take(independentValues.Length - 1), (first, second) => (first + second) / 2).ToArray();
+                        results = ROfRhoAndTime(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, rho, xaxis);
+                        var times = independentValues.Skip(1).ToArray();
                         var dataPoints = times.Zip(results, (x, y) => new Point(x, y));
                         var dataPlot = new PlotData { Data = dataPoints, Label = "ROfRhoAndTime" };
                         var rhoPlot = new Plots { Id = "ROfRhoAndTimeFixedRho", Detector = "R(ρ,time)", Legend = "R(ρ,time)", XAxis = "Time", YAxis = "Reflectance", PlotList = new List<PlotDataJson>() };
@@ -74,7 +69,6 @@ namespace Vts.Api.Services
                         var rho = new DoubleRange((double)vtsSettings["range"]["startValue"], (double)vtsSettings["range"]["endValue"], (int)vtsSettings["range"]["numberValue"]);
                         var ft = (double)vtsSettings["independentAxes"]["value"];
                         results = ROfRhoAndFt(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, rho, ft);
-                        var independentValues = rho.AsEnumerable().ToArray();
                         var rhos = independentValues.Skip(1).Zip(independentValues.Take(independentValues.Length - 1), (first, second) => (first + second) / 2).ToArray();
                         var realPoints = rhos.Zip(results, (x, y) => new Point(x, y.Real));
                         var imagPoints = rhos.Zip(results, (x, y) => new Point(x, y.Imaginary));
@@ -87,13 +81,11 @@ namespace Vts.Api.Services
                     }
                     else
                     {
-                        var ft = new DoubleRange((double)vtsSettings["range"]["startValue"], (double)vtsSettings["range"]["endValue"], (int)vtsSettings["range"]["numberValue"]);
                         var rho = (double)vtsSettings["independentAxes"]["value"];
-                        results = ROfRhoAndFt(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, rho, ft);
-                        var independentValues = ft.AsEnumerable().ToArray();
-                        var times = independentValues.Skip(1).Zip(independentValues.Take(independentValues.Length - 1), (first, second) => (first + second) / 2).ToArray();
-                        var realPoints = times.Zip(results, (x, y) => new Point(x, y.Real));
-                        var imagPoints = times.Zip(results, (x, y) => new Point(x, y.Imaginary));
+                        results = ROfRhoAndFt(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, rho, xaxis);
+                        var fts = independentValues.ToArray();
+                        var realPoints = fts.Zip(results, (x, y) => new Point(x, y.Real));
+                        var imagPoints = fts.Zip(results, (x, y) => new Point(x, y.Imaginary));
                         var realPlot = new PlotData { Data = realPoints, Label = "ROfRhoAndFt" };
                         var imagPlot = new PlotData { Data = imagPoints, Label = "ROfRhoAndFt" };
                         var rhoPlot = new Plots { Id = "ROfRhoAndFtFixedRho", Detector = "R(ρ,ft)", Legend = "R(ρ,ft)", XAxis = "ft", YAxis = "Reflectance", PlotList = new List<PlotDataJson>() };
@@ -104,12 +96,9 @@ namespace Vts.Api.Services
                 }
                 else if (sd == "roffx")
                 {
-                    var fx = new DoubleRange((double)vtsSettings["range"]["startValue"], (double)vtsSettings["range"]["endValue"], (int)vtsSettings["range"]["numberValue"]);
                     IEnumerable<double> results = null;
-                    results = ROfFx(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, fx);
-                    var independentValues = fx.AsEnumerable().ToArray();
-                    var fxs = independentValues.Skip(1).Zip(independentValues.Take(independentValues.Length - 1), (first, second) => (first + second) / 2).ToArray();
-
+                    results = ROfFx(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, xaxis);
+                    var fxs = independentValues.ToArray();
                     var rOfFxPoints = fxs.Zip(results, (x, y) => new Point(x, y));
                     var rOfFxPlot = new PlotData { Data = rOfFxPoints, Label = "ROfFx" };
                     var fxPlot = new Plots { Id = "ROfFx", Detector = "R(fx)", Legend = "R(fx)", XAxis = "fx", YAxis = "Reflectance", PlotList = new List<PlotDataJson>() };
@@ -122,11 +111,9 @@ namespace Vts.Api.Services
                     var independentAxis = vtsSettings["independentAxes"]["label"];
                     if (independentAxis == "t")
                     {
-                        var fx = new DoubleRange((double)vtsSettings["range"]["startValue"], (double)vtsSettings["range"]["endValue"], (int)vtsSettings["range"]["numberValue"]);
                         var time = (double)vtsSettings["independentAxes"]["value"];
-                        results = ROfFxAndTime(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, fx, time);
-                        var independentValues = fx.AsEnumerable().ToArray();
-                        var fxs = independentValues.Skip(1).Zip(independentValues.Take(independentValues.Length - 1), (first, second) => (first + second) / 2).ToArray();
+                        results = ROfFxAndTime(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, xaxis, time);
+                        var fxs = independentValues.ToArray();
                         var rOfFxPoints = fxs.Zip(results, (x, y) => new Point(x, y));
                         var rOfFxPlot = new PlotData { Data = rOfFxPoints, Label = "ROfFxAndTime" };
                         var fxPlot = new Plots { Id = "ROfFxAndTimeFixedTime", Detector = "R(fx,time)", Legend = "R(fx,time)", XAxis = "fx", YAxis = "Reflectance", PlotList = new List<PlotDataJson>() };
@@ -135,12 +122,10 @@ namespace Vts.Api.Services
                     }
                     else
                     {
-                        var time = new DoubleRange((double)vtsSettings["range"]["startValue"], (double)vtsSettings["range"]["endValue"], (int)vtsSettings["range"]["numberValue"]);
                         var fx = (double)vtsSettings["independentAxes"]["value"];
-                        results = ROfFxAndTime(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, fx, time);
-                        var independentValues = time.AsEnumerable().ToArray();
-                        var times = independentValues.Skip(1).Zip(independentValues.Take(independentValues.Length - 1), (first, second) => (first + second) / 2).ToArray();
-                        var dataPoints = times.Zip(results, (x, y) => new Point(x, y));
+                        results = ROfFxAndTime(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, fx, xaxis);
+                        var fts = independentValues.Skip(1).ToArray();
+                        var dataPoints = fts.Zip(results, (x, y) => new Point(x, y));
                         var dataPlot = new PlotData { Data = dataPoints, Label = "ROfFxAndTime" };
                         var fxPlot = new Plots { Id = "ROfFxAndTimeFixedFx", Detector = "R(fx,time)", Legend = "R(fx,time)", XAxis = "Time", YAxis = "Reflectance", PlotList = new List<PlotDataJson>() };
                         fxPlot.PlotList.Add(new PlotDataJson { Data = dataPlot.Data.Select(item => new List<double> { item.X, item.Y }).ToList(), Label = fs + " μa=" + op.Mua + " μs'=" + op.Musp + " ρ=" + fx });
@@ -153,11 +138,9 @@ namespace Vts.Api.Services
                     var independentAxis = vtsSettings["independentAxes"]["label"];
                     if (independentAxis == "ft")
                     {
-                        var fx = new DoubleRange((double)vtsSettings["range"]["startValue"], (double)vtsSettings["range"]["endValue"], (int)vtsSettings["range"]["numberValue"]);
                         var ft = (double)vtsSettings["independentAxes"]["value"];
-                        results = ROfFxAndFt(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, fx, ft);
-                        var independentValues = fx.AsEnumerable().ToArray();
-                        var fxs = independentValues.Skip(1).Zip(independentValues.Take(independentValues.Length - 1), (first, second) => (first + second) / 2).ToArray();
+                        results = ROfFxAndFt(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, xaxis, ft);
+                        var fxs = independentValues.ToArray();
                         var realPoints = fxs.Zip(results, (x, y) => new Point(x, y.Real));
                         var imagPoints = fxs.Zip(results, (x, y) => new Point(x, y.Imaginary));
                         var realPlot = new PlotData { Data = realPoints, Label = "ROfFxAndFt" };
@@ -169,13 +152,11 @@ namespace Vts.Api.Services
                     }
                     else
                     {
-                        var ft = new DoubleRange((double)vtsSettings["range"]["startValue"], (double)vtsSettings["range"]["endValue"], (int)vtsSettings["range"]["numberValue"]);
                         var fx = (double)vtsSettings["independentAxes"]["value"];
-                        results = ROfFxAndFt(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, fx, ft);
-                        var independentValues = ft.AsEnumerable().ToArray();
-                        var times = independentValues.Skip(1).Zip(independentValues.Take(independentValues.Length - 1), (first, second) => (first + second) / 2).ToArray();
-                        var realPoints = times.Zip(results, (x, y) => new Point(x, y.Real));
-                        var imagPoints = times.Zip(results, (x, y) => new Point(x, y.Imaginary));
+                        results = ROfFxAndFt(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, fx, xaxis);
+                        var fts = independentValues.ToArray();
+                        var realPoints = fts.Zip(results, (x, y) => new Point(x, y.Real));
+                        var imagPoints = fts.Zip(results, (x, y) => new Point(x, y.Imaginary));
                         var realPlot = new PlotData { Data = realPoints, Label = "ROfFxAndFt" };
                         var imagPlot = new PlotData { Data = imagPoints, Label = "ROfFxAndFt" };
                         var fxPlot = new Plots { Id = "ROfFxAndFtFixedFx", Detector = "R(fx,ft)", Legend = "R(fx,ft)", XAxis = "ft", YAxis = "Reflectance", PlotList = new List<PlotDataJson>() };
