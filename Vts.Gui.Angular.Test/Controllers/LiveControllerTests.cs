@@ -10,7 +10,7 @@ namespace Vts.Gui.Angular.Test.Controllers
         {
             var liveController = new LiveController();
             var response = liveController.Get();
-            Assert.AreEqual(response, "200 OK");
+            Assert.AreEqual("200 OK", response);
         }
     }
 }

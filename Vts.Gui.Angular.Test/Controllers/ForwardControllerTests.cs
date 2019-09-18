@@ -11,7 +11,7 @@ namespace Vts.Gui.Angular.Test.Controllers
             var forwardController = new ForwardController();
             var response = forwardController.Get();
             string[] array = { "Controller", "Forward" };
-            Assert.AreEqual(response, array);
+            Assert.AreEqual(array, response);
         }
     }
 }

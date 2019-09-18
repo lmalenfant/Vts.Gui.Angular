@@ -11,7 +11,7 @@ namespace Vts.Gui.Angular.Test.Controllers
             var inverseController = new InverseController();
             var response = inverseController.Get();
             string[] array = { "Controller", "Inverse" };
-            Assert.AreEqual(response, array);
+            Assert.AreEqual(array, response);
         }
     }
 }

@@ -15,8 +15,8 @@ namespace Vts.Gui.Angular.Test.Controllers
                 HttpContext = new DefaultHttpContext()
             };
             var response = readyController.Get();
-            Assert.AreEqual(response, "200 OK");
-            Assert.AreEqual(readyController.HttpContext.Response.StatusCode, 200);
+            Assert.AreEqual("200 OK", response);
+            Assert.AreEqual(200, readyController.HttpContext.Response.StatusCode);
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Vts.Gui.Angular.Test.Controllers
             var spectralController = new SpectralController();
             var response = spectralController.Get();
             string[] array = { "Controller", "Spectral" };
-            Assert.AreEqual(response, array);
+            Assert.AreEqual(array, response);
         }
     }
 }
