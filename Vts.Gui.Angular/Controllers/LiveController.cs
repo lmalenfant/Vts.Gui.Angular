@@ -10,6 +10,7 @@ namespace Vts.Gui.Angular.Controllers
         [HttpGet]
         public string Get()
         {
+            HttpContext.Response.StatusCode = 200;
             return "200 OK";
         }
     }

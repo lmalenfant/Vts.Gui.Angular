@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Vts.Gui.Angular.Controllers
 {
@@ -6,9 +7,18 @@ namespace Vts.Gui.Angular.Controllers
     [ApiController]
     public class ReadyController : ControllerBase
     {
-        // GET: api/Live
+        // GET: api/ready
         [HttpGet]
         public string Get()
+        {
+            HttpContext.Response.StatusCode = 200;
+            return "200 OK";
+        }
+
+        // POST api/ready
+        [HttpPost]
+        [Authorize(Policy = "ApiKeyPolicy")]
+        public dynamic Post([FromBody] dynamic value)
         {
             HttpContext.Response.StatusCode = 200;
             return "200 OK";

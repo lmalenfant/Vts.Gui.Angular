@@ -3,8 +3,8 @@
   <table class="solutionDomain">
     <tr>
       <td>Steady-State</td>
-      <td><input name="SolutionDomain" type="radio" [(ngModel)]="solutionDomain.value" value="rofrho" (click)="setIndependentAxes('ρ', 'mm')" />&nbsp;R(ρ)</td>
-      <td><input name="SolutionDomain" type="radio" [(ngModel)]="solutionDomain.value" value="roffx" (click)="setIndependentAxes('fx', '1/mm')" />&nbsp;R(fx)</td>
+      <td><input name="SolutionDomain" type="radio" [(ngModel)]="solutionDomain.value" value="rofrho" (click)="setIndependentAxes('ρ', 'mm', '', '')" />&nbsp;R(ρ)</td>
+      <td><input name="SolutionDomain" type="radio" [(ngModel)]="solutionDomain.value" value="roffx" (click)="setIndependentAxes('fx', '1/mm', '', '')" />&nbsp;R(fx)</td>
     </tr>
     <tr>
       <td>Time-Domain</td>

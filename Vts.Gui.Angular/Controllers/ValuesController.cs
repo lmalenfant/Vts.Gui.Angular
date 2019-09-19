@@ -29,17 +29,5 @@ namespace Vts.Api.Controllers
             var forwardSolverService = new ForwardSolverService();
             return forwardSolverService.GetPlotData(value);
         }
-
-        // PUT api/v1/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/v1/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }
