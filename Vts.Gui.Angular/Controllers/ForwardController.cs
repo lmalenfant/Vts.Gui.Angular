@@ -15,13 +15,6 @@ namespace Vts.Gui.Angular.Controllers
             return new string[] { "Controller", "Forward" };
         }
 
-        // GET: api/v1/Forward/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
         // POST: api/v1/Forward
         [HttpPost]
         public string Post([FromBody] dynamic value)

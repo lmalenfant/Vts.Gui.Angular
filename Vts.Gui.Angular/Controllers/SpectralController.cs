@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Vts.Gui.Angular.Services;
 
 namespace Vts.Gui.Angular.Controllers
 {
@@ -14,29 +15,12 @@ namespace Vts.Gui.Angular.Controllers
             return new string[] { "Controller", "Spectral" };
         }
 
-        // GET: api/v1/Spectral/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return id.ToString();
-        }
-
         // POST: api/v1/Spectral
         [HttpPost]
-        public void Post([FromBody] string value)
+        public string Post([FromBody] dynamic value)
         {
-        }
-
-        // PUT: api/v1/Spectral/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/v1/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            var spectralService = new SpectralService();
+            return spectralService.GetPlotData(value);
         }
     }
 }
