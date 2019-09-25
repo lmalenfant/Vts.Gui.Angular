@@ -3,5 +3,50 @@
   <select id="tissue-type" class="form-control form-control-sm" [ngModel]="tissueType.value" (ngModelChange)="onChange($event)">
     <option *ngFor="let tissue of tissueTypeList" [value]="tissue.value">{{tissue.display}}</option>
   </select>
-  <div id="absorber-concentrations"></div>
+  <div id="absorber-concentrations">
+    <div class="heading">Absorber Concentrations</div>
+    <div class="absorber">
+      <div class="input-group input-group-sm mr-sm-2 ml-sm-2" *ngFor="let concentration of absorberConcentration" id="{{concentration.label}}">
+        <div class="input-group-prepend">
+          <span id="startLabel" class="input-group-text">{{concentration.label}}</span>
+        </div>
+        <input id="startValue" name="startValue" type="text" class="form-control" [(ngModel)]="concentration.value" />
+        <div class="input-group-append">
+          <span id="startUnits" class="input-group-text">{{concentration.units}}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div id="blood-concentration">
+    <div class="heading">Blood Concentration</div>
+    <div class="range form-inline">
+      <div class="input-group input-group-sm mr-sm-2 ml-sm-2">
+        <div class="input-group-prepend">
+          <span id="startLabel" class="input-group-text">Total Hb</span>
+        </div>
+        <input id="startValue" name="startValue" type="text" class="form-control" [(ngModel)]="bloodConcentration.totalHb" />
+        <div class="input-group-append">
+          <span id="startUnits" class="input-group-text">μM</span>
+        </div>
+      </div>
+      <div class="input-group input-group-sm mr-sm-2">
+        <div class="input-group-prepend">
+          <span id="endLabel" class="input-group-text">Blood Volume</span>
+        </div>
+        <input id="endValue" name="endValue" type="text" class="form-control" [(ngModel)]="bloodConcentration.bloodVolume" />
+        <div class="input-group-append">
+          <span id="endUnits" class="input-group-text">vol. frac.</span>
+        </div>
+      </div>
+      <div class="input-group input-group-sm">
+        <div class="input-group-prepend">
+          <span id="numberLabel" class="input-group-text">StO2</span>
+        </div>
+        <input id="numberValue" name="numberValue" type="text" class="form-control number" [(ngModel)]="bloodConcentration.stO2" />
+        <div class="input-group-append">
+          <span id="endUnits" class="input-group-text">frac.</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

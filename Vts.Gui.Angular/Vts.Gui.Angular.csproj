@@ -37,6 +37,9 @@
     <None Remove="ClientApp\src\app\range\range.model.ts" />
     <None Remove="ClientApp\src\app\solution-domain\independent-axis.model.ts" />
     <None Remove="ClientApp\src\app\solution-domain\solution-domain.model.ts" />
+    <None Remove="ClientApp\src\app\tissue-definition\absorber-concentration.model.ts" />
+    <None Remove="ClientApp\src\app\tissue-definition\absorber-list.ts" />
+    <None Remove="ClientApp\src\app\tissue-definition\blood-concentration.model.ts" />
     <None Remove="ClientApp\src\app\tissue-definition\tissue-definition.model.ts" />
     <None Remove="ClientApp\src\app\tissue-definition\tissue-list.ts" />
   </ItemGroup>
@@ -51,6 +54,9 @@
     <TypeScriptCompile Include="ClientApp\src\app\range\range.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\solution-domain\independent-axis.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\solution-domain\solution-domain.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\tissue-definition\absorber-concentration.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\tissue-definition\absorber-list.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\tissue-definition\blood-concentration.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\tissue-definition\tissue-definition.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\tissue-definition\tissue-list.ts" />
   </ItemGroup>
