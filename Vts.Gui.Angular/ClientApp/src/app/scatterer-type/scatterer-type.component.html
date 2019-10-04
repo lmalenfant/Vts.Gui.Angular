@@ -1,0 +1,9 @@
+<div>
+  <div class="heading">{{title}}</div>
+  <select id="tissue-type" class="form-control form-control-sm" [ngModel]="scattererType.value" (ngModelChange)="onChange($event)">
+    <option *ngFor="let scatterer of scattererTypeList" [value]="scatterer.value">{{scatterer.display}}</option>
+  </select>
+  <div>
+
+  </div>
+</div>

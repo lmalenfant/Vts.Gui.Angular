@@ -18,6 +18,8 @@ import { OptimizerTypeComponent } from './optimizer-type/optimizer-type.componen
 import { PlotComponent } from './plot/plot.component';
 import { PlotService } from './services/plot.service';
 import { HttpClientModule } from '@angular/common/http';
+import { ScattererTypeComponent } from './scatterer-type/scatterer-type.component';
+import { SingleWavelengthCalculatorComponent } from './single-wavelength-calculator/single-wavelength-calculator.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +30,8 @@ import { HttpClientModule } from '@angular/common/http';
     InverseSolverAnalysisComponent,
     ForwardSolverAnalysisComponent,
     SpectralComponent,
+    ScattererTypeComponent,
+    SingleWavelengthCalculatorComponent,
     TissueDefinitionComponent,
     ModelAnalysisTypeComponent,
     ForwardSolverEngineComponent,

@@ -3,4 +3,13 @@
   <!-- Tissue -->
   <app-tissue-definition [tissueType]="tissueType" [absorberConcentration]="absorberConcentration" [bloodConcentration]="bloodConcentration"></app-tissue-definition>
   <br /><br />
+  <app-scatterer-type [scattererType]="scattererType"></app-scatterer-type>
+  <br />
+  <!-- Range -->
+  <app-range [range]="range"></app-range>
+  <br />
+  <div class="pull-right">
+    <button id="Simulation" type="submit" class="btn btn-primary">Plot μs' Spectrum</button>&nbsp;
+    <button id="Simulation" type="submit" class="btn btn-primary">Plot μa Spectrum</button>
+  </div>
 </form>

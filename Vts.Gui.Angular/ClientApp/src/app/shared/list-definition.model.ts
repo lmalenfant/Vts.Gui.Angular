@@ -1,4 +1,4 @@
-export class TissueType {
+export class ListType {
   value: string;
   display: string;
 }

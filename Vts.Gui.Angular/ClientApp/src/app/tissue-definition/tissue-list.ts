@@ -1,6 +1,6 @@
-import { TissueType } from './tissue-definition.model';
+import { ListType } from '../shared/list-definition.model';
 
-export const TissueTypeList: TissueType[] = [
+export const TissueTypeList: ListType[] = [
   { value: 'Skin', display: 'Skin' },
   { value: 'BrainWhiteMatter', display: 'Brain White Matter' },
   { value: 'BrainGrayMatter', display: 'Brain Gray Matter' },

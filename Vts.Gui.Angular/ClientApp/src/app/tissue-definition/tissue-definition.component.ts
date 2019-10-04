@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
+import { ListType } from '../shared/list-definition.model';
 import { BrainGrayMatter, BrainWhiteMatter, BreastPostMenopause, BreastPreMenopause, Custom, IntralipidPhantom, Liver, Skin } from '../tissue-definition/absorber-list';
 import { AbsorberConcentration } from './absorber-concentration.model';
 import { BloodConcentration } from './blood-concentration.model';
-import { TissueType } from './tissue-definition.model';
 import { TissueTypeList } from './tissue-list';
 
 @Component({
@@ -12,7 +12,7 @@ import { TissueTypeList } from './tissue-list';
 })
 /** tissue-definition component*/
 export class TissueDefinitionComponent {
-  @Input() tissueType: TissueType;
+  @Input() tissueType: ListType;
   @Input('tissueTypeList') tissueTypeList = TissueTypeList;
   @Input() bloodConcentration: BloodConcentration;
   @Input('absorberConcentration') absorberConcentration: Array<AbsorberConcentration>;
@@ -20,6 +20,7 @@ export class TissueDefinitionComponent {
   constructor() {
 
   }
+
   onChange(value) {
     console.log(this.tissueType.value);
     console.log(value);

@@ -35,6 +35,7 @@
     <None Remove="ClientApp\src\app\optical-properties\optical-properties.model.ts" />
     <None Remove="ClientApp\src\app\plot\plot-object.model.ts" />
     <None Remove="ClientApp\src\app\range\range.model.ts" />
+    <None Remove="ClientApp\src\app\scatterer-type\scatterer-list.ts" />
     <None Remove="ClientApp\src\app\solution-domain\independent-axis.model.ts" />
     <None Remove="ClientApp\src\app\solution-domain\solution-domain.model.ts" />
     <None Remove="ClientApp\src\app\tissue-definition\absorber-concentration.model.ts" />
@@ -52,17 +53,17 @@
     <TypeScriptCompile Include="ClientApp\src\app\optical-properties\optical-properties.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\plot\plot-object.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\range\range.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\scatterer-type\scatterer-list.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\solution-domain\independent-axis.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\solution-domain\solution-domain.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\tissue-definition\absorber-concentration.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\tissue-definition\absorber-list.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\tissue-definition\blood-concentration.model.ts" />
-    <TypeScriptCompile Include="ClientApp\src\app\tissue-definition\tissue-definition.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\shared\list-definition.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\tissue-definition\tissue-list.ts" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ClientApp\src\app\shared\" />
     <Folder Include="Security\" />
   </ItemGroup>
 
