@@ -3,7 +3,56 @@
   <select id="tissue-type" class="form-control form-control-sm" [ngModel]="scattererType.value" (ngModelChange)="onChange($event)">
     <option *ngFor="let scatterer of scattererTypeList" [value]="scatterer.value">{{scatterer.display}}</option>
   </select>
+  <br />
   <div>
-
+    <div class="range form-inline" *ngIf="powerLaw.show">
+      <div class="input-group input-group-sm mr-sm-2 ml-sm-2">
+        <div class="input-group-prepend">
+          <span id="startLabel" class="input-group-text">A</span>
+        </div>
+        <input id="a" name="startValue" type="text" class="form-control" [(ngModel)]="powerLaw.a" />
+        <div class="input-group-append">
+          <span id="b" class="input-group-text">b</span>
+        </div>
+        <input id="startValue" name="startValue" type="text" class="form-control" [(ngModel)]="powerLaw.b" />
+        <div class="input-group-append">
+          <span id="desc" class="input-group-text">(A = μs' at 1000nm)</span>
+        </div>
+      </div>
+    </div>
+    <div class="range form-inline" *ngIf="intralipid.show">
+      <div class="input-group input-group-sm mr-sm-2 ml-sm-2">
+        <div class="input-group-prepend">
+          <span id="startLabel" class="input-group-text">Volume Fraction</span>
+        </div>
+        <input id="a" name="startValue" type="text" class="form-control" [(ngModel)]="intralipid.volumeFraction" />
+      </div>
+    </div>
+    <div class="range form-inline" *ngIf="mieParticle.show">
+      <div class="input-group input-group-sm mr-sm-2 ml-sm-2">
+        <div class="input-group-prepend">
+          <span id="startLabel" class="input-group-text">Particle Radius</span>
+        </div>
+        <input id="a" name="startValue" type="text" class="form-control" [(ngModel)]="mieParticle.particleRadius" />
+      </div>
+      <div class="input-group input-group-sm mr-sm-2 ml-sm-2">
+        <div class="input-group-prepend">
+          <span id="startLabel" class="input-group-text">Particle</span>
+        </div>
+        <input id="a" name="startValue" type="text" class="form-control" [(ngModel)]="mieParticle.particleN" />
+      </div>
+      <div class="input-group input-group-sm mr-sm-2 ml-sm-2">
+        <div class="input-group-prepend">
+          <span id="startLabel" class="input-group-text">Medium</span>
+        </div>
+        <input id="a" name="startValue" type="text" class="form-control" [(ngModel)]="mieParticle.mediumN" />
+      </div>
+      <div class="input-group input-group-sm mr-sm-2 ml-sm-2">
+        <div class="input-group-prepend">
+          <span id="startLabel" class="input-group-text">Volume Fraction</span>
+        </div>
+        <input id="a" name="startValue" type="text" class="form-control" [(ngModel)]="mieParticle.volumeFraction" />
+      </div>
+    </div>
   </div>
 </div>

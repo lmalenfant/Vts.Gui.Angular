@@ -35,6 +35,9 @@
     <None Remove="ClientApp\src\app\optical-properties\optical-properties.model.ts" />
     <None Remove="ClientApp\src\app\plot\plot-object.model.ts" />
     <None Remove="ClientApp\src\app\range\range.model.ts" />
+    <None Remove="ClientApp\src\app\scatterer-type\intralipid.model.ts" />
+    <None Remove="ClientApp\src\app\scatterer-type\mie-particle.model.ts" />
+    <None Remove="ClientApp\src\app\scatterer-type\power-law.model.ts" />
     <None Remove="ClientApp\src\app\scatterer-type\scatterer-list.ts" />
     <None Remove="ClientApp\src\app\solution-domain\independent-axis.model.ts" />
     <None Remove="ClientApp\src\app\solution-domain\solution-domain.model.ts" />
@@ -53,6 +56,9 @@
     <TypeScriptCompile Include="ClientApp\src\app\optical-properties\optical-properties.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\plot\plot-object.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\range\range.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\scatterer-type\intralipid.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\scatterer-type\mie-particle.model.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\scatterer-type\power-law.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\scatterer-type\scatterer-list.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\solution-domain\independent-axis.model.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\solution-domain\solution-domain.model.ts" />
