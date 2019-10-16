@@ -1,0 +1,225 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Newtonsoft.Json;
+using Vts.Common;
+using Vts.Extensions;
+using Vts.Api.Data;
+using Vts.Factories;
+
+namespace Vts.Api.Services
+{
+    public class InverseSolverService
+    {
+        public string GetPlotData(dynamic values)
+        {
+            try
+            {
+                dynamic vtsSettings = values;
+                var sd = vtsSettings["solutionDomain"];
+                var ins = vtsSettings["inverseSolverEngine"];
+                var msg = "";
+                var igops = new OpticalProperties((double) vtsSettings["opticalProperties"]["mua"],
+                    (double) vtsSettings["opticalProperties"]["musp"], (double) vtsSettings["opticalProperties"]["g"],
+                    (double) vtsSettings["opticalProperties"]["n"]);
+                var xaxis = new DoubleRange((double) vtsSettings["range"]["startValue"],
+                    (double) vtsSettings["range"]["endValue"], (int) vtsSettings["range"]["numberValue"]);
+                var independentValues = xaxis.AsEnumerable().ToArray();
+                var independentAxis = vtsSettings["independentAxes"]["label"];
+                // LM?: is independentAxisValue = constant independent axis value?
+                var independentAxisValue = (double) vtsSettings["independentAxes"]["value"];
+                var igparms = GetParametersInOrder(igops, independentValues, sd, independentAxis, independentAxisValue);
+                var optpar = vtsSettings["optimizationParameters"];
+                var optype = vtsSettings["optimizerType"];
+                // get measured data from inverse solver analysis component
+                var measuredPoints = vtsSettings["measuredData"]; // this has form [[x1,y1],[x2,y2]...]
+                //var measPoint = (Point[])measuredObject.PlotList[0].Data; 
+                double[] meas = new double[3];
+                meas[0] = measuredPoints[0];
+                meas[1] = measuredPoints[1];
+                meas[2] = measuredPoints[2];
+
+                var lbs = new double[] {0, 0, 0, 0};
+                var ubs = new double[]
+                {
+                    double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity
+                };
+                InverseSolutionResult fit = ComputationFactory.SolveInverse(
+                    Enum.Parse(typeof(ForwardSolverType), ins.ToString()),
+                    Enum.Parse(typeof(OptimizerType), optype.ToString()),
+                    Enum.Parse(typeof(SolutionDomainType), sd.ToString()),
+                    meas,
+                    meas, // set standard deviation to measured to match WPF
+                    Enum.Parse(typeof(InverseFitType), optpar.ToString()),
+                    igparms.Values.ToArray(),
+                    lbs,
+                    ubs);
+                var fitops = new OpticalProperties(fit.FitOpticalProperties[0].Mua, fit.FitOpticalProperties[0].Musp, 
+                    fit.FitOpticalProperties[0].G, fit.FitOpticalProperties[0].N);
+                var fitparms = GetParametersInOrder(fitops, independentValues, sd, independentAxis, independentAxisValue);
+                var fitPoints = fit.FitDataPoints;
+                var fitPlot = new PlotData {Data = fitPoints, Label = sd.ToString()};
+                var plot = new Plots
+                {
+                    Id = sd.ToString(), Detector = "RXX", Legend = "RXX", XAxis = independentAxis,
+                    YAxis = "Reflectance", PlotList = new List<PlotDataJson>()
+                };
+                plot.PlotList.Add(new PlotDataJson
+                {
+                    Data = fitPlot.Data.Select(item => new List<double> {item.X, item.Y}).ToList(),
+                    Label = ins + " μa=" + fitops.Mua + " μs'=" + fitops.Musp
+                });
+                msg = JsonConvert.SerializeObject(fit);
+                return msg;
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error during action: " + e.Message);
+            }
+
+            // the following needs to change when Wavelength is added into independent variable list
+            IDictionary<IndependentVariableAxis, object> GetParametersInOrder(
+                object opticalProperties, double[] xs, string sd, string independentAxis, double independentValue)
+            {
+                // make list of independent vars with independent first then constant
+                var listIndepVars = new List<IndependentVariableAxis>();
+                var isConstant = independentAxis;
+                if (sd == "rofrho")
+                {
+                    isConstant = "";
+                    listIndepVars.Add(IndependentVariableAxis.Rho);
+                }
+                else if (sd == "rofrhoandt")
+                {
+                    if (independentAxis == "t")
+                    {
+                        listIndepVars.Add(IndependentVariableAxis.Rho);
+                        listIndepVars.Add(IndependentVariableAxis.Time);
+                    }
+
+                    listIndepVars.Add(IndependentVariableAxis.Time);
+                    listIndepVars.Add(IndependentVariableAxis.Rho);
+                }
+                else if (sd == "rofrhoandft")
+                {
+                    listIndepVars.Add(IndependentVariableAxis.Rho);
+                    listIndepVars.Add(IndependentVariableAxis.Ft);
+                }
+                else if (sd == "roffx")
+                {
+                    isConstant = "";
+                    listIndepVars.Add(IndependentVariableAxis.Fx);
+                }
+                else if (sd == "roffxandt")
+                {
+                    listIndepVars.Add(IndependentVariableAxis.Fx);
+                    listIndepVars.Add(IndependentVariableAxis.Time);
+                }
+                else if (sd == "roffxandft")
+                {
+                    listIndepVars.Add(IndependentVariableAxis.Fx);
+                    listIndepVars.Add(IndependentVariableAxis.Ft);
+                }
+
+                // get all parameters in order
+                var allParameters =
+                    from iva in listIndepVars
+                    where iva != IndependentVariableAxis.Wavelength
+                    //orderby GetParameterOrder(iva)
+                    select new KeyValuePair<IndependentVariableAxis, object>(iva,
+                        GetParameterValues(iva, isConstant, independentValue, xs));
+                // OPs are always first in the list
+                return
+                    new KeyValuePair<IndependentVariableAxis, object>(IndependentVariableAxis.Wavelength,
+                            opticalProperties)
+                        .AsEnumerable()
+                        .Concat(allParameters).ToDictionary();
+            }
+
+            int GetParameterOrder(IndependentVariableAxis axis)
+            {
+                switch (axis)
+                {
+                    case IndependentVariableAxis.Wavelength:
+                        return 0;
+                    case IndependentVariableAxis.Rho:
+                        return 1;
+                    case IndependentVariableAxis.Fx:
+                        return 1;
+                    case IndependentVariableAxis.Time:
+                        return 2;
+                    case IndependentVariableAxis.Ft:
+                        return 2;
+                    case IndependentVariableAxis.Z:
+                        return 3;
+                    default:
+                        throw new ArgumentOutOfRangeException("axis");
+                }
+            }
+
+            double[] GetParameterValues(IndependentVariableAxis axis, string isConstant, double independentValue,
+                double[] xs)
+            {
+                if (isConstant != "")
+                {
+                    var positionIndex = 0; //hard-coded for now
+                    switch (positionIndex)
+                    {
+                        case 0:
+                        default:
+                            return new[] {independentValue};
+                        //case 1:
+                        //return new[] { SolutionDomainTypeOptionVM.ConstantAxesVMs[1].AxisValue };
+                        //case 2:
+                        //    return new[] { SolutionDomainTypeOptionVM.ConstantAxisThreeValue };
+                    }
+                }
+                else
+                {
+                    //var numAxes = axis.Count();
+                    var numAxes = 1;
+                    var positionIndex = 0; //hard-coded for now
+                    //var positionIndex = SolutionDomainTypeOptionVM.IndependentVariableAxisOptionVM.SelectedValues.IndexOf(axis);
+                    switch (numAxes)
+                    {
+                        case 1:
+                        default:
+                            //return AllRangeVMs[0].Values.ToArray();
+                            return xs.ToArray();
+                        //case 2:
+                        //    switch (positionIndex)
+                        //    {
+                        //        case 0:
+                        //        default:
+                        //            return AllRangeVMs[1].Values.ToArray();
+                        //        case 1:
+                        //            return AllRangeVMs[0].Values.ToArray();
+                        //    }
+                        //case 3:
+                        //    switch (positionIndex)
+                        //    {
+                        //        case 0:
+                        //        default:
+                        //            return AllRangeVMs[2].Values.ToArray();
+                        //        case 1:
+                        //            return AllRangeVMs[1].Values.ToArray();
+                        //        case 2:
+                        //            return AllRangeVMs[0].Values.ToArray();
+                        //    }
+                    }
+                }
+            }
+        }
+
+        public class InverseSolutionResult
+        {
+            // LM?: IDataPoint[][] for first item is in Wpf.Model
+            public Point[] FitDataPoints { get; set; }
+            //public double[][] FitDataPoints { get; set; }
+            public OpticalProperties[] MeasuredOpticalProperties { get; set; }
+            public OpticalProperties[] GuessOpticalProperties { get; set; }
+            public OpticalProperties[] FitOpticalProperties { get; set; }
+        }
+        
+    }
+}
