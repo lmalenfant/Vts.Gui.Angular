@@ -29,16 +29,13 @@ namespace Vts.Api.Services
                 // LM?: is independentAxisValue = constant independent axis value?
                 var independentAxisValue = (double) vtsSettings["independentAxes"]["value"];
                 var igparms = GetParametersInOrder(igops, independentValues, sd, independentAxis, independentAxisValue);
+                object[] igparmsConvert = igparms.Values.ToArray();
                 var optpar = vtsSettings["optimizationParameters"];
                 var optype = vtsSettings["optimizerType"];
                 // get measured data from inverse solver analysis component
-                var measuredPoints = vtsSettings["measuredData"]; // this has form [[x1,y1],[x2,y2]...]
-                //var measPoint = (Point[])measuredObject.PlotList[0].Data; 
-                double[] meas = new double[3];
-                meas[0] = measuredPoints[0];
-                meas[1] = measuredPoints[1];
-                meas[2] = measuredPoints[2];
-
+                var measuredPoints = vtsSettings["measuredData"]; // this is a JArray has form [[x1,y1],[x2,y2]...]
+                List<double[]> measConvert = measuredPoints.ToObject<List<double[]>>(); // convert to list of double[]
+                var meas = measConvert.Select(p => p.Last()).ToArray(); // get y value
                 var lbs = new double[] {0, 0, 0, 0};
                 var ubs = new double[]
                 {
@@ -51,7 +48,7 @@ namespace Vts.Api.Services
                     meas,
                     meas, // set standard deviation to measured to match WPF
                     Enum.Parse(typeof(InverseFitType), optpar.ToString()),
-                    igparms.Values.ToArray(),
+                    igparmsConvert,
                     lbs,
                     ubs);
                 var fitops = new OpticalProperties(fit.FitOpticalProperties[0].Mua, fit.FitOpticalProperties[0].Musp, 
@@ -84,12 +81,12 @@ namespace Vts.Api.Services
                 // make list of independent vars with independent first then constant
                 var listIndepVars = new List<IndependentVariableAxis>();
                 var isConstant = independentAxis;
-                if (sd == "rofrho")
+                if (sd == "ROfRho")
                 {
                     isConstant = "";
                     listIndepVars.Add(IndependentVariableAxis.Rho);
                 }
-                else if (sd == "rofrhoandt")
+                else if (sd == "ROfRhoAndTime")
                 {
                     if (independentAxis == "t")
                     {
@@ -100,22 +97,22 @@ namespace Vts.Api.Services
                     listIndepVars.Add(IndependentVariableAxis.Time);
                     listIndepVars.Add(IndependentVariableAxis.Rho);
                 }
-                else if (sd == "rofrhoandft")
+                else if (sd == "ROfRhoAndFt")
                 {
                     listIndepVars.Add(IndependentVariableAxis.Rho);
                     listIndepVars.Add(IndependentVariableAxis.Ft);
                 }
-                else if (sd == "roffx")
+                else if (sd == "ROfFx")
                 {
                     isConstant = "";
                     listIndepVars.Add(IndependentVariableAxis.Fx);
                 }
-                else if (sd == "roffxandt")
+                else if (sd == "ROfFxAndTime")
                 {
                     listIndepVars.Add(IndependentVariableAxis.Fx);
                     listIndepVars.Add(IndependentVariableAxis.Time);
                 }
-                else if (sd == "roffxandft")
+                else if (sd == "ROfFxAndFt")
                 {
                     listIndepVars.Add(IndependentVariableAxis.Fx);
                     listIndepVars.Add(IndependentVariableAxis.Ft);

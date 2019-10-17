@@ -22,7 +22,7 @@ export class ForwardSolverAnalysisComponent implements OnInit {
     show: false,
     diameter: 0.1
   };
-  solutionDomain: SolutionDomain = { value: "rofrho" };
+  solutionDomain: SolutionDomain = { value: "ROfRho" };
   independentAxes: IndependentAxis = {
     show: false,
     first: 'ρ',

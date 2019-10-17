@@ -37,7 +37,7 @@ export class InverseSolverAnalysisComponent implements OnInit {
     diameter: 0.1
   };
   isEngineList = InverseSolverEngineList;
-  solutionDomain: SolutionDomain = { value: "rofrho" };
+  solutionDomain: SolutionDomain = { value: "ROfRho" };
   independentAxes: IndependentAxis = {
     show: false,
     first: 'ρ',
@@ -77,9 +77,8 @@ export class InverseSolverAnalysisComponent implements OnInit {
   };
   modelAnalysisType: ModelAnalysisType = { value: 'R'};
   noiseValue = '0';
-
-  //measuredObject: PlotObject; // = [ 0.03, 0.02, 0.01 ];
-  measuredData: number[];
+  
+  measuredData: number[][];
 
   plotObject: PlotObject; 
   //plotObjects: Array<PlotObject>;
@@ -132,7 +131,6 @@ export class InverseSolverAnalysisComponent implements OnInit {
 
   runInverse() {    
     var inSettings = {
-      forwardSolverEngine: this.forwardSolverEngine.value,
       inverseSolverEngine: this.inverseSolverEngine.value,
       optimizerType: this.optimizerType.value,
       solutionDomain: this.solutionDomain.value,
