@@ -23,7 +23,7 @@ namespace Vts.Api.Services
                 var xaxis = new DoubleRange((double)vtsSettings["range"]["startValue"], (double)vtsSettings["range"]["endValue"], (int)vtsSettings["range"]["numberValue"]);
                 var independentValues = xaxis.AsEnumerable().ToArray();
                 var noise = (double)vtsSettings["noiseValue"];
-                if (sd == "ROfRho")
+                if (sd == "rofrho")
                 {
                     IEnumerable<double> results = null;
                     results = ROfRho(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, xaxis, noise);
@@ -35,7 +35,7 @@ namespace Vts.Api.Services
                     rhoPlot.PlotList.Add(new PlotDataJson { Data = rOfRhoPlot.Data.Select(item => new List<double> { item.X, item.Y }).ToList(), Label = fs + " μa=" + op.Mua + " μs'=" + op.Musp });
                     msg = JsonConvert.SerializeObject(rhoPlot);
                 }
-                else if (sd == "ROfRhoAndTime")
+                else if (sd == "rofrhoandt")
                 {
                     IEnumerable<double> results = null;
                     var independentAxis = vtsSettings["independentAxes"]["label"];
@@ -62,7 +62,7 @@ namespace Vts.Api.Services
                         msg = JsonConvert.SerializeObject(rhoPlot);
                     }
                 }
-                else if (sd == "ROfRhoAndFt")
+                else if (sd == "rofrhoandft")
                 {
                     IEnumerable<Complex> results;
                     var independentAxis = vtsSettings["independentAxes"]["label"];
@@ -96,7 +96,7 @@ namespace Vts.Api.Services
                         msg = JsonConvert.SerializeObject(rhoPlot);
                     }
                 }
-                else if (sd == "ROfFx")
+                else if (sd == "roffx")
                 {
                     IEnumerable<double> results = null;
                     results = ROfFx(Enum.Parse(typeof(ForwardSolverType), fs.ToString()), op, xaxis, noise);
@@ -107,7 +107,7 @@ namespace Vts.Api.Services
                     fxPlot.PlotList.Add(new PlotDataJson { Data = rOfFxPlot.Data.Select(item => new List<double> { item.X, item.Y }).ToList(), Label = fs + " μa=" + op.Mua + " μs'=" + op.Musp });
                     msg = JsonConvert.SerializeObject(fxPlot);
                 }
-                else if (sd == "ROfFxAndTime")
+                else if (sd == "roffxandt")
                 {
                     IEnumerable<double> results = null;
                     var independentAxis = vtsSettings["independentAxes"]["label"];
@@ -134,7 +134,7 @@ namespace Vts.Api.Services
                         msg = JsonConvert.SerializeObject(fxPlot);
                     }
                 }
-                else if (sd == "ROfFxAndFt")
+                else if (sd == "roffxandft")
                 {
                     IEnumerable<Complex> results;
                     var independentAxis = vtsSettings["independentAxes"]["label"];

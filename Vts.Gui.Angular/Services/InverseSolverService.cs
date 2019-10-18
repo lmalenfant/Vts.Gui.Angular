@@ -28,7 +28,8 @@ namespace Vts.Api.Services
                 var independentAxis = vtsSettings["independentAxes"]["label"];
                 // LM?: is independentAxisValue = constant independent axis value?
                 var independentAxisValue = (double) vtsSettings["independentAxes"]["value"];
-                var igparms = GetParametersInOrder(igops, independentValues, sd, independentAxis, independentAxisValue);
+                var igopsArray = GetInitialGuessOpticalProperties(igops);
+                var igparms = GetParametersInOrder(igopsArray, independentValues, sd, independentAxis, independentAxisValue);
                 object[] igparmsConvert = igparms.Values.ToArray();
                 var optpar = vtsSettings["optimizationParameters"];
                 var optype = vtsSettings["optimizerType"];
@@ -41,37 +42,52 @@ namespace Vts.Api.Services
                 {
                     double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity
                 };
-                InverseSolutionResult fit = ComputationFactory.SolveInverse(
+                double[] fit = ComputationFactory.SolveInverse(
                     Enum.Parse(typeof(ForwardSolverType), ins.ToString()),
                     Enum.Parse(typeof(OptimizerType), optype.ToString()),
-                    Enum.Parse(typeof(SolutionDomainType), sd.ToString()),
+                    Enum.Parse(typeof(SolutionDomainType), sd.ToString(), true), // LM? add true
                     meas,
                     meas, // set standard deviation to measured to match WPF
                     Enum.Parse(typeof(InverseFitType), optpar.ToString()),
                     igparmsConvert,
                     lbs,
                     ubs);
-                var fitops = new OpticalProperties(fit.FitOpticalProperties[0].Mua, fit.FitOpticalProperties[0].Musp, 
-                    fit.FitOpticalProperties[0].G, fit.FitOpticalProperties[0].N);
+                var fitops = ComputationFactory.UnFlattenOpticalProperties(fit);
                 var fitparms = GetParametersInOrder(fitops, independentValues, sd, independentAxis, independentAxisValue);
-                var fitPoints = fit.FitDataPoints;
-                var fitPlot = new PlotData {Data = fitPoints, Label = sd.ToString()};
+                // temp substitute for common code in ForwardSolverService
+                var ops = fitops.AsEnumerable();
+                var rhos = xaxis.AsEnumerable();
+                var fs = SolverFactory.GetForwardSolver(Enum.Parse(typeof(ForwardSolverType), ins.ToString()));
+                IEnumerable<double> fitResults = fs.ROfRho(ops.First(), rhos);
+                // LM? why didn't you call following in ForwardSolverService
+                //var fitResults = ComputationFactory.ComputeReflectance(
+                //    Enum.Parse(typeof(ForwardSolverType), ins.ToString()),
+                //    Enum.Parse(typeof(SolutionDomainType), sd.ToString(), true),
+                //    ForwardAnalysisType.R, fitparms.Values.ToArray());
+                var fitDataPoints = rhos.Zip(fitResults, (x, y) => new Point(x, y));
+                var fitPlot = new PlotData {Data = fitDataPoints, Label = "ROfRho"};
                 var plot = new Plots
                 {
-                    Id = sd.ToString(), Detector = "RXX", Legend = "RXX", XAxis = independentAxis,
+                    Id = "ROfRho", Detector = "R(ρ)", Legend = "R(ρ)", XAxis = "ρ",
                     YAxis = "Reflectance", PlotList = new List<PlotDataJson>()
                 };
                 plot.PlotList.Add(new PlotDataJson
                 {
                     Data = fitPlot.Data.Select(item => new List<double> {item.X, item.Y}).ToList(),
-                    Label = ins + " μa=" + fitops.Mua + " μs'=" + fitops.Musp
-                });
-                msg = JsonConvert.SerializeObject(fit);
+                    Label = ins + " μa=" + fitops[0].Mua + " μs'=" + fitops[0].Musp
+                }); 
+                msg = JsonConvert.SerializeObject(plot);
                 return msg;
             }
             catch (Exception e)
             {
                 throw new Exception("Error during action: " + e.Message);
+            }
+
+            // this needs further development when add in wavelength refer to WPF code
+            object GetInitialGuessOpticalProperties(OpticalProperties igops)
+            {
+                return new[] {igops};
             }
 
             // the following needs to change when Wavelength is added into independent variable list
@@ -81,12 +97,12 @@ namespace Vts.Api.Services
                 // make list of independent vars with independent first then constant
                 var listIndepVars = new List<IndependentVariableAxis>();
                 var isConstant = independentAxis;
-                if (sd == "ROfRho")
+                if (sd == "rofrho")
                 {
                     isConstant = "";
                     listIndepVars.Add(IndependentVariableAxis.Rho);
                 }
-                else if (sd == "ROfRhoAndTime")
+                else if (sd == "rofrhoandt")
                 {
                     if (independentAxis == "t")
                     {
@@ -97,22 +113,22 @@ namespace Vts.Api.Services
                     listIndepVars.Add(IndependentVariableAxis.Time);
                     listIndepVars.Add(IndependentVariableAxis.Rho);
                 }
-                else if (sd == "ROfRhoAndFt")
+                else if (sd == "rofrhoandft")
                 {
                     listIndepVars.Add(IndependentVariableAxis.Rho);
                     listIndepVars.Add(IndependentVariableAxis.Ft);
                 }
-                else if (sd == "ROfFx")
+                else if (sd == "roffx")
                 {
                     isConstant = "";
                     listIndepVars.Add(IndependentVariableAxis.Fx);
                 }
-                else if (sd == "ROfFxAndTime")
+                else if (sd == "roffxandt")
                 {
                     listIndepVars.Add(IndependentVariableAxis.Fx);
                     listIndepVars.Add(IndependentVariableAxis.Time);
                 }
-                else if (sd == "ROfFxAndFt")
+                else if (sd == "roffxandft")
                 {
                     listIndepVars.Add(IndependentVariableAxis.Fx);
                     listIndepVars.Add(IndependentVariableAxis.Ft);

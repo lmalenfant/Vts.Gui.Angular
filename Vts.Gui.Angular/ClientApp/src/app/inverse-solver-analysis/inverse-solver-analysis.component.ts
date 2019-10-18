@@ -37,7 +37,7 @@ export class InverseSolverAnalysisComponent implements OnInit {
     diameter: 0.1
   };
   isEngineList = InverseSolverEngineList;
-  solutionDomain: SolutionDomain = { value: "ROfRho" };
+  solutionDomain: SolutionDomain = { value: 'rofrho' };
   independentAxes: IndependentAxis = {
     show: false,
     first: 'ρ',
@@ -59,8 +59,8 @@ export class InverseSolverAnalysisComponent implements OnInit {
     numberLabel: 'Number',
     numberValue: 19
   };
-  optimizationParameters: OptimizationParameters = { value: 'MuaMusp'};
-  optimizerType: OptimizerType = { value: 'MPFitLevenbergMarquardt'};
+  optimizationParameters: OptimizationParameters = { value: 'MuaMusp' };
+  optimizerType: OptimizerType = { value: 'MPFitLevenbergMarquardt' };
   forwardOpticalProperties: OpticalProperties = {
     title: 'Forward Simulation Optical Properties',
     mua: 0.01,
@@ -133,6 +133,7 @@ export class InverseSolverAnalysisComponent implements OnInit {
     var inSettings = {
       inverseSolverEngine: this.inverseSolverEngine.value,
       optimizerType: this.optimizerType.value,
+      optimizationParameters: this.optimizationParameters.value,
       solutionDomain: this.solutionDomain.value,
       measuredData: this.measuredData,
       independentAxes: this.independentAxes,
