@@ -37,7 +37,7 @@ export class InverseSolverAnalysisComponent implements OnInit {
     diameter: 0.1
   };
   isEngineList = InverseSolverEngineList;
-  solutionDomain: SolutionDomain = { value: 'rofrho' };
+  solutionDomain: SolutionDomain = { value: 'ROfRho' };
   independentAxes: IndependentAxis = {
     show: false,
     first: 'ρ',

@@ -17,8 +17,7 @@ namespace Vts.Api.Services
             {
                 dynamic vtsSettings = values;
                 var sd = vtsSettings["solutionDomain"];
-                //LM?: I need sd to be one of the SolutionDomainTypes e.g. rofrhoandt does not convert to ROfRhoAndTime
-                var sdtype = Enum.Parse(typeof(SolutionDomainType), sd.ToString(), true); // LM? add true
+                var sdtype = Enum.Parse(typeof(SolutionDomainType), sd.ToString());
                 var ins = vtsSettings["inverseSolverEngine"];
                 var msg = "";
                 var igops = new OpticalProperties((double) vtsSettings["opticalProperties"]["mua"],
@@ -30,7 +29,8 @@ namespace Vts.Api.Services
                 var independentAxis = vtsSettings["independentAxes"]["label"];
                 var independentAxisValue = (double) vtsSettings["independentAxes"]["value"];
                 var igopsArray = GetInitialGuessOpticalProperties(igops);
-                var igparms = GetParametersInOrder(igopsArray, independentValues, sd, independentAxis, independentAxisValue);
+                var igparms = GetParametersInOrder(igopsArray, independentValues, sd, independentAxis,
+                    independentAxisValue);
                 object[] igparmsConvert = igparms.Values.ToArray();
                 var optpar = vtsSettings["optimizationParameters"];
                 var optype = vtsSettings["optimizerType"];
@@ -54,7 +54,17 @@ namespace Vts.Api.Services
                     lbs,
                     ubs);
                 var fitops = ComputationFactory.UnFlattenOpticalProperties(fit);
-                var fitparms = GetParametersInOrder(fitops, independentValues, sd, independentAxis, independentAxisValue);
+                var fitparms =
+                    GetParametersInOrder(fitops, independentValues, sd, independentAxis, independentAxisValue);
+                //var noise = 0;
+                //msg = PlotResults.PlotBasedOnSolutionDomain(
+                //    Enum.Parse(typeof(ForwardSolverType), ins.ToString()),
+                //    sd.Value,
+                //    xaxis,
+                //    fitops[0],
+                //    independentAxis.Value,
+                //    independentValues[0],
+                //    noise);
                 // LM? why didn't you call following in ForwardSolverService
                 var fitResults = ComputationFactory.ComputeReflectance(
                     Enum.Parse(typeof(ForwardSolverType), ins.ToString()),
@@ -65,14 +75,15 @@ namespace Vts.Api.Services
                 {
                     fitResultsList.Add(fitResults[i]);
                 }
+
                 var fitDataPoints = independentValues.Zip(fitResultsList, (x, y) => new Point(x, y));
-                var fitPlot = new PlotData {Data = fitDataPoints, Label = sd.ToString()};
-                Plots plot = GetSolutionDomainPlot(sd.Value, independentAxis.Value); // not sure why need Value here
+                var fitPlot = new PlotData { Data = fitDataPoints, Label = sd.ToString() };
+                Plots plot = GetSolutionDomainPlot(sd.Value, independentAxis.Value); // why need Value here
                 plot.PlotList.Add(new PlotDataJson
                 {
-                    Data = fitPlot.Data.Select(item => new List<double> {item.X, item.Y}).ToList(),
+                    Data = fitPlot.Data.Select(item => new List<double> { item.X, item.Y }).ToList(),
                     Label = ins + " μa=" + fitops[0].Mua + " μs'=" + fitops[0].Musp
-                }); 
+                });
                 msg = JsonConvert.SerializeObject(plot);
                 return msg;
             }
@@ -93,42 +104,66 @@ namespace Vts.Api.Services
             {
                 // make list of independent vars with independent first then constant
                 var listIndepVars = new List<IndependentVariableAxis>();
-                var isConstant = independentAxis;
-                if (sd == "rofrho")
+                string isConstant = "";
+                if (sd == "ROfRho")
                 {
-                    isConstant = "";
                     listIndepVars.Add(IndependentVariableAxis.Rho);
                 }
-                else if (sd == "rofrhoandt")
+                else if (sd == "ROfRhoAndTime")
                 {
+                    listIndepVars.Add(IndependentVariableAxis.Rho);
+                    listIndepVars.Add(IndependentVariableAxis.Time);
                     if (independentAxis == "t")
                     {
-                        listIndepVars.Add(IndependentVariableAxis.Rho);
-                        listIndepVars.Add(IndependentVariableAxis.Time);
+                        isConstant = "t";
                     }
-
-                    listIndepVars.Add(IndependentVariableAxis.Time);
-                    listIndepVars.Add(IndependentVariableAxis.Rho);
+                    else
+                    {
+                        isConstant = "rho";
+                    }
                 }
-                else if (sd == "rofrhoandft")
+                else if (sd == "ROfRhoAndFt")
                 {
-                    listIndepVars.Add(IndependentVariableAxis.Rho);
                     listIndepVars.Add(IndependentVariableAxis.Ft);
+                    listIndepVars.Add(IndependentVariableAxis.Rho);
+                    if (independentAxis == "ft")
+                    {
+                        isConstant = "ft";
+                    }
+                    else
+                    {
+                        isConstant = "rho";
+                    }
                 }
-                else if (sd == "roffx")
+                else if (sd == "ROfFx")
                 {
-                    isConstant = "";
                     listIndepVars.Add(IndependentVariableAxis.Fx);
                 }
-                else if (sd == "roffxandt")
+                else if (sd == "ROfFxAndTime")
                 {
-                    listIndepVars.Add(IndependentVariableAxis.Fx);
                     listIndepVars.Add(IndependentVariableAxis.Time);
-                }
-                else if (sd == "roffxandft")
-                {
                     listIndepVars.Add(IndependentVariableAxis.Fx);
+                    if (independentAxis == "t")
+                    {
+                        isConstant = "t";
+                    }
+                    else
+                    {
+                        isConstant = "fx";
+                    }
+                }
+                else if (sd == "ROfFxAndFt")
+                {
                     listIndepVars.Add(IndependentVariableAxis.Ft);
+                    listIndepVars.Add(IndependentVariableAxis.Fx);
+                    if (independentAxis == "ft")
+                    {
+                        isConstant = "ft";
+                    }
+                    else
+                    {
+                        isConstant = "fx";
+                    }
                 }
 
                 // get all parameters in order
@@ -170,32 +205,49 @@ namespace Vts.Api.Services
             double[] GetParameterValues(IndependentVariableAxis axis, string isConstant, double independentValue,
                 double[] xs)
             {
-                if (isConstant != "")
+                if (((axis == IndependentVariableAxis.Rho) && (isConstant == "rho")) ||
+                    ((axis == IndependentVariableAxis.Time) && (isConstant == "t")) ||
+                    ((axis == IndependentVariableAxis.Fx) && (isConstant == "fx")) ||
+                    ((axis == IndependentVariableAxis.Ft) && (isConstant == "ft")))
                 {
-                    var positionIndex = 0; //hard-coded for now
-                    switch (positionIndex)
+                    return new[] {independentValue};
+                }
+                else
+                {
+                    if (axis != IndependentVariableAxis.Time)
                     {
-                        case 0:
-                        default:
-                            return new[] {independentValue};
+                        return xs.ToArray();
+                    }
+                    else
+                    {
+                        return xs.Skip(1).ToArray();
+                    }
+                }
+                //{
+                //    var positionIndex = 0; //hard-coded for now
+                //    switch (positionIndex)
+                //    {
+                //        case 0:
+                //        default:
+                //            return new[] {independentValue};
                         //case 1:
                         //return new[] { SolutionDomainTypeOptionVM.ConstantAxesVMs[1].AxisValue };
                         //case 2:
                         //    return new[] { SolutionDomainTypeOptionVM.ConstantAxisThreeValue };
-                    }
-                }
-                else
-                {
-                    //var numAxes = axis.Count();
-                    var numAxes = 1;
-                    var positionIndex = 0; //hard-coded for now
-                    //var positionIndex = SolutionDomainTypeOptionVM.IndependentVariableAxisOptionVM.SelectedValues.IndexOf(axis);
-                    switch (numAxes)
-                    {
-                        case 1:
-                        default:
-                            //return AllRangeVMs[0].Values.ToArray();
-                            return xs.ToArray();
+                    //}
+                //}
+                //else
+                //{
+                //    //var numAxes = axis.Count();
+                //    var numAxes = 1;
+                //    var positionIndex = 0; //hard-coded for now
+                //    //var positionIndex = SolutionDomainTypeOptionVM.IndependentVariableAxisOptionVM.SelectedValues.IndexOf(axis);
+                //    switch (numAxes)
+                //    {
+                //        case 1:
+                //        default:
+                //            //return AllRangeVMs[0].Values.ToArray();
+                //            return xs.ToArray();
                         //case 2:
                         //    switch (positionIndex)
                         //    {
@@ -216,8 +268,8 @@ namespace Vts.Api.Services
                         //        case 2:
                         //            return AllRangeVMs[0].Values.ToArray();
                         //    }
-                    }
-                }
+                    //}
+                //}
             }
         }
 
@@ -225,12 +277,12 @@ namespace Vts.Api.Services
         {
             switch (sd)
             {
-                case "rofrho":
+                case "ROfRho":
                     return new Plots()
                         {Id = "ROfRho", Detector = "R(ρ)", Legend = "R(ρ)", XAxis = "ρ",
                             YAxis = "Reflectance", PlotList = new List<PlotDataJson>()
                         };
-                case "rofrhoAndt":
+                case "ROfRhoAndTime":
                     if (independentAxis == "t")
                         return new Plots()
                         {
@@ -242,7 +294,7 @@ namespace Vts.Api.Services
                         {Id = "ROfRhoAndTimeFixedRho", Detector = "R(ρ,t)", Legend = "R(ρ,t)",
                             XAxis = "time", YAxis = "Reflectance", PlotList = new List<PlotDataJson>()
                         };
-                case "rofrhoandft":
+                case "ROfRhoAndFt":
                     if (independentAxis == "ft")
                         return new Plots()
                         {Id = "ROfRhoAndFtFixedFt", Detector = "R(ρ,ft)", Legend = "R(ρ,ft)",
@@ -254,12 +306,12 @@ namespace Vts.Api.Services
                             Id = "ROfRhoAndFtFixedRho", Detector = "R(ρ,ft)", Legend = "R(ρ,ft)",
                             XAxis = "ρ", YAxis = "Reflectance", PlotList = new List<PlotDataJson>()
                         };
-                case "roffx":
+                case "ROfFx":
                     return new Plots()
                     {Id = "ROfFx", Detector = "R(fx)", Legend = "R(fx)",
                         XAxis = "fx", YAxis = "Reflectance", PlotList = new List<PlotDataJson>()
                     };
-                case "roffxandt":
+                case "ROfFxAndTime":
                     if (independentAxis == "t")
                         return new Plots()
                         {Id = "ROfFxAndTimeFixedTime", Detector = "R(fx,t)", Legend = "R(fx,t)",
@@ -270,7 +322,7 @@ namespace Vts.Api.Services
                         {Id = "ROfFxAndTimeFixedFx", Detector = "R(fx,t)", Legend = "R(fx,t)",
                             XAxis = "time", YAxis = "Reflectance", PlotList = new List<PlotDataJson>()
                         };
-                case "roffxandft":
+                case "ROfFxAndFt":
                     if (independentAxis == "ft")
                         return new Plots()
                         {Id = "ROfFxAndFtFixedFt", Detector = "R(fx,ft)", Legend = "R(fx,ft)",
