@@ -56,35 +56,35 @@ namespace Vts.Api.Services
                 var fitops = ComputationFactory.UnFlattenOpticalProperties(fit);
                 var fitparms =
                     GetParametersInOrder(fitops, independentValues, sd, independentAxis, independentAxisValue);
-                //var noise = 0;
-                //msg = PlotResults.PlotBasedOnSolutionDomain(
-                //    Enum.Parse(typeof(ForwardSolverType), ins.ToString()),
-                //    sd.Value,
-                //    xaxis,
-                //    fitops[0],
-                //    independentAxis.Value,
-                //    independentValues[0],
-                //    noise);
-                // LM? why didn't you call following in ForwardSolverService
-                var fitResults = ComputationFactory.ComputeReflectance(
+                var noise = 0;
+                msg = PlotResults.PlotBasedOnSolutionDomain(
                     Enum.Parse(typeof(ForwardSolverType), ins.ToString()),
-                    sdtype,
-                    ForwardAnalysisType.R, fitparms.Values.ToArray());
-                var fitResultsList = new List<double>();
-                for (int i = 0; i < fitResults.Length; i++)
-                {
-                    fitResultsList.Add(fitResults[i]);
-                }
+                    sd.Value,
+                    xaxis,
+                    fitops[0],
+                    independentAxis.Value,
+                    independentValues[0],
+                    noise);
+                //// LM? why didn't you call following in ForwardSolverService
+                //var fitResults = ComputationFactory.ComputeReflectance(
+                //    Enum.Parse(typeof(ForwardSolverType), ins.ToString()),
+                //    sdtype,
+                //    ForwardAnalysisType.R, fitparms.Values.ToArray());
+                //var fitResultsList = new List<double>();
+                //for (int i = 0; i < fitResults.Length; i++)
+                //{
+                //    fitResultsList.Add(fitResults[i]);
+                //}
 
-                var fitDataPoints = independentValues.Zip(fitResultsList, (x, y) => new Point(x, y));
-                var fitPlot = new PlotData { Data = fitDataPoints, Label = sd.ToString() };
-                Plots plot = GetSolutionDomainPlot(sd.Value, independentAxis.Value); // why need Value here
-                plot.PlotList.Add(new PlotDataJson
-                {
-                    Data = fitPlot.Data.Select(item => new List<double> { item.X, item.Y }).ToList(),
-                    Label = ins + " μa=" + fitops[0].Mua + " μs'=" + fitops[0].Musp
-                });
-                msg = JsonConvert.SerializeObject(plot);
+                //var fitDataPoints = independentValues.Zip(fitResultsList, (x, y) => new Point(x, y));
+                //var fitPlot = new PlotData { Data = fitDataPoints, Label = sd.ToString() };
+                //Plots plot = GetSolutionDomainPlot(sd.Value, independentAxis.Value); // why need Value here
+                //plot.PlotList.Add(new PlotDataJson
+                //{
+                //    Data = fitPlot.Data.Select(item => new List<double> { item.X, item.Y }).ToList(),
+                //    Label = ins + " μa=" + fitops[0].Mua + " μs'=" + fitops[0].Musp
+                //});
+                //msg = JsonConvert.SerializeObject(plot);
                 return msg;
             }
             catch (Exception e)

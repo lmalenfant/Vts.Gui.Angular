@@ -48,7 +48,7 @@ namespace Vts.Api.Services
                     {
                         var rho = independentValue;
                         results = ROfRhoAndTime(fs, op, rho, xaxis, noise);
-                        var times = independentValues.Skip(1).ToArray(); // this skip is giving inverse problems
+                        var times = independentValues.ToArray(); // the Skip(1) is giving inverse problems
                         var dataPoints = times.Zip(results, (x, y) => new Point(x, y));
                         var dataPlot = new PlotData { Data = dataPoints, Label = "ROfRhoAndTime" };
                         var rhoPlot = new Plots { Id = "ROfRhoAndTimeFixedRho", Detector = "R(ρ,time)", Legend = "R(ρ,time)", XAxis = "Time", YAxis = "Reflectance", PlotList = new List<PlotDataJson>() };
