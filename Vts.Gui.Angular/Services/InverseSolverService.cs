@@ -63,7 +63,7 @@ namespace Vts.Api.Services
                     xaxis,
                     fitops[0],
                     independentAxis.Value,
-                    independentValues[0],
+                    independentAxisValue,
                     noise);
                 //// LM? why didn't you call following in ForwardSolverService
                 //var fitResults = ComputationFactory.ComputeReflectance(
@@ -220,7 +220,7 @@ namespace Vts.Api.Services
                     }
                     else
                     {
-                        return xs.Skip(1).ToArray();
+                        return xs.ToArray();
                     }
                 }
                 //{
