@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Newtonsoft.Json;
 using Vts.Common;
 using Vts.Extensions;
-using Vts.Api.Data;
 using Vts.Factories;
 
 namespace Vts.Api.Services
@@ -54,37 +52,17 @@ namespace Vts.Api.Services
                     lbs,
                     ubs);
                 var fitops = ComputationFactory.UnFlattenOpticalProperties(fit);
-                var fitparms =
-                    GetParametersInOrder(fitops, independentValues, sd, independentAxis, independentAxisValue);
+                //var fitparms =
+                //    GetParametersInOrder(fitops, independentValues, sd, independentAxis, independentAxisValue);
                 var noise = 0;
-                msg = PlotResults.PlotBasedOnSolutionDomain(
+                msg = PlotResultsService.PlotBasedOnSolutionDomain(
                     Enum.Parse(typeof(ForwardSolverType), ins.ToString()),
                     sd.Value,
                     xaxis,
-                    fitops[0],
+                    fitops[0], // not sure [0] is always going to work here
                     independentAxis.Value,
                     independentAxisValue,
                     noise);
-                //// LM? why didn't you call following in ForwardSolverService
-                //var fitResults = ComputationFactory.ComputeReflectance(
-                //    Enum.Parse(typeof(ForwardSolverType), ins.ToString()),
-                //    sdtype,
-                //    ForwardAnalysisType.R, fitparms.Values.ToArray());
-                //var fitResultsList = new List<double>();
-                //for (int i = 0; i < fitResults.Length; i++)
-                //{
-                //    fitResultsList.Add(fitResults[i]);
-                //}
-
-                //var fitDataPoints = independentValues.Zip(fitResultsList, (x, y) => new Point(x, y));
-                //var fitPlot = new PlotData { Data = fitDataPoints, Label = sd.ToString() };
-                //Plots plot = GetSolutionDomainPlot(sd.Value, independentAxis.Value); // why need Value here
-                //plot.PlotList.Add(new PlotDataJson
-                //{
-                //    Data = fitPlot.Data.Select(item => new List<double> { item.X, item.Y }).ToList(),
-                //    Label = ins + " μa=" + fitops[0].Mua + " μs'=" + fitops[0].Musp
-                //});
-                //msg = JsonConvert.SerializeObject(plot);
                 return msg;
             }
             catch (Exception e)
@@ -201,7 +179,7 @@ namespace Vts.Api.Services
                         throw new ArgumentOutOfRangeException("axis");
                 }
             }
-
+            // this has commented out code that might come into play when we add wavelength as axis
             double[] GetParameterValues(IndependentVariableAxis axis, string isConstant, double independentValue,
                 double[] xs)
             {
@@ -273,68 +251,5 @@ namespace Vts.Api.Services
             }
         }
 
-        Plots GetSolutionDomainPlot(string sd, string independentAxis)
-        {
-            switch (sd)
-            {
-                case "ROfRho":
-                    return new Plots()
-                        {Id = "ROfRho", Detector = "R(ρ)", Legend = "R(ρ)", XAxis = "ρ",
-                            YAxis = "Reflectance", PlotList = new List<PlotDataJson>()
-                        };
-                case "ROfRhoAndTime":
-                    if (independentAxis == "t")
-                        return new Plots()
-                        {
-                            Id = "ROfRhoAndTimeFixedTime", Detector = "R(ρ,t)", Legend = "R(ρ,t)",
-                            XAxis = "ρ", YAxis = "Reflectance", PlotList = new List<PlotDataJson>()
-                        };
-                    else
-                        return new Plots()
-                        {Id = "ROfRhoAndTimeFixedRho", Detector = "R(ρ,t)", Legend = "R(ρ,t)",
-                            XAxis = "time", YAxis = "Reflectance", PlotList = new List<PlotDataJson>()
-                        };
-                case "ROfRhoAndFt":
-                    if (independentAxis == "ft")
-                        return new Plots()
-                        {Id = "ROfRhoAndFtFixedFt", Detector = "R(ρ,ft)", Legend = "R(ρ,ft)",
-                            XAxis = "ft", YAxis = "Reflectance", PlotList = new List<PlotDataJson>()
-                        };
-                    else
-                        return new Plots()
-                        {
-                            Id = "ROfRhoAndFtFixedRho", Detector = "R(ρ,ft)", Legend = "R(ρ,ft)",
-                            XAxis = "ρ", YAxis = "Reflectance", PlotList = new List<PlotDataJson>()
-                        };
-                case "ROfFx":
-                    return new Plots()
-                    {Id = "ROfFx", Detector = "R(fx)", Legend = "R(fx)",
-                        XAxis = "fx", YAxis = "Reflectance", PlotList = new List<PlotDataJson>()
-                    };
-                case "ROfFxAndTime":
-                    if (independentAxis == "t")
-                        return new Plots()
-                        {Id = "ROfFxAndTimeFixedTime", Detector = "R(fx,t)", Legend = "R(fx,t)",
-                            XAxis = "fx", YAxis = "Reflectance", PlotList = new List<PlotDataJson>()
-                        };
-                    else
-                        return new Plots()
-                        {Id = "ROfFxAndTimeFixedFx", Detector = "R(fx,t)", Legend = "R(fx,t)",
-                            XAxis = "time", YAxis = "Reflectance", PlotList = new List<PlotDataJson>()
-                        };
-                case "ROfFxAndFt":
-                    if (independentAxis == "ft")
-                        return new Plots()
-                        {Id = "ROfFxAndFtFixedFt", Detector = "R(fx,ft)", Legend = "R(fx,ft)",
-                            XAxis = "ft", YAxis = "Reflectance", PlotList = new List<PlotDataJson>()
-                        };
-                    else
-                        return new Plots()
-                        {Id = "ROfFxAndFtFixedFx", Detector = "R(fx,ft)", Legend = "R(fx,ft)",
-                            XAxis = "fx", YAxis = "Reflectance", PlotList = new List<PlotDataJson>()
-                        };
-            }
-            return null;
-        }
     }
 }
