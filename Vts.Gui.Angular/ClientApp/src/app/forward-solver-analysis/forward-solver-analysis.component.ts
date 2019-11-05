@@ -22,7 +22,7 @@ export class ForwardSolverAnalysisComponent implements OnInit {
     show: false,
     diameter: 0.1
   };
-  solutionDomain: SolutionDomain = { value: "rofrho" };
+  solutionDomain: SolutionDomain = { value: 'ROfRho' };
   independentAxes: IndependentAxis = {
     show: false,
     first: 'ρ',
@@ -52,6 +52,7 @@ export class ForwardSolverAnalysisComponent implements OnInit {
     n: 1.4
   };
   modelAnalysisType: ModelAnalysisType = { value: 'R' };
+  noiseValue = '0'; // always set to 0 for fs
 
   plotObject: PlotObject;
   //plotObjects: Array<PlotObject>;
@@ -71,7 +72,8 @@ export class ForwardSolverAnalysisComponent implements OnInit {
       independentAxes: this.independentAxes,
       range: this.range,
       opticalProperties: this.opticalProperties,
-      modelAnalysis: this.modelAnalysisType.value
+      modelAnalysis: this.modelAnalysisType.value,
+      noiseValue: this.noiseValue
     };
     console.log(fsSettings);
     console.log(JSON.stringify(fsSettings));

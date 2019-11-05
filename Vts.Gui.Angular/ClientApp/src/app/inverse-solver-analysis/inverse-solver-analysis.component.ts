@@ -37,7 +37,7 @@ export class InverseSolverAnalysisComponent implements OnInit {
     diameter: 0.1
   };
   isEngineList = InverseSolverEngineList;
-  solutionDomain: SolutionDomain = { value: "rofrho" };
+  solutionDomain: SolutionDomain = { value: 'ROfRho' };
   independentAxes: IndependentAxis = {
     show: false,
     first: 'ρ',
@@ -59,8 +59,8 @@ export class InverseSolverAnalysisComponent implements OnInit {
     numberLabel: 'Number',
     numberValue: 19
   };
-  optimizationParameters: OptimizationParameters = { value: "muaandmusp"};
-  optimizerType: OptimizerType = { value: "levenbergmarquardt"};
+  optimizationParameters: OptimizationParameters = { value: 'MuaMusp' };
+  optimizerType: OptimizerType = { value: 'MPFitLevenbergMarquardt' };
   forwardOpticalProperties: OpticalProperties = {
     title: 'Forward Simulation Optical Properties',
     mua: 0.01,
@@ -77,6 +77,9 @@ export class InverseSolverAnalysisComponent implements OnInit {
   };
   modelAnalysisType: ModelAnalysisType = { value: 'R'};
   noiseValue = '0';
+  
+  measuredData: number[][];
+
   plotObject: PlotObject; 
   //plotObjects: Array<PlotObject>;
 
@@ -95,24 +98,28 @@ export class InverseSolverAnalysisComponent implements OnInit {
       independentAxes: this.independentAxes,
       range: this.range,
       opticalProperties: this.forwardOpticalProperties,
-      modelAnalysis: this.modelAnalysisType.value
+      modelAnalysis: this.modelAnalysisType.value,
+      noiseValue: this.noiseValue
     };
     console.log(fsSettings);
     console.log(JSON.stringify(fsSettings));
-    this.plotData.getPlotData(fsSettings, "inverse").subscribe((data: any) => {
+    this.plotData.getPlotData(fsSettings, "forward").subscribe((data: any) => {
       //this.plotObject = data;
       this.plotData.addNewPlot(data);
+      this.measuredData = data.PlotList[0].Data;
     });
   }
     
   plotInitialGuess() {    
     var igSettings = {
       forwardSolverEngine: this.inverseSolverEngine.value,
+      forwardOpticalProperties: this.forwardOpticalProperties,
       solutionDomain: this.solutionDomain.value,
       independentAxes: this.independentAxes,
       range: this.range,
       opticalProperties: this.initialGuessOpticalProperties,
-      modelAnalysis: this.modelAnalysisType.value
+      modelAnalysis: this.modelAnalysisType.value,
+      noiseValue: "0"
     };
     console.log(igSettings);
     console.log(JSON.stringify(igSettings));
@@ -124,12 +131,13 @@ export class InverseSolverAnalysisComponent implements OnInit {
 
   runInverse() {    
     var inSettings = {
-      forwardSolverEngine: this.forwardSolverEngine.value,
+      inverseSolverEngine: this.inverseSolverEngine.value,
       optimizerType: this.optimizerType.value,
+      optimizationParameters: this.optimizationParameters.value,
       solutionDomain: this.solutionDomain.value,
+      measuredData: this.measuredData,
       independentAxes: this.independentAxes,
       range: this.range,
-      inverseSolverEngine: this.inverseSolverEngine.value,
       opticalProperties: this.initialGuessOpticalProperties,
     };
     console.log(inSettings);
