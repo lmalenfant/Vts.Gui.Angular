@@ -3,7 +3,7 @@ using Vts.Common;
 
 namespace Vts.Api.Services
 {
-    public class ForwardSolverService
+    public class ForwardSolverService : IForwardSolverService
     {
         public string GetPlotData(dynamic values)
         {
