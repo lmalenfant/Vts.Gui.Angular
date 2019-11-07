@@ -8,6 +8,13 @@ namespace Vts.Gui.Angular.Controllers
     [ApiController]
     public class ForwardController : ControllerBase
     {
+        private readonly IForwardSolverService _forwardSolverService;
+
+        public ForwardController(IForwardSolverService forwardSolverService)
+        {
+            _forwardSolverService = forwardSolverService;
+        }
+
         // GET: api/v1/Forward
         [HttpGet]
         public IEnumerable<string> Get()
@@ -19,8 +26,7 @@ namespace Vts.Gui.Angular.Controllers
         [HttpPost]
         public string Post([FromBody] dynamic value)
         {
-            var forwardSolverService = new ForwardSolverService();
-            return forwardSolverService.GetPlotData(value);
+            return _forwardSolverService.GetPlotData(value);
         }
     }
 }

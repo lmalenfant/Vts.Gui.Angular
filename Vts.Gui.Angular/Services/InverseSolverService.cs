@@ -7,7 +7,7 @@ using Vts.Factories;
 
 namespace Vts.Api.Services
 {
-    public class InverseSolverService
+    public class InverseSolverService : IInverseSolverService
     {
         public string GetPlotData(dynamic values)
         {

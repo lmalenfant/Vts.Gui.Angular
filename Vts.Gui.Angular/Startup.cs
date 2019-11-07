@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Vts.Api.Security;
+using Vts.Api.Services;
 
 namespace Vts.Gui.Angular
 {
@@ -30,6 +31,8 @@ namespace Vts.Gui.Angular
                 configuration.RootPath = "ClientApp/dist";
             });
             services.AddTransient<IAuthorizationHandler, ApiKeyRequirementHandler>();
+            services.AddTransient<IForwardSolverService, ForwardSolverService>();
+            services.AddTransient<IInverseSolverService, InverseSolverService>();
             services.AddAuthentication().AddJwtBearer();
             services.AddAuthorization(authConfig => {
                 authConfig.AddPolicy("ApiKeyPolicy",
