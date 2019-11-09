@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Vts.Gui.Angular.Services;
 
-namespace Vts.Gui.Angular.Controllers
+namespace Vts.Api.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]

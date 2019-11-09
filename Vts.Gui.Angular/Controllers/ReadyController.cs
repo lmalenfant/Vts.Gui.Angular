@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Vts.Gui.Angular.Controllers
+namespace Vts.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
