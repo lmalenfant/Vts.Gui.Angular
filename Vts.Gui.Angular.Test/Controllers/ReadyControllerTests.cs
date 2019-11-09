@@ -7,14 +7,15 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.TestHost;
 using NUnit.Framework;
-using Vts.Gui.Angular.Controllers;
+using Vts.Api.Controllers;
+using Vts.Gui.Angular;
 
-namespace Vts.Gui.Angular.Test.Controllers
+namespace Vts.Api.Test.Controllers
 {
     class ReadyControllerTests
     {
         [Test]
-        public void test_controller_get()
+        public void Test_controller_get()
         {
             var readyController = new ReadyController {
                 ControllerContext = new ControllerContext {
@@ -27,7 +28,7 @@ namespace Vts.Gui.Angular.Test.Controllers
         }
 
         [Test]
-        public void test_controller_post()
+        public void Test_controller_post()
         {
             var readyController = new ReadyController {
                 ControllerContext = new ControllerContext {
@@ -40,7 +41,7 @@ namespace Vts.Gui.Angular.Test.Controllers
         }
 
         [Test]
-        public async Task test_post_with_api_key()
+        public async Task Test_post_with_api_key()
         {
             var server = new TestServer(new WebHostBuilder().UseStartup<Startup>());
             var httpClient = server.CreateClient();
@@ -52,7 +53,7 @@ namespace Vts.Gui.Angular.Test.Controllers
         }
 
         [Test]
-        public void test_post_with_api_key_unauthorized()
+        public void Test_post_with_api_key_unauthorized()
         {
             var server = new TestServer(new WebHostBuilder().UseStartup<Startup>());
             var client = server.CreateClient();

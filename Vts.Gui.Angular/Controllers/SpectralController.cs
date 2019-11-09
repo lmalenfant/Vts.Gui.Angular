@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Vts.Gui.Angular.Controllers
+namespace Vts.Api.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]

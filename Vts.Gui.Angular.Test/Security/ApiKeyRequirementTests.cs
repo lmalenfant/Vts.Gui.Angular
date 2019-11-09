@@ -4,12 +4,12 @@ using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 using Vts.Api.Security;
 
-namespace BluePayApi.Test.Security
+namespace Vts.Api.Test.Security
 {
     class ApiKeyRequirementTests
     {
         [Test]
-        public void test_api_key_handler()
+        public void Test_api_key_handler()
         {
             var serviceProvider = new ServiceCollection()
                 .AddAuthorization(authConfig => {

@@ -1,9 +1,9 @@
 ﻿using Moq;
 using NUnit.Framework;
 using Vts.Api.Services;
-using Vts.Gui.Angular.Controllers;
+using Vts.Api.Controllers;
 
-namespace Vts.Gui.Angular.Test.Controllers
+namespace Vts.Api.Test.Controllers
 {
     public class ForwardControllerTests
     {
@@ -17,7 +17,7 @@ namespace Vts.Gui.Angular.Test.Controllers
         }
 
         [Test]
-        public void test_controller_get()
+        public void Test_controller_get()
         {
             var forwardController = new ForwardController(forwardSolverMock.Object);
             var response = forwardController.Get();

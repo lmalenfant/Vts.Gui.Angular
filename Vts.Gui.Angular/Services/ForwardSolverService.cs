@@ -1,10 +1,18 @@
 ﻿using System;
+using Microsoft.Extensions.Logging;
 using Vts.Common;
 
 namespace Vts.Api.Services
 {
     public class ForwardSolverService : IForwardSolverService
     {
+        private readonly ILogger<ForwardSolverService> _logger;
+
+        public ForwardSolverService(ILogger<ForwardSolverService> logger)
+        {
+            _logger = logger;
+        }
+
         public string GetPlotData(dynamic values)
         {
             try
