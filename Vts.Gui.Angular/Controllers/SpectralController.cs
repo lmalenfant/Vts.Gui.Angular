@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Vts.Gui.Angular.Services;
+using Vts.Api.Services;
 
 namespace Vts.Api.Controllers
 {
@@ -8,6 +8,13 @@ namespace Vts.Api.Controllers
     [ApiController]
     public class SpectralController : ControllerBase
     {
+        private readonly ISpectralService _spectralService;
+
+        public SpectralController(ISpectralService spectralService)
+        {
+            _spectralService = spectralService;
+        }
+
         // GET: api/v1/Spectral
         [HttpGet]
         public IEnumerable<string> Get()
@@ -19,8 +26,7 @@ namespace Vts.Api.Controllers
         [HttpPost]
         public string Post([FromBody] dynamic value)
         {
-            var spectralService = new SpectralService();
-            return spectralService.GetPlotData(value);
+            return _spectralService.GetPlotData(value);
         }
     }
 }
