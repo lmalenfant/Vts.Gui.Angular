@@ -11,7 +11,7 @@ namespace Vts.Api.Services
 {
     public class PlotResultsService
     {
-        public static string PlotBasedOnSolutionDomain(ForwardSolverType fs, string sd, DoubleRange xaxis, 
+        public static string Plot(ForwardSolverType fs, string sd, DoubleRange xaxis, 
             OpticalProperties op, string independentAxis, double independentValue, double noise)
         {
             var msg = "";

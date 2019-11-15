@@ -28,7 +28,7 @@ namespace Vts.Api.Services
                 var noise = (double)vtsSettings["noiseValue"];
                 var independentAxis = vtsSettings["independentAxes"]["label"];
                 var independentValue = (double)vtsSettings["independentAxes"]["value"];
-                msg = PlotResultsService.PlotBasedOnSolutionDomain(
+                msg = PlotResultsService.Plot(
                     Enum.Parse(typeof(ForwardSolverType), fs.ToString()),
                     sd.Value,
                     xaxis,

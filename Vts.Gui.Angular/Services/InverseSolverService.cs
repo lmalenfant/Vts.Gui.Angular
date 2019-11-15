@@ -55,7 +55,7 @@ namespace Vts.Api.Services
                 //var fitparms =
                 //    GetParametersInOrder(fitops, independentValues, sd, independentAxis, independentAxisValue);
                 var noise = 0;
-                msg = PlotResultsService.PlotBasedOnSolutionDomain(
+                msg = PlotResultsService.Plot(
                     Enum.Parse(typeof(ForwardSolverType), ins.ToString()),
                     sd.Value,
                     xaxis,
