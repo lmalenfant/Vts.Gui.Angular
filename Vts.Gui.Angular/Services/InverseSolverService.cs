@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 using Vts.Common;
 using Vts.Extensions;
 using Vts.Factories;
@@ -9,6 +10,12 @@ namespace Vts.Api.Services
 {
     public class InverseSolverService : IInverseSolverService
     {
+        private readonly ILogger<InverseSolverService> _logger;
+
+        public InverseSolverService(ILogger<InverseSolverService> logger)
+        {
+            _logger = logger;
+        }
         public string GetPlotData(dynamic values)
         {
             try
@@ -55,14 +62,15 @@ namespace Vts.Api.Services
                 //var fitparms =
                 //    GetParametersInOrder(fitops, independentValues, sd, independentAxis, independentAxisValue);
                 var noise = 0;
-                msg = PlotResultsService.Plot(
-                    Enum.Parse(typeof(ForwardSolverType), ins.ToString()),
-                    sd.Value,
-                    xaxis,
-                    fitops[0], // not sure [0] is always going to work here
-                    independentAxis.Value,
-                    independentAxisValue,
-                    noise);
+                var plotParameters = new SolutionDomainPlotParameters();
+                plotParameters.ForwardSolverType = Enum.Parse(typeof(ForwardSolverType), ins.ToString());
+                plotParameters.SolutionDomain = sd.Value;
+                plotParameters.XAxis = xaxis;
+                plotParameters.OpticalProperties = fitops[0]; // not sure [0] is always going to work here
+                plotParameters.IndependentAxis = independentAxis.Value;
+                plotParameters.IndependentValue = independentAxisValue;
+                plotParameters.Noise = noise;
+                msg = PlotFactory.GetPlot(PlotType.SolutionDomain, plotParameters);
                 return msg;
             }
             catch (Exception e)

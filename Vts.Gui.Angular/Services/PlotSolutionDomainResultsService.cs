@@ -9,13 +9,20 @@ using Vts.Api.Data;
 
 namespace Vts.Api.Services
 {
-    public class PlotResultsService
+    public class PlotSolutionDomainResultsService : IPlotResultsService
     {
-        public static string Plot(ForwardSolverType fs, string sd, DoubleRange xaxis, 
-            OpticalProperties op, string independentAxis, double independentValue, double noise)
+        public string Plot(IPlotParameters plotParameters)
         {
             var msg = "";
-            var independentValues = xaxis.AsEnumerable().ToArray();
+            var parameters = (SolutionDomainPlotParameters) plotParameters;
+            var fs = parameters.ForwardSolverType;
+            var op = parameters.OpticalProperties;
+            var xaxis = parameters.XAxis;
+            var sd = parameters.SolutionDomain;
+            var noise = parameters.Noise;
+            var independentAxis = parameters.IndependentAxis;
+            var independentValue = parameters.IndependentValue;
+            var independentValues = ((DoubleRange)xaxis).AsEnumerable().ToArray();
             IEnumerable<double> doubleResults;
             IEnumerable<Complex> complexResults;
             double[] xs;
@@ -115,9 +122,9 @@ namespace Vts.Api.Services
                         {
                             var rho = independentValue;
                             complexResults = ROfRhoAndFt(fs, op, rho, xaxis, noise);
-                            var fts = independentValues;
-                            xyPointsReal = fts.Zip(complexResults, (x, y) => new Point(x, y.Real));
-                            xyPointsImag = fts.Zip(complexResults, (x, y) => new Point(x, y.Imaginary));
+                            xs = independentValues;
+                            xyPointsReal = xs.Zip(complexResults, (x, y) => new Point(x, y.Real));
+                            xyPointsImag = xs.Zip(complexResults, (x, y) => new Point(x, y.Imaginary));
                             var realPlot = new PlotData {Data = xyPointsReal, Label = "ROfRhoAndFt"};
                             var imagPlot = new PlotData {Data = xyPointsImag, Label = "ROfRhoAndFt"};
                             var rhoPlot = new Plots
@@ -258,7 +265,7 @@ namespace Vts.Api.Services
             }
         }
 
-        private static IEnumerable<double> ROfRho(ForwardSolverType fst, OpticalProperties op, DoubleRange rho, double noise)
+        private IEnumerable<double> ROfRho(ForwardSolverType fst, OpticalProperties op, DoubleRange rho, double noise)
         {
             var ops = op.AsEnumerable();
             var rhos = rho.AsEnumerable();
@@ -270,7 +277,7 @@ namespace Vts.Api.Services
             return fs.ROfRho(ops, rhos);
         }
 
-        private static IEnumerable<double> ROfRhoAndTime(ForwardSolverType fst, OpticalProperties op, DoubleRange rho, double time, double noise)
+        private IEnumerable<double> ROfRhoAndTime(ForwardSolverType fst, OpticalProperties op, DoubleRange rho, double time, double noise)
         {
             var ops = op.AsEnumerable();
             var rhos = rho.AsEnumerable();
@@ -283,7 +290,7 @@ namespace Vts.Api.Services
             return fs.ROfRhoAndTime(ops, rhos, times);
         }
 
-        private static IEnumerable<double> ROfRhoAndTime(ForwardSolverType fst, OpticalProperties op, double rho, DoubleRange time, double noise)
+        private IEnumerable<double> ROfRhoAndTime(ForwardSolverType fst, OpticalProperties op, double rho, DoubleRange time, double noise)
         {
             var ops = op.AsEnumerable();
             var rhos = rho.AsEnumerable();
@@ -296,7 +303,7 @@ namespace Vts.Api.Services
             return fs.ROfRhoAndTime(ops, rhos, times);
         }
 
-        private static IEnumerable<Complex> ROfRhoAndFt(ForwardSolverType fst, OpticalProperties op, DoubleRange rho, double ft, double noise)
+        private IEnumerable<Complex> ROfRhoAndFt(ForwardSolverType fst, OpticalProperties op, DoubleRange rho, double ft, double noise)
         {
             var ops = op.AsEnumerable();
             var rhos = rho.AsEnumerable();
@@ -313,7 +320,7 @@ namespace Vts.Api.Services
             return fs.ROfRhoAndFt(ops, rhos, fts);
         }
 
-        private static IEnumerable<Complex> ROfRhoAndFt(ForwardSolverType fst, OpticalProperties op, double rho, DoubleRange ft, double noise)
+        private IEnumerable<Complex> ROfRhoAndFt(ForwardSolverType fst, OpticalProperties op, double rho, DoubleRange ft, double noise)
         {
             var ops = op.AsEnumerable();
             var rhos = rho.AsEnumerable();
@@ -330,7 +337,7 @@ namespace Vts.Api.Services
             return fs.ROfRhoAndFt(ops, rhos, fts);
         }
 
-        private static IEnumerable<double> ROfFx(ForwardSolverType fst, OpticalProperties op, DoubleRange fx, double noise)
+        private IEnumerable<double> ROfFx(ForwardSolverType fst, OpticalProperties op, DoubleRange fx, double noise)
         {
             try
             {
@@ -349,7 +356,7 @@ namespace Vts.Api.Services
             }
         }
 
-        private static IEnumerable<double> ROfFxAndTime(ForwardSolverType fst, OpticalProperties op, DoubleRange fx, double time, double noise)
+        private IEnumerable<double> ROfFxAndTime(ForwardSolverType fst, OpticalProperties op, DoubleRange fx, double time, double noise)
         {
             var ops = op.AsEnumerable();
             var fxs = fx.AsEnumerable();
@@ -362,7 +369,7 @@ namespace Vts.Api.Services
             return fs.ROfFxAndTime(ops, fxs, times);
         }
 
-        private static IEnumerable<double> ROfFxAndTime(ForwardSolverType fst, OpticalProperties op, double fx, DoubleRange time, double noise)
+        private IEnumerable<double> ROfFxAndTime(ForwardSolverType fst, OpticalProperties op, double fx, DoubleRange time, double noise)
         {
             var ops = op.AsEnumerable();
             var fxs = fx.AsEnumerable();
@@ -375,7 +382,7 @@ namespace Vts.Api.Services
             return fs.ROfFxAndTime(ops, fxs, times);
         }
 
-        private static IEnumerable<Complex> ROfFxAndFt(ForwardSolverType fst, OpticalProperties op, DoubleRange fx, double ft, double noise)
+        private IEnumerable<Complex> ROfFxAndFt(ForwardSolverType fst, OpticalProperties op, DoubleRange fx, double ft, double noise)
         {
             var ops = op.AsEnumerable();
             var fxs = fx.AsEnumerable();
@@ -392,7 +399,7 @@ namespace Vts.Api.Services
             return fs.ROfFxAndFt(ops, fxs, fts);
         }
 
-        private static IEnumerable<Complex> ROfFxAndFt(ForwardSolverType fst, OpticalProperties op, double fx, DoubleRange ft, double noise)
+        private IEnumerable<Complex> ROfFxAndFt(ForwardSolverType fst, OpticalProperties op, double fx, DoubleRange ft, double noise)
         {
             var ops = op.AsEnumerable();
             var fxs = fx.AsEnumerable();
