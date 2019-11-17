@@ -1,12 +1,14 @@
 import { Component } from '@angular/core';
 import { AbsorberConcentration } from '../tissue-definition/absorber-concentration.model';
-import { Skin } from '../tissue-definition/absorber-list';
+import { Skin, Liver, IntralipidPhantom, BreastPostMenopause, BreastPreMenopause, Custom } from '../tissue-definition/absorber-list';
 import { BloodConcentration } from '../tissue-definition/blood-concentration.model';
 import { Range } from '../range/range.model';
 import { ListType } from '../shared/list-definition.model';
 import { PowerLaw } from '../scatterer-type/power-law.model';
 import { Intralipid } from '../scatterer-type/intralipid.model';
 import { MieParticle } from '../scatterer-type/mie-particle.model';
+import { PlotService } from '../services/plot.service';
+import * as $ from 'jquery';
 
 @Component({
     selector: 'app-spectral',
@@ -34,7 +36,49 @@ export class SpectralComponent {
     numberValue: 36
   };
 
-  constructor() {
+  constructor(private plotData: PlotService) {
 
-    }
+  }
+
+  plotMuspSpectrum() {
+    let spectralSettings = {
+      plotType: "μa",
+      tissueType: this.tissueType,
+      absorberConcentration: this.absorberConcentration,
+      bloodConcentration: this.bloodConcentration,
+      scattererType: this.scattererType,
+      powerLaw: this.powerLaw,
+      intralipid: this.intralipid,
+      mieParticle: this.mieParticle,
+      range: this.range
+    };
+    console.log(spectralSettings);
+    console.log(JSON.stringify(spectralSettings));
+    this.plotData.getPlotData(spectralSettings, "spectral").subscribe((data: any) => {
+      //set the plot grouping based on the checkbox value
+      this.plotData.groupPlots = $("#group-plots").is(":checked");
+      this.plotData.addNewPlot(data);
+    });
+  }
+
+  plotMuaSpectrum() {
+    let spectralSettings = {
+      plotType: "μs'",
+      tissueType: this.tissueType,
+      absorberConcentration: this.absorberConcentration,
+      bloodConcentration: this.bloodConcentration,
+      scattererType: this.scattererType,
+      powerLaw: this.powerLaw,
+      intralipid: this.intralipid,
+      mieParticle: this.mieParticle,
+      range: this.range
+    };
+    console.log(spectralSettings);
+    console.log(JSON.stringify(spectralSettings));
+    this.plotData.getPlotData(spectralSettings, "spectral").subscribe((data: any) => {
+      //set the plot grouping based on the checkbox value
+      this.plotData.groupPlots = $("#group-plots").is(":checked");
+      this.plotData.addNewPlot(data);
+    });
+  }
 }

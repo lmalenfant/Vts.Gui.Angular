@@ -37,7 +37,7 @@ export class PlotService {
   }
 
   addNewPlot(data: PlotObject) {
-    if (this.groupPlots) {
+    if (this.groupPlots && data.Id != "Spectral") {
       data.Id = data.YAxis + data.XAxis;
       data.Detector = "R(" + data.XAxis + ")"
     }

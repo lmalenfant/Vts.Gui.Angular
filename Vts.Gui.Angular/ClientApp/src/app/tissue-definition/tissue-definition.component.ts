@@ -42,17 +42,16 @@ export class TissueDefinitionComponent {
   }
 
   onChange(value) {
-    console.log(this.tissueType.value);
+    console.log("Display: " + this.tissueType.display + " Value: " + this.tissueType.value);
     console.log(value);
     this.tissueType.value = value;
     this.bloodConcentration.visible = true;
-    switch (this.tissueType.value) {
+    switch (value) {
       case 'Skin':
         this.absorberConcentration = Skin;
         break;
       case 'Liver':
         this.absorberConcentration = Liver;
-
         break;
       case 'BrainGrayMatter':
         this.absorberConcentration = BrainGrayMatter;
