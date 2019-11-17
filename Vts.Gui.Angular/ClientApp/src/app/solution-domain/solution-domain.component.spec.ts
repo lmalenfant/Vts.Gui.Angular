@@ -17,7 +17,7 @@ describe('solution-domain component', () => {
       .compileComponents();
       testHostFixture = TestBed.createComponent(TestHostComponent);
       testHostComponent = testHostFixture.componentInstance;
-      testHostComponent.solutionDomainComponent.solutionDomain = { value: "rofrho" };
+      testHostComponent.solutionDomainComponent.solutionDomain = { value: "ROfRho" };
       testHostComponent.solutionDomainComponent.range = {
         title: 'Detector Positions',
         startLabel: 'Begin',
@@ -45,7 +45,7 @@ describe('solution-domain component', () => {
     it('should have a solution domain value of R(ρ)', async(() => {
       testHostFixture.whenStable().then(() => {
         const testElement = testHostFixture.debugElement.query(By.css('input[name="SolutionDomain"]'));
-        expect(testElement.nativeElement.value).toBe('rofrho');
+        expect(testElement.nativeElement.value).toBe('ROfRho');
       });
     }));
 
@@ -55,7 +55,7 @@ describe('solution-domain component', () => {
         options[3].triggerEventHandler('change', { target: options[3].nativeElement });
         options[3].nativeElement.click();
         testHostFixture.detectChanges();
-        expect(testHostComponent.solutionDomainComponent.solutionDomain.value).toBe('roffxandt');
+        expect(testHostComponent.solutionDomainComponent.solutionDomain.value).toBe('ROfFxAndTime');
       });
     }));
 
@@ -65,7 +65,7 @@ describe('solution-domain component', () => {
         options[5].triggerEventHandler('change', { target: options[5].nativeElement });
         options[5].nativeElement.click();
         testHostFixture.detectChanges();
-        expect(testHostComponent.solutionDomainComponent.solutionDomain.value).toBe('roffxandft');
+        expect(testHostComponent.solutionDomainComponent.solutionDomain.value).toBe('ROfFxAndFt');
         expect(testHostComponent.solutionDomainComponent.independentAxes.show).toBe(true);
       });
     }));

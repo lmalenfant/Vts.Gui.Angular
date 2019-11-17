@@ -8,6 +8,13 @@ namespace Vts.Api.Controllers
     [ApiController]
     public class InverseController : ControllerBase
     {
+        private readonly IInverseSolverService _inverseSolverService;
+
+        public InverseController(IInverseSolverService inverseSolverService)
+        {
+            _inverseSolverService = inverseSolverService;
+        }
+
         // GET: api/v1/Inverse
         [HttpGet]
         public IEnumerable<string> Get()
@@ -26,8 +33,7 @@ namespace Vts.Api.Controllers
         [HttpPost]
         public string Post([FromBody] dynamic value)
         {
-            var inverseSolverService = new InverseSolverService();
-            return inverseSolverService.GetPlotData(value);
+            return _inverseSolverService.GetPlotData(value);
         }
 
         // PUT: api/v1/Inverse/5

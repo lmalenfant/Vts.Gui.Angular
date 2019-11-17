@@ -28,14 +28,16 @@ namespace Vts.Api.Services
                 var noise = (double)vtsSettings["noiseValue"];
                 var independentAxis = vtsSettings["independentAxes"]["label"];
                 var independentValue = (double)vtsSettings["independentAxes"]["value"];
-                msg = PlotResultsService.PlotBasedOnSolutionDomain(
-                    Enum.Parse(typeof(ForwardSolverType), fs.ToString()),
-                    sd.Value,
-                    xaxis,
-                    op,
-                    independentAxis.Value,
-                    independentValue,
-                    noise);
+                var plotParameters = new SolutionDomainPlotParameters();
+                //msg = PlotResultsService.Plot(
+                plotParameters.ForwardSolverType = Enum.Parse(typeof(ForwardSolverType), fs.ToString());
+                plotParameters.SolutionDomain = sd.Value;
+                plotParameters.XAxis = xaxis;
+                plotParameters.OpticalProperties = op;
+                plotParameters.IndependentAxis = independentAxis.Value;
+                plotParameters.IndependentValue = independentValue;
+                plotParameters.Noise = noise;
+                msg = PlotFactory.GetPlot(PlotType.SolutionDomain, plotParameters);
                 return msg;
             }
             catch (Exception e)
