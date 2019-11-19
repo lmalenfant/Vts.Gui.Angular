@@ -11,10 +11,12 @@ namespace Vts.Api.Services
     public class InverseSolverService : IInverseSolverService
     {
         private readonly ILogger<InverseSolverService> _logger;
+        private readonly IPlotFactory _plotFactory;
 
-        public InverseSolverService(ILogger<InverseSolverService> logger)
+        public InverseSolverService(ILogger<InverseSolverService> logger, IPlotFactory plotFactory)
         {
             _logger = logger;
+            _plotFactory = plotFactory;
         }
         public string GetPlotData(dynamic values)
         {
@@ -70,7 +72,7 @@ namespace Vts.Api.Services
                 plotParameters.IndependentAxis = independentAxis.Value;
                 plotParameters.IndependentValue = independentAxisValue;
                 plotParameters.Noise = noise;
-                msg = PlotFactory.GetPlot(PlotType.SolutionDomain, plotParameters);
+                msg = _plotFactory.GetPlot(PlotType.SolutionDomain, plotParameters);
                 return msg;
             }
             catch (Exception e)

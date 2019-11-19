@@ -42,7 +42,8 @@ export class SpectralComponent {
 
   plotMuspSpectrum() {
     let spectralSettings = {
-      plotType: "μa",
+      plotType: "mua",
+      plotName: "μa",
       tissueType: this.tissueType,
       absorberConcentration: this.absorberConcentration,
       bloodConcentration: this.bloodConcentration,
@@ -63,7 +64,8 @@ export class SpectralComponent {
 
   plotMuaSpectrum() {
     let spectralSettings = {
-      plotType: "μs'",
+      plotType: "musp",
+      plotName: "μs'",
       tissueType: this.tissueType,
       absorberConcentration: this.absorberConcentration,
       bloodConcentration: this.bloodConcentration,

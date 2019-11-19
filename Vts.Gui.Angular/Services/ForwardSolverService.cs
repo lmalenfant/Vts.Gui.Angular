@@ -7,10 +7,12 @@ namespace Vts.Api.Services
     public class ForwardSolverService : IForwardSolverService
     {
         private readonly ILogger<ForwardSolverService> _logger;
+        private readonly IPlotFactory _plotFactory;
 
-        public ForwardSolverService(ILogger<ForwardSolverService> logger)
+        public ForwardSolverService(ILogger<ForwardSolverService> logger, IPlotFactory plotFactory)
         {
             _logger = logger;
+            _plotFactory = plotFactory;
         }
 
         public string GetPlotData(dynamic values)
@@ -37,7 +39,7 @@ namespace Vts.Api.Services
                 plotParameters.IndependentAxis = independentAxis.Value;
                 plotParameters.IndependentValue = independentValue;
                 plotParameters.Noise = noise;
-                msg = PlotFactory.GetPlot(PlotType.SolutionDomain, plotParameters);
+                msg = _plotFactory.GetPlot(PlotType.SolutionDomain, plotParameters);
                 return msg;
             }
             catch (Exception e)

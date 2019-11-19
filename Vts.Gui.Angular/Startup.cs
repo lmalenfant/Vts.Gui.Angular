@@ -37,6 +37,9 @@ namespace Vts.Gui.Angular
             services.AddTransient<IForwardSolverService, ForwardSolverService>();
             services.AddTransient<IInverseSolverService, InverseSolverService>();
             services.AddTransient<ISpectralService, SpectralService>();
+            services.AddSingleton<PlotSpectralResultsService>();
+            services.AddSingleton<PlotSolutionDomainResultsService>();
+            services.AddTransient<IPlotFactory, PlotFactory>();
             services.AddAuthentication().AddJwtBearer();
             services.AddAuthorization(authConfig => {
                 authConfig.AddPolicy("ApiKeyPolicy",

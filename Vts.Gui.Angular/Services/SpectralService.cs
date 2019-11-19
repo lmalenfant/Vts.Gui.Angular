@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -10,16 +11,25 @@ namespace Vts.Api.Services
     public class SpectralService : ISpectralService
     {
         private readonly ILogger<SpectralService> _logger;
+        private readonly IPlotFactory _plotFactory;
 
-        public SpectralService(ILogger<SpectralService> logger)
+        public SpectralService(ILogger<SpectralService> logger, IPlotFactory plotFactory)
         {
             _logger = logger;
+            _plotFactory = plotFactory;
         }
 
         public string GetPlotData(dynamic values)
         {
             _logger.LogInformation("Get the plot data for the Spectral Panel");
+
             dynamic spectralSettings = values;
+
+            var plotType = (string)spectralSettings["plotType"];
+            var plotParameters = new SpectralPlotParameters();
+            plotParameters.PlotType = Enum.Parse<SpectralPlotType>(plotType.ToString(), true);
+            plotParameters.TissueType = (string)spectralSettings["tissueType"].value;
+            plotParameters.PlotName = (string)spectralSettings["plotName"];
 
             // set up the absorber concentrations
             var absorberConcentrations = spectralSettings["absorberConcentration"];
@@ -56,43 +66,13 @@ namespace Vts.Api.Services
             }
 
             // get the wavelength
-            var wavelengths = new DoubleRange((double)spectralSettings["range"]["startValue"],
+            plotParameters.XAxis = new DoubleRange((double)spectralSettings["range"]["startValue"],
                                 (double)spectralSettings["range"]["endValue"], (int)spectralSettings["range"]["numberValue"]);
-            var wvs = wavelengths.AsEnumerable().ToArray();
+            plotParameters.Wavelengths = plotParameters.XAxis.AsEnumerable().ToArray();
             // set up the tissue
-            var tissue = new SpectralMapping.Tissue(chromophoreAbsorbers, scatterer, (string)spectralSettings["tissueType"].value);
+            plotParameters.Tissue = new SpectralMapping.Tissue(chromophoreAbsorbers, scatterer, (string)spectralSettings["tissueType"].value);
 
-            List<Point> xyPoints = new List<Point>();
-            PlotData plotData;
-            Plots plot;
-
-            var plotType = (string)spectralSettings["plotType"];
-
-            foreach (var wv in wvs)
-            {
-                if (plotType == "μa")
-                {
-                    xyPoints.Add(new Point(wv, tissue.GetMua(wv)));
-                }
-                else
-                {
-                    xyPoints.Add(new Point(wv, tissue.GetMusp(wv)));
-                }
-            }
-            plotData = new PlotData { Data = xyPoints, Label = spectralSettings["tissueType"].value };
-            plot = new Plots {
-                Id = "Spectral",
-                Detector = "Spectral",
-                Legend = "Spectral",
-                XAxis = "λ",
-                YAxis = plotType,
-                PlotList = new List<PlotDataJson>()
-            };
-            plot.PlotList.Add(new PlotDataJson {
-                Data = plotData.Data.Select(item => new List<double> { item.X, item.Y }).ToList(),
-                Label = spectralSettings["tissueType"].value + " " + plotType
-            });
-            return JsonConvert.SerializeObject(plot);
+            return _plotFactory.GetPlot(PlotType.Spectral, plotParameters);
         }
     }
 }

@@ -1,24 +1,31 @@
 ﻿using System;
-
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Vts.Api.Services
 {
-    public class PlotFactory
+    public class PlotFactory : IPlotFactory
     {
-        public static string GetPlot(PlotType plotType, IPlotParameters plotParameters)
+        private readonly IServiceProvider _serviceProvider;
+
+        public PlotFactory(IServiceProvider serviceProvider)
         {
-            string msg = null;
-            IPlotResultsService plotResultsService;
+            _serviceProvider = serviceProvider;
+        }
+
+        public string GetPlot(PlotType plotType, IPlotParameters plotParameters)
+        {
             switch (plotType)
             {
                 case PlotType.SolutionDomain:
-                    plotResultsService = new PlotSolutionDomainResultsService();
-                    return plotResultsService.Plot((SolutionDomainPlotParameters)plotParameters);
+                    var plotSolutionDomainResultsService = _serviceProvider.GetService<PlotSolutionDomainResultsService>();
+                    return plotSolutionDomainResultsService.Plot((SolutionDomainPlotParameters)plotParameters);
                 case PlotType.Spectral:
-                    plotResultsService = new PlotSpectralResultsService();
-                    return plotResultsService.Plot((SpectralPlotParameters)plotParameters);
+                    var plotSpectralResultsService = _serviceProvider.GetService<PlotSpectralResultsService>();
+                    return plotSpectralResultsService.Plot((SpectralPlotParameters)plotParameters);
+                default:
+                    return null;
             }
-            return msg;
         }
     }
 }
