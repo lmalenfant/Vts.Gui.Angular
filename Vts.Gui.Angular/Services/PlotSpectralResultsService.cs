@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using Vts.Common;
-using Vts.Extensions;
-using Vts.Api.Data;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using Vts.Api.Data;
+using Vts.Extensions;
 
 namespace Vts.Api.Services
 {
@@ -40,8 +38,8 @@ namespace Vts.Api.Services
             }
             plotData = new PlotData { Data = xyPoints, Label = parameters.TissueType };
             plot = new Plots {
-                Id = "Spectral",
-                Detector = "Spectral",
+                Id = "Spectral" + parameters.PlotType.ToString(),
+                Detector = "Spectral " + parameters.PlotName,
                 Legend = "Spectral",
                 XAxis = "λ",
                 YAxis = parameters.YAxis,

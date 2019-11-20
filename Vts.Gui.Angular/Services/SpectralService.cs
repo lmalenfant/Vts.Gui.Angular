@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
-using Vts.Api.Data;
 using Vts.Common;
 
 namespace Vts.Api.Services
@@ -30,6 +28,7 @@ namespace Vts.Api.Services
             plotParameters.PlotType = Enum.Parse<SpectralPlotType>(plotType.ToString(), true);
             plotParameters.TissueType = (string)spectralSettings["tissueType"].value;
             plotParameters.PlotName = (string)spectralSettings["plotName"];
+            plotParameters.YAxis = plotParameters.PlotName;
 
             // set up the absorber concentrations
             var absorberConcentrations = spectralSettings["absorberConcentration"];
@@ -47,18 +46,18 @@ namespace Vts.Api.Services
             }
 
             // set up the scatterer
-            var scatterType = spectralSettings["scattererType"].value;
+            var scatterType = (string)spectralSettings["scattererType"].value;
             SpectralMapping.IScatterer scatterer;
             switch (scatterType)
             {
                 case "PowerLaw":
-                    scatterer = new SpectralMapping.PowerLawScatterer(spectralSettings["powerLaw"].a, spectralSettings["powerLaw"].b);
+                    scatterer = new SpectralMapping.PowerLawScatterer((double)spectralSettings["powerLaw"].a, (double)spectralSettings["powerLaw"].b);
                     break;
                 case "Intralipid":
-                    scatterer = new SpectralMapping.IntralipidScatterer(spectralSettings["intralipid"].volumeFraction);
+                    scatterer = new SpectralMapping.IntralipidScatterer((double)spectralSettings["intralipid"].volumeFraction);
                     break;
                 case "Mie":
-                    scatterer = new SpectralMapping.MieScatterer(spectralSettings["mieParticle"].particleRadius, spectralSettings["mieParticle"].particleN, spectralSettings["mieParticle"].particlemediumN, spectralSettings["mieParticle"].volumeFraction);
+                    scatterer = new SpectralMapping.MieScatterer((double)spectralSettings["mieParticle"].particleRadius, (double)spectralSettings["mieParticle"].particleN, (double)spectralSettings["mieParticle"].particlemediumN, (double)spectralSettings["mieParticle"].volumeFraction);
                     break;
                 default:
                 scatterer = new SpectralMapping.PowerLawScatterer();

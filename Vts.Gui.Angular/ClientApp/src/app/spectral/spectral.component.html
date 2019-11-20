@@ -1,15 +1,13 @@
 <form name="form1" (submit)="onSubmit()">
   <div class="heading">Tissue Type</div>
   <!-- Tissue -->
-  <app-tissue-definition [tissueType]="tissueType" [absorberConcentration]="absorberConcentration" [bloodConcentration]="bloodConcentration"></app-tissue-definition>
-  <br /><br />
-  <app-scatterer-type [scattererType]="scattererType" [powerLaw]="powerLaw" [intralipid]="intralipid" [mieParticle]="mieParticle"></app-scatterer-type>
+  <app-tissue-definition [tissueType]="tissueType" [absorberConcentration]="absorberConcentration" [bloodConcentration]="bloodConcentration" [scattererType]="scattererType" [powerLaw]="powerLaw" [intralipid]="intralipid" [mieParticle]="mieParticle"></app-tissue-definition>
   <br />
   <!-- Range -->
   <app-range [range]="range"></app-range>
   <br />
   <div class="pull-right">
-    <button id="PlotMuaSpectrum" type="button" class="btn btn-primary" (click)="plotMuaSpectrum()">Plot μs' Spectrum</button>&nbsp;
-    <button id="PlotMuspSpectrum" type="button" class="btn btn-primary" (click)="plotMuspSpectrum()">Plot μa Spectrum</button>
+    <button id="PlotMuspSpectrum" type="button" class="btn btn-primary" (click)="plotMuspSpectrum()">Plot μa Spectrum</button>&nbsp;
+    <button id="PlotMuaSpectrum" type="button" class="btn btn-primary" (click)="plotMuaSpectrum()">Plot μs' Spectrum</button>
   </div>
 </form>

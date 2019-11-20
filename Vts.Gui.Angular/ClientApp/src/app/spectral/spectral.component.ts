@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AbsorberConcentration } from '../tissue-definition/absorber-concentration.model';
-import { Skin, Liver, IntralipidPhantom, BreastPostMenopause, BreastPreMenopause, Custom } from '../tissue-definition/absorber-list';
+import { Skin, Liver, IntralipidPhantom, BreastPostMenopause, BreastPreMenopause, Custom, BrainGrayMatter, BrainWhiteMatter } from '../tissue-definition/absorber-list';
 import { BloodConcentration } from '../tissue-definition/blood-concentration.model';
 import { Range } from '../range/range.model';
 import { ListType } from '../shared/list-definition.model';
@@ -41,6 +41,8 @@ export class SpectralComponent {
   }
 
   plotMuspSpectrum() {
+    // need to update the absorber values because the input to not recognise the change
+    this.updateAbsorberValues(this.tissueType.value);
     let spectralSettings = {
       plotType: "mua",
       plotName: "μa",
@@ -63,6 +65,8 @@ export class SpectralComponent {
   }
 
   plotMuaSpectrum() {
+    // need to update the absorber values because the input to not recognise the change
+    this.updateAbsorberValues(this.tissueType.value);
     let spectralSettings = {
       plotType: "musp",
       plotName: "μs'",
@@ -82,5 +86,34 @@ export class SpectralComponent {
       this.plotData.groupPlots = $("#group-plots").is(":checked");
       this.plotData.addNewPlot(data);
     });
+  }
+
+  updateAbsorberValues(value) {
+    switch (value) {
+      case 'Skin':
+        this.absorberConcentration = Skin;
+        break;
+      case 'Liver':
+        this.absorberConcentration = Liver;
+        break;
+      case 'BrainGrayMatter':
+        this.absorberConcentration = BrainGrayMatter;
+        break;
+      case 'BrainWhiteMatter':
+        this.absorberConcentration = BrainWhiteMatter;
+        break;
+      case 'BreastPreMenopause':
+        this.absorberConcentration = BreastPreMenopause;
+        break;
+      case 'BreastPostMenopause':
+        this.absorberConcentration = BreastPostMenopause;
+        break;
+      case 'IntralipidPhantom':
+        this.absorberConcentration = IntralipidPhantom;
+        break;
+      case 'Custom':
+        this.absorberConcentration = Custom;
+        break;
+    }
   }
 }

@@ -24,8 +24,9 @@ export class ScattererTypeComponent {
   }
 
   onChange(value) {
-    console.log(this.scattererType.value);
-    console.log(value);
+    console.log("Current Scatterer Type: " + this.scattererType.value);
+    console.log("New Scatterer Type: " + value);
+    this.scattererType.value = value;
     switch (value) {
       case 'PowerLaw':
         this.powerLaw.show = true;
