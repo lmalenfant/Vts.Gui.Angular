@@ -27,7 +27,7 @@ namespace Vts.Api.Services
 
             foreach (var wv in parameters.Wavelengths)
             {
-                switch (parameters.PlotType)
+                switch (parameters.SpectralPlotType)
                 {
                     case SpectralPlotType.Mua:
                     xyPoints.Add(new Point(wv, parameters.Tissue.GetMua(wv)));

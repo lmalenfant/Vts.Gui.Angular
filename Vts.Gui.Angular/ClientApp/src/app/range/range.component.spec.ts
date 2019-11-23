@@ -23,12 +23,12 @@ describe('range component', () => {
           title: 'Detector Positions',
           startLabel: 'Begin',
           startLabelUnits: 'mm',
-          startValue: 0.5,
+          start: 0.5,
           endLabel: 'End',
           endLabelUnits: 'mm',
-          endValue: 9.5,
+          stop: 9.5,
           numberLabel: 'Number',
-          numberValue: 19
+          count: 19
         };
         testHostFixture.detectChanges();
       }));
@@ -90,7 +90,7 @@ describe('range component', () => {
         testElement.nativeElement.value = 0.25;
         testElement.nativeElement.dispatchEvent(new Event('input'));
         testHostFixture.detectChanges();
-        expect(testHostComponent.rangeComponent.range.startValue.toString()).toBe('0.25');
+        expect(testHostComponent.rangeComponent.range.start.toString()).toBe('0.25');
       });
     }));
 
@@ -100,7 +100,7 @@ describe('range component', () => {
         testElement.nativeElement.value = 5.25;
         testElement.nativeElement.dispatchEvent(new Event('input'));
         testHostFixture.detectChanges();
-        expect(testHostComponent.rangeComponent.range.endValue.toString()).toBe('5.25');
+        expect(testHostComponent.rangeComponent.range.stop.toString()).toBe('5.25');
       });
     }));
 
@@ -110,7 +110,7 @@ describe('range component', () => {
         testElement.nativeElement.value = 29;
         testElement.nativeElement.dispatchEvent(new Event('input'));
         testHostFixture.detectChanges();
-        expect(testHostComponent.rangeComponent.range.numberValue.toString()).toBe('29');
+        expect(testHostComponent.rangeComponent.range.count.toString()).toBe('29');
       });
     }));
 

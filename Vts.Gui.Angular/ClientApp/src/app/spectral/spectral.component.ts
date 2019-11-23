@@ -28,12 +28,12 @@ export class SpectralComponent {
     title: 'Wavelength Range',
     startLabel: 'Begin',
     startLabelUnits: 'nm',
-    startValue: 650,
+    start: 650,
     endLabel: 'End',
     endLabelUnits: 'nm',
-    endValue: 1000,
+    stop: 1000,
     numberLabel: 'Number',
-    numberValue: 36
+    count: 36
   };
 
   constructor(private plotData: PlotService) {

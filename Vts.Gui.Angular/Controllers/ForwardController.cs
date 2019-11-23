@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Vts.Api.Models;
 using Vts.Api.Services;
 
 namespace Vts.Api.Controllers
@@ -24,9 +25,9 @@ namespace Vts.Api.Controllers
 
         // POST: api/v1/Forward
         [HttpPost]
-        public string Post([FromBody] dynamic value)
+        public string Post([FromBody] SolutionDomainPlotParameters PlotParameters)
         {
-            return _forwardSolverService.GetPlotData(value);
+            return _forwardSolverService.GetPlotData(PlotParameters);
         }
     }
 }

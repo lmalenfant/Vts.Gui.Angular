@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
+using Vts.Api.Models;
 using Vts.Api.Services;
 
 namespace Vts.Api.Controllers
@@ -31,9 +32,9 @@ namespace Vts.Api.Controllers
 
         // POST: api/v1/Inverse
         [HttpPost]
-        public string Post([FromBody] dynamic value)
+        public string Post([FromBody] SolutionDomainPlotParameters PlotParameters)
         {
-            return _inverseSolverService.GetPlotData(value);
+            return _inverseSolverService.GetPlotData(PlotParameters);
         }
 
         // PUT: api/v1/Inverse/5

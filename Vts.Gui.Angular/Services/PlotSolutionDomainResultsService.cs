@@ -21,9 +21,9 @@ namespace Vts.Api.Services
             var op = parameters.OpticalProperties;
             var xaxis = parameters.XAxis;
             var sd = parameters.SolutionDomain;
-            var noise = parameters.Noise;
-            var independentAxis = parameters.IndependentAxis;
-            var independentValue = parameters.IndependentValue;
+            var noise = parameters.NoiseValue;
+            var independentAxis = parameters.IndependentAxes.Label;
+            var independentValue = parameters.IndependentAxes.Value;
             var independentValues = ((DoubleRange)xaxis).AsEnumerable().ToArray();
             IEnumerable<double> doubleResults;
             IEnumerable<Complex> complexResults;

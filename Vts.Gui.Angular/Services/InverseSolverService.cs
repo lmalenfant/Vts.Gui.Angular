@@ -21,45 +21,39 @@ namespace Vts.Api.Services
             _logger = logger;
             _plotFactory = plotFactory;
         }
-        public string GetPlotData(dynamic values)
+        public string GetPlotData(SolutionDomainPlotParameters PlotParameters)
         {
             try
             {
-                dynamic vtsSettings = values;
-                var sd = vtsSettings["solutionDomain"];
-                var sdtype = Enum.Parse(typeof(SolutionDomainType), sd.ToString());
-                var ins = vtsSettings["inverseSolverEngine"];
-                var msg = "";
-                var igops = new OpticalProperties((double) vtsSettings["opticalProperties"]["mua"],
-                    (double) vtsSettings["opticalProperties"]["musp"], (double) vtsSettings["opticalProperties"]["g"],
-                    (double) vtsSettings["opticalProperties"]["n"]);
-                var xaxis = new DoubleRange((double) vtsSettings["range"]["startValue"],
-                    (double) vtsSettings["range"]["endValue"], (int) vtsSettings["range"]["numberValue"]);
+                var sd = PlotParameters.SolutionDomain;
+                var sdtype = Enum.Parse<SolutionDomainType>(sd);
+                var ins = PlotParameters.InverseSolverEngine;
+                var igops = PlotParameters.OpticalProperties;
+                var xaxis = PlotParameters.Range;
                 var independentValues = xaxis.AsEnumerable().ToArray();
-                var independentAxis = vtsSettings["independentAxes"]["label"];
-                var independentAxisValue = (double) vtsSettings["independentAxes"]["value"];
+                var independentAxis = PlotParameters.IndependentAxes.Label;
+                var independentAxisValue = PlotParameters.IndependentAxes.Value;
                 var igopsArray = GetInitialGuessOpticalProperties(igops);
                 var igparms = GetParametersInOrder(igopsArray, independentValues, sd, independentAxis,
                     independentAxisValue);
                 object[] igparmsConvert = igparms.Values.ToArray();
-                var optpar = vtsSettings["optimizationParameters"];
-                var optype = vtsSettings["optimizerType"];
+                var optpar = PlotParameters.OptimizationParameters;
+                var optype = PlotParameters.OptimizerType;
                 // get measured data from inverse solver analysis component
-                var measuredPoints = vtsSettings["measuredData"]; // this is a JArray has form [[x1,y1],[x2,y2]...]
-                List<double[]> measConvert = measuredPoints.ToObject<List<double[]>>(); // convert to list of double[]
-                var meas = measConvert.Select(p => p.Last()).ToArray(); // get y value
+                var measuredPoints = PlotParameters.MeasuredData;
+                var meas = measuredPoints.Select(p => p.Last()).ToArray(); // get y value
                 var lbs = new double[] {0, 0, 0, 0};
                 var ubs = new double[]
                 {
                     double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity
                 };
                 double[] fit = ComputationFactory.SolveInverse(
-                    Enum.Parse(typeof(ForwardSolverType), ins.ToString()),
-                    Enum.Parse(typeof(OptimizerType), optype.ToString()),
+                    Enum.Parse<ForwardSolverType>(PlotParameters.InverseSolverEngine),
+                    Enum.Parse<OptimizerType>(optype),
                     sdtype,
                     meas,
                     meas, // set standard deviation to measured to match WPF
-                    Enum.Parse(typeof(InverseFitType), optpar.ToString()),
+                    Enum.Parse<InverseFitType>(optpar),
                     igparmsConvert,
                     lbs,
                     ubs);
@@ -67,20 +61,20 @@ namespace Vts.Api.Services
                 //var fitparms =
                 //    GetParametersInOrder(fitops, independentValues, sd, independentAxis, independentAxisValue);
                 var noise = 0;
-                var plotParameters = new SolutionDomainPlotParameters();
-                plotParameters.ForwardSolverType = Enum.Parse(typeof(ForwardSolverType), ins.ToString());
-                plotParameters.SolutionDomain = sd.Value;
-                plotParameters.XAxis = xaxis;
-                plotParameters.OpticalProperties = fitops[0]; // not sure [0] is always going to work here
-                plotParameters.IndependentAxis = independentAxis.Value;
-                plotParameters.IndependentValue = independentAxisValue;
-                plotParameters.Noise = noise;
-                msg = _plotFactory.GetPlot(PlotType.SolutionDomain, plotParameters);
+                PlotParameters.ForwardSolverType = Enum.Parse<ForwardSolverType>(ins);
+                PlotParameters.SolutionDomain = sd;
+                PlotParameters.XAxis = xaxis;
+                PlotParameters.OpticalProperties = fitops[0]; // not sure [0] is always going to work here
+                PlotParameters.IndependentAxes.Label = independentAxis;
+                PlotParameters.IndependentAxes.Value = independentAxisValue;
+                PlotParameters.NoiseValue = noise;
+                var msg = _plotFactory.GetPlot(PlotType.SolutionDomain, PlotParameters);
                 return msg;
             }
             catch (Exception e)
             {
-                throw new Exception("Error during action: " + e.Message);
+                _logger.LogError("An error occurred: {Message}", e.Message);
+                throw;
             }
 
             // this needs further development when add in wavelength refer to WPF code

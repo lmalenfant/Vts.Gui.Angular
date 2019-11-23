@@ -22,12 +22,12 @@ describe('solution-domain component', () => {
         title: 'Detector Positions',
         startLabel: 'Begin',
         startLabelUnits: 'mm',
-        startValue: 0.5,
+        start: 0.5,
         endLabel: 'End',
         endLabelUnits: 'mm',
-        endValue: 9.5,
+        stop: 9.5,
         numberLabel: 'Number',
-        numberValue: 19
+        count: 19
       };
       testHostComponent.solutionDomainComponent.independentAxes = {
         show: false,
