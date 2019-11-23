@@ -58,7 +58,7 @@ export class SolutionDomainComponent {
         this.range.numberValue = 19;
         break;
       case '1/mm':
-        this.range.title = 'Spacial Frequencies';
+        this.range.title = 'Spatial Frequencies';
         this.range.startValue = 0;
         this.range.endValue = 0.5;
         this.range.numberValue = 51;
