@@ -1,4 +1,4 @@
-﻿using Vts.Common;
+﻿using Vts.Api.Models;
 
 namespace Vts.Api.Services
 {

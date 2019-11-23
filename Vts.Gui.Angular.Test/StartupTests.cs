@@ -12,8 +12,8 @@ namespace Vts.Api.Test
 {
     class StartupTests
     {
-        private ILogger<Startup> logger;
-        private ILoggerFactory factory;
+        private ILogger<Startup> _logger;
+        private ILoggerFactory _factory;
 
         [SetUp]
         public void Setup_data()
@@ -21,9 +21,9 @@ namespace Vts.Api.Test
             var serviceProvider = new ServiceCollection()
                 .AddLogging()
                 .BuildServiceProvider();
-            factory = serviceProvider.GetService<ILoggerFactory>()
+            _factory = serviceProvider.GetService<ILoggerFactory>()
                 .AddConsole();
-            logger = factory.CreateLogger<Startup>();
+            _logger = _factory.CreateLogger<Startup>();
         }
 
         [Test]
@@ -35,7 +35,7 @@ namespace Vts.Api.Test
                 .AddInMemoryCollection(testConfiguration)
                 .Build();
             // Call the Startup constructor with the generated configuration
-            var target = new Startup(configuration, logger);
+            var target = new Startup(configuration, _logger);
             var services = new ServiceCollection()
                 .AddLogging();
             // Call ConfigureServices

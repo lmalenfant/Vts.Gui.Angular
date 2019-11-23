@@ -1,8 +1,8 @@
-﻿
+﻿using Vts.Api.Enums;
 using Vts.Common;
 using Vts.SpectralMapping;
 
-namespace Vts.Api.Services
+namespace Vts.Api.Models
 {
     public class SpectralPlotParameters : IPlotParameters
     {

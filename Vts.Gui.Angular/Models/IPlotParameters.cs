@@ -1,8 +1,7 @@
-﻿using System;
-
+﻿
 using Vts.Common;
 
-namespace Vts.Api.Services
+namespace Vts.Api.Models
 {
     public interface IPlotParameters
     {

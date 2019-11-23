@@ -6,6 +6,8 @@ using Newtonsoft.Json;
 using Vts.Common;
 using Vts.Extensions;
 using Vts.Api.Data;
+using Vts.Api.Models;
+using Vts.Factories;
 
 namespace Vts.Api.Services
 {
@@ -269,7 +271,7 @@ namespace Vts.Api.Services
         {
             var ops = op.AsEnumerable();
             var rhos = rho.AsEnumerable();
-            var fs = Factories.SolverFactory.GetForwardSolver(fst);
+            var fs = SolverFactory.GetForwardSolver(fst);
             if (noise > 0.0)
             {
                 return fs.ROfRho(ops, rhos).AddNoise(noise);
@@ -282,7 +284,7 @@ namespace Vts.Api.Services
             var ops = op.AsEnumerable();
             var rhos = rho.AsEnumerable();
             var times = time.AsEnumerable();
-            var fs = Factories.SolverFactory.GetForwardSolver(fst);
+            var fs = SolverFactory.GetForwardSolver(fst);
             if (noise > 0.0)
             {
                 return fs.ROfRhoAndTime(ops, rhos, times).AddNoise(noise);
@@ -295,7 +297,7 @@ namespace Vts.Api.Services
             var ops = op.AsEnumerable();
             var rhos = rho.AsEnumerable();
             var times = time.AsEnumerable();
-            var fs = Factories.SolverFactory.GetForwardSolver(fst);
+            var fs = SolverFactory.GetForwardSolver(fst);
             if (noise > 0.0)
             {
                 return fs.ROfRhoAndTime(ops, rhos, times).AddNoise(noise);
@@ -308,7 +310,7 @@ namespace Vts.Api.Services
             var ops = op.AsEnumerable();
             var rhos = rho.AsEnumerable();
             var fts = ft.AsEnumerable();
-            var fs = Factories.SolverFactory.GetForwardSolver(fst);
+            var fs = SolverFactory.GetForwardSolver(fst);
             var results = fs.ROfRhoAndFt(ops, rhos, fts);
             if (noise > 0.0)
             {
@@ -325,7 +327,7 @@ namespace Vts.Api.Services
             var ops = op.AsEnumerable();
             var rhos = rho.AsEnumerable();
             var fts = ft.AsEnumerable();
-            var fs = Factories.SolverFactory.GetForwardSolver(fst);
+            var fs = SolverFactory.GetForwardSolver(fst);
             var results = fs.ROfRhoAndFt(ops, rhos, fts);
             if (noise > 0.0)
             {
@@ -343,7 +345,7 @@ namespace Vts.Api.Services
             {
                 var ops = op.AsEnumerable();
                 var fxs = fx.AsEnumerable();
-                var fs = Factories.SolverFactory.GetForwardSolver(fst);
+                var fs = SolverFactory.GetForwardSolver(fst);
                 if (noise > 0.0)
                 {
                     return fs.ROfFx(ops, fxs).AddNoise(noise);
@@ -361,7 +363,7 @@ namespace Vts.Api.Services
             var ops = op.AsEnumerable();
             var fxs = fx.AsEnumerable();
             var times = time.AsEnumerable();
-            var fs = Factories.SolverFactory.GetForwardSolver(fst);
+            var fs = SolverFactory.GetForwardSolver(fst);
             if (noise > 0.0)
             {
                 return fs.ROfFxAndTime(ops, fxs, times).AddNoise(noise);
@@ -374,7 +376,7 @@ namespace Vts.Api.Services
             var ops = op.AsEnumerable();
             var fxs = fx.AsEnumerable();
             var times = time.AsEnumerable();
-            var fs = Factories.SolverFactory.GetForwardSolver(fst);
+            var fs = SolverFactory.GetForwardSolver(fst);
             if (noise > 0.0)
             {
                 return fs.ROfFxAndTime(ops, fxs, times).AddNoise(noise);
@@ -387,7 +389,7 @@ namespace Vts.Api.Services
             var ops = op.AsEnumerable();
             var fxs = fx.AsEnumerable();
             var fts = ft.AsEnumerable();
-            var fs = Factories.SolverFactory.GetForwardSolver(fst);
+            var fs = SolverFactory.GetForwardSolver(fst);
             var results = fs.ROfRhoAndFt(ops, fxs, fts);
             if (noise > 0.0)
             {
@@ -404,7 +406,7 @@ namespace Vts.Api.Services
             var ops = op.AsEnumerable();
             var fxs = fx.AsEnumerable();
             var fts = ft.AsEnumerable();
-            var fs = Factories.SolverFactory.GetForwardSolver(fst);
+            var fs = SolverFactory.GetForwardSolver(fst);
             var results = fs.ROfRhoAndFt(ops, fxs, fts);
             if (noise > 0.0)
             {

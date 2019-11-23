@@ -1,7 +1,10 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
+using Vts.Api.Enums;
+using Vts.Api.Models;
+using Vts.Api.Services;
 
-namespace Vts.Api.Services
+namespace Vts.Api.Factories
 {
     public class PlotFactory : IPlotFactory
     {

@@ -1,7 +1,6 @@
-﻿
-using Vts.Common;
+﻿using Vts.Common;
 
-namespace Vts.Api.Services
+namespace Vts.Api.Models
 {
     public class SolutionDomainPlotParameters : IPlotParameters
     {

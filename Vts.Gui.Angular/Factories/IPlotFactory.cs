@@ -1,4 +1,8 @@
-﻿namespace Vts.Api.Services
+﻿using Vts.Api.Enums;
+using Vts.Api.Models;
+
+namespace Vts.Api.Factories
+
 {
     public interface IPlotFactory
     {

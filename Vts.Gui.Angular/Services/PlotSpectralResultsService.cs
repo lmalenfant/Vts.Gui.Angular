@@ -3,6 +3,8 @@ using System.Linq;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Vts.Api.Data;
+using Vts.Api.Enums;
+using Vts.Api.Models;
 using Vts.Extensions;
 
 namespace Vts.Api.Services

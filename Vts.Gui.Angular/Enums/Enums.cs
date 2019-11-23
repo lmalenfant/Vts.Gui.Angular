@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Vts.Api.Services
+namespace Vts.Api.Enums
 {
     public enum PlotType
     {
