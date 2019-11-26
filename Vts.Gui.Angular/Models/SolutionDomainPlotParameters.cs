@@ -13,7 +13,7 @@ namespace Vts.Api.Models
         public OpticalProperties OpticalProperties { get; set; }
         public string OptimizerType { get; set; }
         public string OptimizationParameters { get; set; }
-        public IndependentAxes IndependentAxes { get; set; }
+        public LabelValuePair IndependentAxes { get; set; }
         public double NoiseValue { get; set; }
         public DoubleRange Range { get; set; }
         public string ModelAnalysis { get; set; }

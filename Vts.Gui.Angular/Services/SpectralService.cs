@@ -29,17 +29,10 @@ namespace Vts.Api.Services
             plotParameters.YAxis = plotParameters.PlotName;
 
             // set up the absorber concentrations
-            List<IChromophoreAbsorber> chromophoreAbsorbers = new List<IChromophoreAbsorber>();
+            var chromophoreAbsorbers = new List<IChromophoreAbsorber>();
             foreach (var absorber in plotParameters.AbsorberConcentration)
             {
-                var chromophoreTypes = EnumHelper.GetValues<ChromophoreType>();
-                foreach (var type in chromophoreTypes)
-                {
-                    if (type.ToString() == (string)absorber.label)
-                    {
-                        chromophoreAbsorbers.Add(new ChromophoreAbsorber(type, (double)absorber.value));
-                    }
-                }
+                chromophoreAbsorbers.Add(new ChromophoreAbsorber(Enum.Parse<ChromophoreType>(absorber.Label, true), absorber.Value));
             }
 
             // set up the scatterer

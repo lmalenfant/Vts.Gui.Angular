@@ -23,7 +23,7 @@ namespace Vts.Api.Models
         public DoubleRange Range { get; set; }
         public string ScattererType { get; set; }
         public ScatteringType ScatteringType { get; set; }
-        public List<dynamic> AbsorberConcentration { get; set; }
+        public List<LabelValuePair> AbsorberConcentration { get; set; }
         public PowerLawScatterer PowerLawScatterer { get; set; }
         public IntralipidScatterer IntralipidScatterer { get; set; }
         public MieScatterer MieScatterer { get; set; }
