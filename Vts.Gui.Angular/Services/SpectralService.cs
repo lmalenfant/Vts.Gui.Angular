@@ -27,10 +27,11 @@ namespace Vts.Api.Services
             dynamic spectralSettings = values;
 
             var plotType = (string)spectralSettings["plotType"];
-            var plotParameters = new SpectralPlotParameters();
-            plotParameters.PlotType = Enum.Parse<SpectralPlotType>(plotType.ToString(), true);
-            plotParameters.TissueType = (string)spectralSettings["tissueType"].value;
-            plotParameters.PlotName = (string)spectralSettings["plotName"];
+            var plotParameters = new SpectralPlotParameters {
+                SpectralPlotType = Enum.Parse<SpectralPlotType>(plotType.ToString(), true),
+                TissueType = (string)spectralSettings["tissueType"].value,
+                PlotName = (string)spectralSettings["plotName"]
+            };
             plotParameters.YAxis = plotParameters.PlotName;
 
             // set up the absorber concentrations

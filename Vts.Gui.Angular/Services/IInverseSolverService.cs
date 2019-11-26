@@ -1,7 +1,9 @@
-﻿namespace Vts.Api.Services
+﻿using Vts.Api.Models;
+
+namespace Vts.Api.Services
 {
     public interface IInverseSolverService
     {
-        string GetPlotData(dynamic values);
+        string GetPlotData(SolutionDomainPlotParameters PlotParameters);
     }
 }

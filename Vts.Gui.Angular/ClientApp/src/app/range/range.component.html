@@ -4,7 +4,7 @@
     <div class="input-group-prepend">
       <span id="startLabel" class="input-group-text">{{range.startLabel}}</span>
     </div>
-    <input id="startValue" name="startValue" type="text" class="form-control" [(ngModel)]="range.startValue" />
+    <input id="startValue" name="startValue" type="text" class="form-control" [(ngModel)]="range.start" />
     <div class="input-group-append">
       <span id="startUnits" class="input-group-text">{{range.startLabelUnits}}</span>
     </div>
@@ -13,7 +13,7 @@
     <div class="input-group-prepend">
       <span id="endLabel" class="input-group-text">{{range.endLabel}}</span>
     </div>
-    <input id="endValue" name="endValue" type="text" class="form-control" [(ngModel)]="range.endValue" />
+    <input id="endValue" name="endValue" type="text" class="form-control" [(ngModel)]="range.stop" />
     <div class="input-group-append">
       <span id="endUnits" class="input-group-text">{{range.endLabelUnits}}</span>
     </div>
@@ -22,6 +22,6 @@
     <div class="input-group-prepend">
       <span id="numberLabel" class="input-group-text">{{range.numberLabel}}</span>
     </div>
-    <input id="numberValue" name="numberValue" type="text" class="form-control number" [(ngModel)]="range.numberValue" />
+    <input id="numberValue" name="numberValue" type="text" class="form-control number" [(ngModel)]="range.count" />
   </div>
 </div>

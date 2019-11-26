@@ -2,10 +2,10 @@ export class Range {
   title: string;
   startLabel: string;
   startLabelUnits: string;
-  startValue: number;
+  start: number;
   endLabel: string;
   endLabelUnits: string;
-  endValue: number;
+  stop: number;
   numberLabel: string;
-  numberValue: number;
+  count: number;
 }

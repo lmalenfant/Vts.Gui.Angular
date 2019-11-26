@@ -12,10 +12,13 @@ namespace Vts.Api.Models
         /// <summary>
         /// Spectral plot type = Mua or Musp
         /// </summary>
-        public SpectralPlotType PlotType { get; set; }
+        public SpectralPlotType SpectralPlotType { get; set; }
+        public string PlotType { get; set; }
         public string PlotName { get; set; }
         public Tissue Tissue { get; set; }
         public double[] Wavelengths { get; set; }
-        public string TissueType {  get; set; }
+        public string TissueType { get; set; }
+        public DoubleRange Range { get; set; }
+        public string ScattererType { get; set; }
     }
 }
