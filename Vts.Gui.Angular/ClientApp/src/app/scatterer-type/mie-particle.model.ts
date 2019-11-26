@@ -1,7 +1,7 @@
-export class MieParticle {
+export class MieScatterer {
   particleRadius: number;
-  particleN: number;
-  mediumN: number;
+  ParticleRefractiveIndexMismatch: number;
+  MediumRefractiveIndexMismatch: number;
   volumeFraction: number;
   show: boolean;
 }

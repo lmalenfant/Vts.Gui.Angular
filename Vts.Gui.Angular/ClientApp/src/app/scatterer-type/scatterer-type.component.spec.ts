@@ -21,7 +21,7 @@ describe('scatterer-type component', () => {
   it('Scatter Type should be PowerLaw', async(() => {
     testHostComponent.scattererTypeComponent.intralipid = { volumeFraction: 0.01, show: false };
     testHostComponent.scattererTypeComponent.powerLaw = { a: 1.2, b: 1.42, show: true };
-    testHostComponent.scattererTypeComponent.mieParticle = { particleRadius: 0.5, particleN: 1.4, mediumN: 1, volumeFraction: 0.01, show: false };
+    testHostComponent.scattererTypeComponent.mieParticle = { particleRadius: 0.5, ParticleRefractiveIndexMismatch: 1.4, MediumRefractiveIndexMismatch: 1, volumeFraction: 0.01, show: false };
     testHostComponent.scattererTypeComponent.scattererType = { value: 'PowerLaw', display: 'PowerLaw [A*λ^(-b)]' };
     testHostFixture.detectChanges();
     expect(testHostComponent.scattererTypeComponent.scattererType.value).toEqual('PowerLaw');

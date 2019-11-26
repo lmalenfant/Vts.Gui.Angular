@@ -6,6 +6,7 @@ using Vts.Api.Enums;
 using Vts.Api.Factories;
 using Vts.Api.Models;
 using Vts.Common;
+using Vts.SpectralMapping;
 
 namespace Vts.Api.Services
 {
@@ -20,60 +21,51 @@ namespace Vts.Api.Services
             _plotFactory = plotFactory;
         }
 
-        public string GetPlotData(dynamic values)
+        public string GetPlotData(SpectralPlotParameters plotParameters)
         {
             _logger.LogInformation("Get the plot data for the Spectral Panel");
 
-            dynamic spectralSettings = values;
-
-            var plotType = (string)spectralSettings["plotType"];
-            var plotParameters = new SpectralPlotParameters {
-                SpectralPlotType = Enum.Parse<SpectralPlotType>(plotType.ToString(), true),
-                TissueType = (string)spectralSettings["tissueType"].value,
-                PlotName = (string)spectralSettings["plotName"]
-            };
+            plotParameters.SpectralPlotType = Enum.Parse<SpectralPlotType>(plotParameters.PlotType, true);
             plotParameters.YAxis = plotParameters.PlotName;
 
             // set up the absorber concentrations
-            var absorberConcentrations = spectralSettings["absorberConcentration"];
-            List<SpectralMapping.IChromophoreAbsorber> chromophoreAbsorbers = new List<SpectralMapping.IChromophoreAbsorber>();
-            foreach (var absorber in absorberConcentrations)
+            List<IChromophoreAbsorber> chromophoreAbsorbers = new List<IChromophoreAbsorber>();
+            foreach (var absorber in plotParameters.AbsorberConcentration)
             {
                 var chromophoreTypes = EnumHelper.GetValues<ChromophoreType>();
                 foreach (var type in chromophoreTypes)
                 {
                     if (type.ToString() == (string)absorber.label)
                     {
-                        chromophoreAbsorbers.Add(new SpectralMapping.ChromophoreAbsorber(type, (double)absorber.value));
+                        chromophoreAbsorbers.Add(new ChromophoreAbsorber(type, (double)absorber.value));
                     }
                 }
             }
 
             // set up the scatterer
-            var scatterType = (string)spectralSettings["scattererType"].value;
-            SpectralMapping.IScatterer scatterer;
-            switch (scatterType)
+            plotParameters.ScatteringType = Enum.Parse<ScatteringType>(plotParameters.ScattererType, true);
+            IScatterer scatterer;
+            switch (plotParameters.ScatteringType)
             {
-                case "PowerLaw":
-                    scatterer = new SpectralMapping.PowerLawScatterer((double)spectralSettings["powerLaw"].a, (double)spectralSettings["powerLaw"].b);
+                case ScatteringType.PowerLaw:
+                    scatterer = plotParameters.PowerLawScatterer;
                     break;
-                case "Intralipid":
-                    scatterer = new SpectralMapping.IntralipidScatterer((double)spectralSettings["intralipid"].volumeFraction);
+                case ScatteringType.Intralipid:
+                    scatterer = plotParameters.IntralipidScatterer;
                     break;
-                case "Mie":
-                    scatterer = new SpectralMapping.MieScatterer((double)spectralSettings["mieParticle"].particleRadius, (double)spectralSettings["mieParticle"].particleN, (double)spectralSettings["mieParticle"].particlemediumN, (double)spectralSettings["mieParticle"].volumeFraction);
+                case ScatteringType.Mie:
+                    scatterer = plotParameters.MieScatterer;
                     break;
                 default:
-                scatterer = new SpectralMapping.PowerLawScatterer();
+                scatterer = new PowerLawScatterer();
                 break;
             }
 
             // get the wavelength
-            plotParameters.XAxis = new DoubleRange((double)spectralSettings["range"]["startValue"],
-                                (double)spectralSettings["range"]["endValue"], (int)spectralSettings["range"]["numberValue"]);
+            plotParameters.XAxis = plotParameters.Range;
             plotParameters.Wavelengths = plotParameters.XAxis.AsEnumerable().ToArray();
             // set up the tissue
-            plotParameters.Tissue = new SpectralMapping.Tissue(chromophoreAbsorbers, scatterer, (string)spectralSettings["tissueType"].value);
+            plotParameters.Tissue = new Tissue(chromophoreAbsorbers, scatterer, plotParameters.TissueType);
 
             return _plotFactory.GetPlot(PlotType.Spectral, plotParameters);
         }

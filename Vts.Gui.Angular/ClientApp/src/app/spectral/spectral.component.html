@@ -1,7 +1,7 @@
 <form name="form1" (submit)="onSubmit()">
   <div class="heading">Tissue Type</div>
   <!-- Tissue -->
-  <app-tissue-definition [tissueType]="tissueType" [absorberConcentration]="absorberConcentration" [bloodConcentration]="bloodConcentration" [scattererType]="scattererType" [powerLaw]="powerLaw" [intralipid]="intralipid" [mieParticle]="mieParticle"></app-tissue-definition>
+  <app-tissue-definition [tissueType]="tissueTypeDropdown" [absorberConcentration]="absorberConcentration" [bloodConcentration]="bloodConcentration" [scattererType]="scattererTypeDropdown" [powerLaw]="powerLaw" [intralipid]="intralipid" [mieParticle]="mieParticle"></app-tissue-definition>
   <br />
   <!-- Range -->
   <app-range [range]="range"></app-range>

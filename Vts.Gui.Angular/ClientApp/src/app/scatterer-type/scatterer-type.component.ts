@@ -1,9 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { ListType } from '../shared/list-definition.model';
 import { ScattererTypeList } from './scatterer-list';
-import { PowerLaw } from './power-law.model';
-import { Intralipid } from './intralipid.model';
-import { MieParticle } from './mie-particle.model';
+import { PowerLawScatterer as PowerLaw } from './power-law.model';
+import { IntralipidScatterer as Intralipid } from './intralipid.model';
+import { MieScatterer as MieParticle } from './mie-particle.model';
 
 @Component({
     selector: 'app-scatterer-type',

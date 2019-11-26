@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var PowerLaw = /** @class */ (function () {
-    function PowerLaw() {
+var PowerLawScatterer = /** @class */ (function () {
+    function PowerLawScatterer() {
     }
-    return PowerLaw;
+    return PowerLawScatterer;
 }());
-exports.PowerLaw = PowerLaw;
+exports.PowerLawScatterer = PowerLawScatterer;
 //# sourceMappingURL=power-law.model.js.map

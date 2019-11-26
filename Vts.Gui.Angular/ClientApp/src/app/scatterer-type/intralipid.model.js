@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var Intralipid = /** @class */ (function () {
-    function Intralipid() {
+var IntralipidScatterer = /** @class */ (function () {
+    function IntralipidScatterer() {
     }
-    return Intralipid;
+    return IntralipidScatterer;
 }());
-exports.Intralipid = Intralipid;
+exports.IntralipidScatterer = IntralipidScatterer;
 //# sourceMappingURL=intralipid.model.js.map

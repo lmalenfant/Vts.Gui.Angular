@@ -28,7 +28,7 @@ describe('tissue-definition component', () => {
     testHostComponent.tissueDefinitionComponent.scattererType = { value: 'PowerLaw', display: 'PowerLaw [A*λ^(-b)]' };
     testHostComponent.tissueDefinitionComponent.powerLaw = { a: 1.2, b: 1.42, show: true };
     testHostComponent.tissueDefinitionComponent.intralipid = { volumeFraction: 0.01, show: false };
-    testHostComponent.tissueDefinitionComponent.mieParticle = { particleRadius: 0.5, particleN: 1.4, mediumN: 1, volumeFraction: 0.01, show: false };
+    testHostComponent.tissueDefinitionComponent.mieParticle = { particleRadius: 0.5, ParticleRefractiveIndexMismatch: 1.4, MediumRefractiveIndexMismatch: 1, volumeFraction: 0.01, show: false };
     testHostFixture.detectChanges();
   }));
 

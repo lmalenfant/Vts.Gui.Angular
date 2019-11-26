@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var MieParticle = /** @class */ (function () {
-    function MieParticle() {
+var MieScatterer = /** @class */ (function () {
+    function MieScatterer() {
     }
-    return MieParticle;
+    return MieScatterer;
 }());
-exports.MieParticle = MieParticle;
+exports.MieScatterer = MieScatterer;
 //# sourceMappingURL=mie-particle.model.js.map

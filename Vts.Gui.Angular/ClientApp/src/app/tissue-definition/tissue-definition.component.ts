@@ -5,9 +5,9 @@ import { AbsorberConcentration } from './absorber-concentration.model';
 import { BloodConcentration } from './blood-concentration.model';
 import { TissueTypeList } from './tissue-list';
 import { ScattererTypeList } from '../scatterer-type/scatterer-list';
-import { PowerLaw } from '../scatterer-type/power-law.model';
-import { Intralipid } from '../scatterer-type/intralipid.model';
-import { MieParticle } from '../scatterer-type/mie-particle.model';
+import { PowerLawScatterer as PowerLaw } from '../scatterer-type/power-law.model';
+import { IntralipidScatterer as Intralipid } from '../scatterer-type/intralipid.model';
+import { MieScatterer as MieParticle } from '../scatterer-type/mie-particle.model';
 import * as $ from 'jquery';
 
 @Component({

@@ -4,9 +4,9 @@ import { Skin, Liver, IntralipidPhantom, BreastPostMenopause, BreastPreMenopause
 import { BloodConcentration } from '../tissue-definition/blood-concentration.model';
 import { Range } from '../range/range.model';
 import { ListType } from '../shared/list-definition.model';
-import { PowerLaw } from '../scatterer-type/power-law.model';
-import { Intralipid } from '../scatterer-type/intralipid.model';
-import { MieParticle } from '../scatterer-type/mie-particle.model';
+import { PowerLawScatterer as PowerLaw } from '../scatterer-type/power-law.model';
+import { IntralipidScatterer as Intralipid } from '../scatterer-type/intralipid.model';
+import { MieScatterer as MieParticle } from '../scatterer-type/mie-particle.model';
 import { PlotService } from '../services/plot.service';
 import * as $ from 'jquery';
 
@@ -17,13 +17,13 @@ import * as $ from 'jquery';
 })
 /** spectral component*/
 export class SpectralComponent {
-  tissueType: ListType = { value: 'Skin', display: 'Skin' };
+  tissueTypeDropdown: ListType = { value: 'Skin', display: 'Skin' };
   absorberConcentration: Array<AbsorberConcentration> = Skin;
   bloodConcentration: BloodConcentration = { totalHb: 80, bloodVolume: 0.0344, stO2: 0.7, visible: true };
-  scattererType: ListType = { value: 'PowerLaw', display: 'PowerLaw [A*λ^(-b)]' };
+  scattererTypeDropdown: ListType = { value: 'PowerLaw', display: 'PowerLaw [A*λ^(-b)]' };
   powerLaw: PowerLaw = { a: 1.2, b: 1.42, show: true };
   intralipid: Intralipid = { volumeFraction: 0.01, show: false };
-  mieParticle: MieParticle = { particleRadius: 0.5, particleN: 1.4, mediumN: 1, volumeFraction: 0.01, show: false };
+  mieParticle: MieParticle = { particleRadius: 0.5, ParticleRefractiveIndexMismatch: 1.4, MediumRefractiveIndexMismatch: 1, volumeFraction: 0.01, show: false };
   range: Range = {
     title: 'Wavelength Range',
     startLabel: 'Begin',
@@ -42,17 +42,17 @@ export class SpectralComponent {
 
   plotMuspSpectrum() {
     // need to update the absorber values because the input to not recognise the change
-    this.updateAbsorberValues(this.tissueType.value);
+    this.updateAbsorberValues(this.tissueTypeDropdown.value);
     let spectralSettings = {
       plotType: "mua",
       plotName: "μa",
-      tissueType: this.tissueType,
+      tissueType: this.tissueTypeDropdown.value,
       absorberConcentration: this.absorberConcentration,
       bloodConcentration: this.bloodConcentration,
-      scattererType: this.scattererType,
-      powerLaw: this.powerLaw,
-      intralipid: this.intralipid,
-      mieParticle: this.mieParticle,
+      scattererType: this.scattererTypeDropdown.value,
+      powerLawScatterer: this.powerLaw,
+      intralipidScatterer: this.intralipid,
+      mieScatterer: this.mieParticle,
       range: this.range
     };
     console.log(spectralSettings);
@@ -66,17 +66,17 @@ export class SpectralComponent {
 
   plotMuaSpectrum() {
     // need to update the absorber values because the input to not recognise the change
-    this.updateAbsorberValues(this.tissueType.value);
+    this.updateAbsorberValues(this.tissueTypeDropdown.value);
     let spectralSettings = {
       plotType: "musp",
       plotName: "μs'",
-      tissueType: this.tissueType,
+      tissueType: this.tissueTypeDropdown,
       absorberConcentration: this.absorberConcentration,
       bloodConcentration: this.bloodConcentration,
-      scattererType: this.scattererType,
-      powerLaw: this.powerLaw,
-      intralipid: this.intralipid,
-      mieParticle: this.mieParticle,
+      scattererType: this.scattererTypeDropdown,
+      powerLawScatterer: this.powerLaw,
+      intralipidScatterer: this.intralipid,
+      mieScatterer: this.mieParticle,
       range: this.range
     };
     console.log(spectralSettings);
