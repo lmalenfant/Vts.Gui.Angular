@@ -13,6 +13,7 @@ export class SolutionDomainComponent {
   @Input() solutionDomain: SolutionDomain;
   @Input() independentAxes: IndependentAxis;
   @Input() range: Range;
+  @Input() id: string;
 
   setIndependentAxes(first, units1, second, units2) {
     console.log('setIndependentAxis');

@@ -17,6 +17,7 @@ import * as $ from 'jquery';
 })
 /** forward-solver-analysis component*/
 export class ForwardSolverAnalysisComponent implements OnInit {
+  id: string = 'Forward';
   forwardSolverEngine: ForwardSolverEngine = { value: 'DistributedPointSourceSDA', display: 'Standard Diffusion (Analytic: Distributed Point Source)' };
   gaussianBeam: GaussianBeam = {
     show: false,

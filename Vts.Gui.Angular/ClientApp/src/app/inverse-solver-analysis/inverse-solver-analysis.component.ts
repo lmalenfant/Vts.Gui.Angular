@@ -21,6 +21,7 @@ import { PlotObject } from '../plot/plot-object.model';
 
 /** inverse-solver-analysis component*/
 export class InverseSolverAnalysisComponent implements OnInit {
+  id: string = 'Inverse';
   forwardSolverEngine: ForwardSolverEngine = { 
     value: 'PointSourceSDA', 
     display: 'Standard Diffusion (Analytic: Isotropic Point Source)'};

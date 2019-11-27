@@ -3,18 +3,18 @@
   <table class="solutionDomain">
     <tr>
       <td>Steady-State</td>
-      <td><input name="SolutionDomain" type="radio" [(ngModel)]="solutionDomain.value" value="ROfRho" (click)="setIndependentAxes('ρ', 'mm', '', '')" />&nbsp;R(ρ)</td>
-      <td><input name="SolutionDomain" type="radio" [(ngModel)]="solutionDomain.value" value="ROfFx" (click)="setIndependentAxes('fx', '1/mm', '', '')" />&nbsp;R(fx)</td>
+      <td><input name="SolutionDomain{{id}}" type="radio" [(ngModel)]="solutionDomain.value" value="ROfRho" (click)="setIndependentAxes('ρ', 'mm', '', '')" />&nbsp;R(ρ)</td>
+      <td><input name="SolutionDomain{{id}}" type="radio" [(ngModel)]="solutionDomain.value" value="ROfFx" (click)="setIndependentAxes('fx', '1/mm', '', '')" />&nbsp;R(fx)</td>
     </tr>
     <tr>
       <td>Time-Domain</td>
-      <td><input name="SolutionDomain" type="radio" [(ngModel)]="solutionDomain.value" value="ROfRhoAndTime" (click)="setIndependentAxes('ρ', 'mm', 't', 'ns')" />&nbsp;R(ρ, t)</td>
-      <td><input name="SolutionDomain" type="radio" [(ngModel)]="solutionDomain.value" value="ROfFxAndTime" (click)="setIndependentAxes('fx', '1/mm', 't', 'ns')" />&nbsp;R(fx, t)</td>
+      <td><input name="SolutionDomain{{id}}" type="radio" [(ngModel)]="solutionDomain.value" value="ROfRhoAndTime" (click)="setIndependentAxes('ρ', 'mm', 't', 'ns')" />&nbsp;R(ρ, t)</td>
+      <td><input name="SolutionDomain{{id}}" type="radio" [(ngModel)]="solutionDomain.value" value="ROfFxAndTime" (click)="setIndependentAxes('fx', '1/mm', 't', 'ns')" />&nbsp;R(fx, t)</td>
     </tr>
     <tr>
       <td>Frequency-Domain</td>
-      <td><input name="SolutionDomain" type="radio" [(ngModel)]="solutionDomain.value" value="ROfRhoAndFt" (click)="setIndependentAxes('ρ', 'mm', 'ft', 'GHz')" />&nbsp;R(ρ, ft)</td>
-      <td><input name="SolutionDomain" type="radio" [(ngModel)]="solutionDomain.value" value="ROfFxAndFt" (click)="setIndependentAxes('fx', '1/mm', 'ft', 'GHz')" />&nbsp;R(fx, ft)</td>
+      <td><input name="SolutionDomain{{id}}" type="radio" [(ngModel)]="solutionDomain.value" value="ROfRhoAndFt" (click)="setIndependentAxes('ρ', 'mm', 'ft', 'GHz')" />&nbsp;R(ρ, ft)</td>
+      <td><input name="SolutionDomain{{id}}" type="radio" [(ngModel)]="solutionDomain.value" value="ROfFxAndFt" (click)="setIndependentAxes('fx', '1/mm', 'ft', 'GHz')" />&nbsp;R(fx, ft)</td>
     </tr>
   </table><br *ngIf="independentAxes.show" />
   <div *ngIf="independentAxes.show" class="form-inline">
