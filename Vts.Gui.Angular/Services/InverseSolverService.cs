@@ -25,20 +25,15 @@ namespace Vts.Api.Services
         {
             try
             {
-                var sd = PlotParameters.SolutionDomain;
-                var sdtype = Enum.Parse<SolutionDomainType>(sd);
                 var ins = PlotParameters.InverseSolverEngine;
-                var igops = PlotParameters.OpticalProperties;
                 var xaxis = PlotParameters.Range;
-                var independentValues = xaxis.AsEnumerable().ToArray();
-                var independentAxis = PlotParameters.IndependentAxes.Label;
-                var independentAxisValue = PlotParameters.IndependentAxes.Value;
-                var igopsArray = GetInitialGuessOpticalProperties(igops);
-                var igparms = GetParametersInOrder(igopsArray, independentValues, sd, independentAxis,
-                    independentAxisValue);
+                var igparms = GetParametersInOrder(
+                    GetInitialGuessOpticalProperties(PlotParameters.OpticalProperties),
+                    PlotParameters.Range.AsEnumerable().ToArray(), 
+                    PlotParameters.SolutionDomain, 
+                    PlotParameters.IndependentAxes.Label,
+                    PlotParameters.IndependentAxes.Value);
                 object[] igparmsConvert = igparms.Values.ToArray();
-                var optpar = PlotParameters.OptimizationParameters;
-                var optype = PlotParameters.OptimizerType;
                 // get measured data from inverse solver analysis component
                 var measuredPoints = PlotParameters.MeasuredData;
                 var meas = measuredPoints.Select(p => p.Last()).ToArray(); // get y value
@@ -49,25 +44,21 @@ namespace Vts.Api.Services
                 };
                 double[] fit = ComputationFactory.SolveInverse(
                     Enum.Parse<ForwardSolverType>(PlotParameters.InverseSolverEngine),
-                    Enum.Parse<OptimizerType>(optype),
-                    sdtype,
+                    Enum.Parse<OptimizerType>(PlotParameters.OptimizerType),
+                    Enum.Parse<SolutionDomainType>(PlotParameters.SolutionDomain),
                     meas,
                     meas, // set standard deviation to measured to match WPF
-                    Enum.Parse<InverseFitType>(optpar),
+                    Enum.Parse<InverseFitType>(PlotParameters.OptimizationParameters),
                     igparmsConvert,
                     lbs,
                     ubs);
                 var fitops = ComputationFactory.UnFlattenOpticalProperties(fit);
                 //var fitparms =
                 //    GetParametersInOrder(fitops, independentValues, sd, independentAxis, independentAxisValue);
-                var noise = 0;
                 PlotParameters.ForwardSolverType = Enum.Parse<ForwardSolverType>(ins);
-                PlotParameters.SolutionDomain = sd;
                 PlotParameters.XAxis = xaxis;
                 PlotParameters.OpticalProperties = fitops[0]; // not sure [0] is always going to work here
-                PlotParameters.IndependentAxes.Label = independentAxis;
-                PlotParameters.IndependentAxes.Value = independentAxisValue;
-                PlotParameters.NoiseValue = noise;
+                PlotParameters.NoiseValue = 0;
                 var msg = _plotFactory.GetPlot(PlotType.SolutionDomain, PlotParameters);
                 return msg;
             }
