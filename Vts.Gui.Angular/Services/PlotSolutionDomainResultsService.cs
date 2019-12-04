@@ -27,23 +27,23 @@ namespace Vts.Api.Services
             var parameters = (SolutionDomainPlotParameters) plotParameters;
             var fs = parameters.ForwardSolverType;
             var op = parameters.OpticalProperties;
-            var xaxis = parameters.XAxis;
+            var xAxis = parameters.XAxis;
             var noise = parameters.NoiseValue;
             var independentAxis = parameters.IndependentAxes.Label;
             var independentValue = parameters.IndependentAxes.Value;
-            var independentValues = xaxis.AsEnumerable().ToArray();
-            IEnumerable<double> doubleResults;
-            IEnumerable<Complex> complexResults;
-            double[] xs;
-            IEnumerable<Point> xyPoints, xyPointsReal, xyPointsImag;
-            PlotData plotData, plotDataReal, plotDataImag;
-            Plots plot;
+            var independentValues = xAxis.AsEnumerable().ToArray();
             try
             {
+                IEnumerable<double> doubleResults;
+                IEnumerable<Complex> complexResults;
+                double[] xs;
+                IEnumerable<Point> xyPoints, xyPointsReal, xyPointsImaginary;
+                PlotData plotData, plotDataReal, plotDataImaginary;
+                Plots plot;
                 switch (parameters.SolutionDomain)
                 {
                     case SolutionDomainType.ROfRho:
-                        doubleResults = ROfRho(fs, op, xaxis, noise);
+                        doubleResults = ROfRho(fs, op, xAxis, noise);
                         xs = independentValues;
                         xyPoints = xs.Zip(doubleResults, (x, y) => new Point(x, y));
                         plotData = new PlotData {Data = xyPoints, Label = "ROfRho"};
@@ -63,7 +63,7 @@ namespace Vts.Api.Services
                         if (independentAxis == "t")
                         {
                             var time = independentValue;
-                            doubleResults = ROfRhoAndTime(fs, op, xaxis, time, noise);
+                            doubleResults = ROfRhoAndTime(fs, op, xAxis, time, noise);
                             xs = independentValues;
                             xyPoints = xs.Zip(doubleResults, (x, y) => new Point(x, y));
                             plotData = new PlotData {Data = xyPoints, Label = "ROfRhoAndTime"};
@@ -82,7 +82,7 @@ namespace Vts.Api.Services
                         else
                         {
                             var rho = independentValue;
-                            doubleResults = ROfRhoAndTime(fs, op, rho, xaxis, noise);
+                            doubleResults = ROfRhoAndTime(fs, op, rho, xAxis, noise);
                             xs = independentValues.ToArray(); // the Skip(1) is giving inverse problems
                             xyPoints = xs.Zip(doubleResults, (x, y) => new Point(x, y));
                             plotData = new PlotData {Data = xyPoints, Label = "ROfRhoAndTime"};
@@ -102,14 +102,14 @@ namespace Vts.Api.Services
                     case SolutionDomainType.ROfRhoAndFt:
                         if (independentAxis == "ft")
                         {
-                            var rho = xaxis;
+                            var rho = xAxis;
                             var ft = independentValue;
                             complexResults = ROfRhoAndFt(fs, op, rho, ft, noise);
                             xs = independentValues;
                             xyPointsReal = xs.Zip(complexResults, (x, y) => new Point(x, y.Real));
-                            xyPointsImag = xs.Zip(complexResults, (x, y) => new Point(x, y.Imaginary));
+                            xyPointsImaginary = xs.Zip(complexResults, (x, y) => new Point(x, y.Imaginary));
                             plotDataReal = new PlotData {Data = xyPointsReal, Label = "ROfRhoAndFt"};
-                            plotDataImag = new PlotData {Data = xyPointsImag, Label = "ROfRhoAndFt"};
+                            plotDataImaginary = new PlotData {Data = xyPointsImaginary, Label = "ROfRhoAndFt"};
                             plot = new Plots
                             {
                                 Id = "ROfRhoAndFtFixedFt", Detector = "R(ρ,ft)", Legend = "R(ρ,ft)", XAxis = "ρ",
@@ -122,7 +122,7 @@ namespace Vts.Api.Services
                             });
                             plot.PlotList.Add(new PlotDataJson
                             {
-                                Data = plotDataImag.Data.Select(item => new List<double> {item.X, item.Y}).ToList(),
+                                Data = plotDataImaginary.Data.Select(item => new List<double> {item.X, item.Y}).ToList(),
                                 Label = fs + " μa=" + op.Mua + " μs'=" + op.Musp + " ft=" + ft + "(imag)"
                             });
                             msg = JsonConvert.SerializeObject(plot);
@@ -130,12 +130,12 @@ namespace Vts.Api.Services
                         else
                         {
                             var rho = independentValue;
-                            complexResults = ROfRhoAndFt(fs, op, rho, xaxis, noise);
+                            complexResults = ROfRhoAndFt(fs, op, rho, xAxis, noise);
                             xs = independentValues;
                             xyPointsReal = xs.Zip(complexResults, (x, y) => new Point(x, y.Real));
-                            xyPointsImag = xs.Zip(complexResults, (x, y) => new Point(x, y.Imaginary));
+                            xyPointsImaginary = xs.Zip(complexResults, (x, y) => new Point(x, y.Imaginary));
                             var realPlot = new PlotData {Data = xyPointsReal, Label = "ROfRhoAndFt"};
-                            var imagPlot = new PlotData {Data = xyPointsImag, Label = "ROfRhoAndFt"};
+                            var imagPlot = new PlotData {Data = xyPointsImaginary, Label = "ROfRhoAndFt"};
                             var rhoPlot = new Plots
                             {
                                 Id = "ROfRhoAndFtFixedRho", Detector = "R(ρ,ft)", Legend = "R(ρ,ft)", XAxis = "ft",
@@ -155,7 +155,7 @@ namespace Vts.Api.Services
                         }
                         break;
                     case SolutionDomainType.ROfFx:
-                        doubleResults = ROfFx(fs, op, xaxis, noise);
+                        doubleResults = ROfFx(fs, op, xAxis, noise);
                         xs = independentValues;
                         xyPoints = xs.Zip(doubleResults, (x, y) => new Point(x, y));
                         plotData = new PlotData {Data = xyPoints, Label = "ROfFx"};
@@ -175,7 +175,7 @@ namespace Vts.Api.Services
                         if (independentAxis == "t")
                         {
                             var time = independentValue;
-                            doubleResults = ROfFxAndTime(fs, op, xaxis, time, noise);
+                            doubleResults = ROfFxAndTime(fs, op, xAxis, time, noise);
                             xs = independentValues;
                             xyPoints = xs.Zip(doubleResults, (x, y) => new Point(x, y));
                             plotData = new PlotData {Data = xyPoints, Label = "ROfFxAndTime"};
@@ -194,7 +194,7 @@ namespace Vts.Api.Services
                         else
                         {
                             var fx = independentValue;
-                            doubleResults = ROfFxAndTime(fs, op, fx, xaxis, noise);
+                            doubleResults = ROfFxAndTime(fs, op, fx, xAxis, noise);
                             xs = independentValues;
                             xyPoints = xs.Zip(doubleResults, (x, y) => new Point(x, y));
                             plotData = new PlotData {Data = xyPoints, Label = "ROfFxAndTime"};
@@ -215,12 +215,12 @@ namespace Vts.Api.Services
                         if (independentAxis == "ft")
                         {
                             var ft = independentValue;
-                            complexResults = ROfFxAndFt(fs, op, xaxis, ft, noise);
+                            complexResults = ROfFxAndFt(fs, op, xAxis, ft, noise);
                             xs = independentValues;
                             xyPointsReal = xs.Zip(complexResults, (x, y) => new Point(x, y.Real));
-                            xyPointsImag = xs.Zip(complexResults, (x, y) => new Point(x, y.Imaginary));
+                            xyPointsImaginary = xs.Zip(complexResults, (x, y) => new Point(x, y.Imaginary));
                             plotDataReal = new PlotData {Data = xyPointsReal, Label = "ROfFxAndFt"};
-                            plotDataImag = new PlotData {Data = xyPointsImag, Label = "ROfFxAndFt"};
+                            plotDataImaginary = new PlotData {Data = xyPointsImaginary, Label = "ROfFxAndFt"};
                             plot = new Plots
                             {
                                 Id = "ROfFxAndFtFixedFt", Detector = "R(fx,ft)", Legend = "R(fx,ft)", XAxis = "fx",
@@ -233,7 +233,7 @@ namespace Vts.Api.Services
                             });
                             plot.PlotList.Add(new PlotDataJson
                             {
-                                Data = plotDataImag.Data.Select(item => new List<double> {item.X, item.Y}).ToList(),
+                                Data = plotDataImaginary.Data.Select(item => new List<double> {item.X, item.Y}).ToList(),
                                 Label = fs + " μa=" + op.Mua + " μs'=" + op.Musp + " ft=" + ft + "(imag)"
                             });
                             msg = JsonConvert.SerializeObject(plot);
@@ -241,12 +241,12 @@ namespace Vts.Api.Services
                         else
                         {
                             var fx = independentValue;
-                            complexResults = ROfFxAndFt(fs, op, fx, xaxis, noise);
+                            complexResults = ROfFxAndFt(fs, op, fx, xAxis, noise);
                             xs = independentValues;
                             xyPointsReal = xs.Zip(complexResults, (x, y) => new Point(x, y.Real));
-                            xyPointsImag = xs.Zip(complexResults, (x, y) => new Point(x, y.Imaginary));
+                            xyPointsImaginary = xs.Zip(complexResults, (x, y) => new Point(x, y.Imaginary));
                             plotDataReal = new PlotData {Data = xyPointsReal, Label = "ROfFxAndFt"};
-                            plotDataImag = new PlotData {Data = xyPointsImag, Label = "ROfFxAndFt"};
+                            plotDataImaginary = new PlotData {Data = xyPointsImaginary, Label = "ROfFxAndFt"};
                             plot = new Plots
                             {
                                 Id = "ROfFxAndFtFixedFx", Detector = "R(fx,ft)", Legend = "R(fx,ft)", XAxis = "ft",
@@ -259,7 +259,7 @@ namespace Vts.Api.Services
                             });
                             plot.PlotList.Add(new PlotDataJson
                             {
-                                Data = plotDataImag.Data.Select(item => new List<double> {item.X, item.Y}).ToList(),
+                                Data = plotDataImaginary.Data.Select(item => new List<double> {item.X, item.Y}).ToList(),
                                 Label = fs.ToString() + " μa=" + op.Mua + " μs'=" + op.Musp + " fx=" + fx + "(imag)"
                             });
                             msg = JsonConvert.SerializeObject(plot);
@@ -362,7 +362,8 @@ namespace Vts.Api.Services
             }
             catch (Exception e)
             {
-                throw new Exception("Error in call to ROfFx: " + e.Message + "values fst: " + fst + ", op: " + op + ", rho:" + fx + " source: " + e.Source + " inner: " + e.InnerException);
+                _logger.LogError("Error in call to ROfFx: " + e.Message + "values fst: " + fst + ", op: " + op + ", rho:" + fx + " source: " + e.Source + " inner: " + e.InnerException);
+                throw;
             }
         }
 

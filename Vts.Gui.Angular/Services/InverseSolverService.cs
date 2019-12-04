@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using Microsoft.Extensions.Logging;
 using Vts.Api.Enums;
@@ -171,7 +172,7 @@ namespace Vts.Api.Services
                     case IndependentVariableAxis.Z:
                         return 3;
                     default:
-                        throw new ArgumentOutOfRangeException("axis");
+                        throw new InvalidEnumArgumentException("There is no Enum of this type");
                 }
             }
             // this has commented out code that might come into play when we add wavelength as axis
