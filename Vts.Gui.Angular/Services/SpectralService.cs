@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using Vts.Api.Enums;
 using Vts.Api.Factories;
 using Vts.Api.Models;
-using Vts.Common;
 using Vts.SpectralMapping;
 
 namespace Vts.Api.Services
@@ -25,7 +24,6 @@ namespace Vts.Api.Services
         {
             _logger.LogInformation("Get the plot data for the Spectral Panel");
 
-            plotParameters.SpectralPlotType = Enum.Parse<SpectralPlotType>(plotParameters.PlotType, true);
             plotParameters.YAxis = plotParameters.PlotName;
 
             // set up the absorber concentrations
@@ -36,7 +34,6 @@ namespace Vts.Api.Services
             }
 
             // set up the scatterer
-            plotParameters.ScatteringType = Enum.Parse<ScatteringType>(plotParameters.ScattererType, true);
             IScatterer scatterer;
             switch (plotParameters.ScatteringType)
             {
@@ -55,7 +52,6 @@ namespace Vts.Api.Services
             }
 
             // get the wavelength
-            //plotParameters.XAxis = plotParameters.Range;
             plotParameters.Wavelengths = plotParameters.XAxis.AsEnumerable().ToArray();
             // set up the tissue
             plotParameters.Tissue = new Tissue(chromophoreAbsorbers, scatterer, plotParameters.TissueType);

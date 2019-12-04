@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 using Vts.Api.Data;
 using Vts.Api.Enums;
 using Vts.Api.Models;
-using Vts.Extensions;
 
 namespace Vts.Api.Services
 {
@@ -21,9 +20,7 @@ namespace Vts.Api.Services
         public string Plot(IPlotParameters plotParameters)
         {
             var parameters = (SpectralPlotParameters)plotParameters;
-            List<Point> xyPoints = new List<Point>();
-            PlotData plotData;
-            Plots plot;
+            var xyPoints = new List<Point>();
 
             foreach (var wv in parameters.Wavelengths)
             {
@@ -38,9 +35,9 @@ namespace Vts.Api.Services
 
                 }
             }
-            plotData = new PlotData { Data = xyPoints, Label = parameters.TissueType };
-            plot = new Plots {
-                Id = "Spectral" + parameters.PlotType.ToString(),
+            var plotData = new PlotData { Data = xyPoints, Label = parameters.TissueType };
+            var plot = new Plots {
+                Id = "Spectral" + parameters.SpectralPlotType,
                 Detector = "Spectral " + parameters.PlotName,
                 Legend = "Spectral",
                 XAxis = "λ",

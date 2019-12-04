@@ -24,11 +24,11 @@ namespace Vts.Api.Services
         {
             try
             {
-                var ins = plotParameters.InverseSolverEngine;
+                var inverseSolver = plotParameters.InverseSolverType;
                 var igparms = GetParametersInOrder(
                     GetInitialGuessOpticalProperties(plotParameters.OpticalProperties),
                     plotParameters.XAxis.AsEnumerable().ToArray(), 
-                    plotParameters.SolutionDomain, 
+                    plotParameters.SolutionDomain.ToString(), 
                     plotParameters.IndependentAxes.Label,
                     plotParameters.IndependentAxes.Value);
                 object[] igparmsConvert = igparms.Values.ToArray();
@@ -41,19 +41,19 @@ namespace Vts.Api.Services
                     double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity
                 };
                 double[] fit = ComputationFactory.SolveInverse(
-                    Enum.Parse<ForwardSolverType>(plotParameters.InverseSolverEngine),
-                    Enum.Parse<OptimizerType>(plotParameters.OptimizerType),
-                    Enum.Parse<SolutionDomainType>(plotParameters.SolutionDomain),
+                    plotParameters.InverseSolverType,
+                    plotParameters.OptimizerType,
+                    plotParameters.SolutionDomain,
                     meas,
                     meas, // set standard deviation to measured to match WPF
-                    Enum.Parse<InverseFitType>(plotParameters.OptimizationParameters),
+                    plotParameters.OptimizationParameters,
                     igparmsConvert,
                     lbs,
                     ubs);
                 var fitops = ComputationFactory.UnFlattenOpticalProperties(fit);
                 //var fitparms =
                 //    GetParametersInOrder(fitops, independentValues, sd, independentAxis, independentAxisValue);
-                plotParameters.ForwardSolverType = Enum.Parse<ForwardSolverType>(ins);
+                plotParameters.ForwardSolverType = inverseSolver;
                 plotParameters.OpticalProperties = fitops[0]; // not sure [0] is always going to work here
                 plotParameters.NoiseValue = 0;
                 var msg = _plotFactory.GetPlot(PlotType.SolutionDomain, plotParameters);

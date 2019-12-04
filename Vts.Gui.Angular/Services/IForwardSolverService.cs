@@ -4,6 +4,6 @@ namespace Vts.Api.Services
 {
     public interface IForwardSolverService
     {
-        string GetPlotData(SolutionDomainPlotParameters PlotParameters);
+        string GetPlotData(SolutionDomainPlotParameters plotParameters);
     }
 }

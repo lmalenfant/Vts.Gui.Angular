@@ -44,12 +44,12 @@ export class SpectralComponent {
     // need to update the absorber values because the input to not recognise the change
     this.updateAbsorberValues(this.tissueTypeDropdown.value);
     let spectralSettings = {
-      plotType: "mua",
+      spectralPlotType: "mua",
       plotName: "μa",
       tissueType: this.tissueTypeDropdown.value,
       absorberConcentration: this.absorberConcentration,
       bloodConcentration: this.bloodConcentration,
-      scattererType: this.scattererTypeDropdown.value,
+      scatteringType: this.scattererTypeDropdown.value,
       powerLawScatterer: this.powerLaw,
       intralipidScatterer: this.intralipid,
       mieScatterer: this.mieParticle,
@@ -65,15 +65,15 @@ export class SpectralComponent {
   }
 
   plotMuaSpectrum() {
-    // need to update the absorber values because the input to not recognise the change
+    // need to update the absorber values because the input to not recognize the change
     this.updateAbsorberValues(this.tissueTypeDropdown.value);
     let spectralSettings = {
-      plotType: "musp",
+      spectralPlotType: "musp",
       plotName: "μs'",
-      tissueType: this.tissueTypeDropdown,
+      tissueType: this.tissueTypeDropdown.value,
       absorberConcentration: this.absorberConcentration,
       bloodConcentration: this.bloodConcentration,
-      scattererType: this.scattererTypeDropdown,
+      scatteringType: this.scattererTypeDropdown.value,
       powerLawScatterer: this.powerLaw,
       intralipidScatterer: this.intralipid,
       mieScatterer: this.mieParticle,

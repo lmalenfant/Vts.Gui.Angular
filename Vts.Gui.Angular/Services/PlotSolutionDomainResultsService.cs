@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Vts.Common;
 using Vts.Extensions;
@@ -13,6 +14,13 @@ namespace Vts.Api.Services
 {
     public class PlotSolutionDomainResultsService : IPlotResultsService
     {
+        private readonly ILogger<PlotSolutionDomainResultsService> _logger;
+
+        public PlotSolutionDomainResultsService(ILogger<PlotSolutionDomainResultsService> logger)
+        {
+            _logger = logger;
+        }
+
         public string Plot(IPlotParameters plotParameters)
         {
             var msg = "";
@@ -20,11 +28,10 @@ namespace Vts.Api.Services
             var fs = parameters.ForwardSolverType;
             var op = parameters.OpticalProperties;
             var xaxis = parameters.XAxis;
-            var sd = parameters.SolutionDomain;
             var noise = parameters.NoiseValue;
             var independentAxis = parameters.IndependentAxes.Label;
             var independentValue = parameters.IndependentAxes.Value;
-            var independentValues = ((DoubleRange)xaxis).AsEnumerable().ToArray();
+            var independentValues = xaxis.AsEnumerable().ToArray();
             IEnumerable<double> doubleResults;
             IEnumerable<Complex> complexResults;
             double[] xs;
@@ -33,9 +40,9 @@ namespace Vts.Api.Services
             Plots plot;
             try
             {
-                switch (sd)
+                switch (parameters.SolutionDomain)
                 {
-                    case "ROfRho":
+                    case SolutionDomainType.ROfRho:
                         doubleResults = ROfRho(fs, op, xaxis, noise);
                         xs = independentValues;
                         xyPoints = xs.Zip(doubleResults, (x, y) => new Point(x, y));
@@ -52,7 +59,7 @@ namespace Vts.Api.Services
                         });
                         msg = JsonConvert.SerializeObject(plot);
                         break;
-                    case "ROfRhoAndTime":
+                    case SolutionDomainType.ROfRhoAndTime:
                         if (independentAxis == "t")
                         {
                             var time = independentValue;
@@ -92,7 +99,7 @@ namespace Vts.Api.Services
                             msg = JsonConvert.SerializeObject(plot);
                         }
                         break;
-                    case "ROfRhoAndFt":
+                    case SolutionDomainType.ROfRhoAndFt:
                         if (independentAxis == "ft")
                         {
                             var rho = xaxis;
@@ -147,7 +154,7 @@ namespace Vts.Api.Services
                             msg = JsonConvert.SerializeObject(rhoPlot);
                         }
                         break;
-                    case "ROfFx":
+                    case SolutionDomainType.ROfFx:
                         doubleResults = ROfFx(fs, op, xaxis, noise);
                         xs = independentValues;
                         xyPoints = xs.Zip(doubleResults, (x, y) => new Point(x, y));
@@ -164,7 +171,7 @@ namespace Vts.Api.Services
                         });
                         msg = JsonConvert.SerializeObject(plot);
                         break;
-                    case "ROfFxAndTime":
+                    case SolutionDomainType.ROfFxAndTime:
                         if (independentAxis == "t")
                         {
                             var time = independentValue;
@@ -204,7 +211,7 @@ namespace Vts.Api.Services
                             msg = JsonConvert.SerializeObject(plot);
                         }
                         break;
-                    case "ROfFxAndFt":
+                    case SolutionDomainType.ROfFxAndFt:
                         if (independentAxis == "ft")
                         {
                             var ft = independentValue;
@@ -263,7 +270,8 @@ namespace Vts.Api.Services
             }
             catch (Exception e)
             {
-                throw new Exception("Error during action: " + e.Message);
+                _logger.LogError("An error occurred: {Message}", e.Message);
+                throw;
             }
         }
 

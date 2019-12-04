@@ -94,7 +94,7 @@ export class InverseSolverAnalysisComponent implements OnInit {
 
   plotMeasured() {    
     var fsSettings = {
-      forwardSolverEngine: this.forwardSolverEngine.value,
+      forwardSolverType: this.forwardSolverEngine.value,
       solutionDomain: this.solutionDomain.value,
       independentAxes: this.independentAxes,
       xAxis: this.range,
@@ -113,7 +113,7 @@ export class InverseSolverAnalysisComponent implements OnInit {
     
   plotInitialGuess() {    
     var igSettings = {
-      forwardSolverEngine: this.inverseSolverEngine.value,
+      forwardSolverType: this.inverseSolverEngine.value,
       forwardOpticalProperties: this.forwardOpticalProperties,
       solutionDomain: this.solutionDomain.value,
       independentAxes: this.independentAxes,
@@ -132,7 +132,7 @@ export class InverseSolverAnalysisComponent implements OnInit {
 
   runInverse() {    
     var inSettings = {
-      inverseSolverEngine: this.inverseSolverEngine.value,
+      inverseSolverType: this.inverseSolverEngine.value,
       optimizerType: this.optimizerType.value,
       optimizationParameters: this.optimizationParameters.value,
       solutionDomain: this.solutionDomain.value,

@@ -17,12 +17,11 @@ namespace Vts.Api.Services
             _plotFactory = plotFactory;
         }
 
-        public string GetPlotData(SolutionDomainPlotParameters PlotParameters)
+        public string GetPlotData(SolutionDomainPlotParameters plotParameters)
         {
             try
             {
-                PlotParameters.ForwardSolverType = Enum.Parse<ForwardSolverType>(PlotParameters.ForwardSolverEngine, true);
-                var msg = _plotFactory.GetPlot(PlotType.SolutionDomain, PlotParameters);
+                var msg = _plotFactory.GetPlot(PlotType.SolutionDomain, plotParameters);
                 return msg;
             }
             catch (Exception e)

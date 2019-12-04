@@ -68,7 +68,7 @@ export class ForwardSolverAnalysisComponent implements OnInit {
 
   onSubmit() {
     var fsSettings = {
-      forwardSolverEngine: this.forwardSolverEngine.value,
+      forwardSolverType: this.forwardSolverEngine.value,
       solutionDomain: this.solutionDomain.value,
       independentAxes: this.independentAxes,
       xAxis: this.range,
