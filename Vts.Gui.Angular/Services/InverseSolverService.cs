@@ -5,7 +5,6 @@ using Microsoft.Extensions.Logging;
 using Vts.Api.Enums;
 using Vts.Api.Factories;
 using Vts.Api.Models;
-using Vts.Common;
 using Vts.Extensions;
 using Vts.Factories;
 
@@ -21,21 +20,20 @@ namespace Vts.Api.Services
             _logger = logger;
             _plotFactory = plotFactory;
         }
-        public string GetPlotData(SolutionDomainPlotParameters PlotParameters)
+        public string GetPlotData(SolutionDomainPlotParameters plotParameters)
         {
             try
             {
-                var ins = PlotParameters.InverseSolverEngine;
-                var xaxis = PlotParameters.Range;
+                var ins = plotParameters.InverseSolverEngine;
                 var igparms = GetParametersInOrder(
-                    GetInitialGuessOpticalProperties(PlotParameters.OpticalProperties),
-                    PlotParameters.Range.AsEnumerable().ToArray(), 
-                    PlotParameters.SolutionDomain, 
-                    PlotParameters.IndependentAxes.Label,
-                    PlotParameters.IndependentAxes.Value);
+                    GetInitialGuessOpticalProperties(plotParameters.OpticalProperties),
+                    plotParameters.XAxis.AsEnumerable().ToArray(), 
+                    plotParameters.SolutionDomain, 
+                    plotParameters.IndependentAxes.Label,
+                    plotParameters.IndependentAxes.Value);
                 object[] igparmsConvert = igparms.Values.ToArray();
                 // get measured data from inverse solver analysis component
-                var measuredPoints = PlotParameters.MeasuredData;
+                var measuredPoints = plotParameters.MeasuredData;
                 var meas = measuredPoints.Select(p => p.Last()).ToArray(); // get y value
                 var lbs = new double[] {0, 0, 0, 0};
                 var ubs = new double[]
@@ -43,23 +41,22 @@ namespace Vts.Api.Services
                     double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity, double.PositiveInfinity
                 };
                 double[] fit = ComputationFactory.SolveInverse(
-                    Enum.Parse<ForwardSolverType>(PlotParameters.InverseSolverEngine),
-                    Enum.Parse<OptimizerType>(PlotParameters.OptimizerType),
-                    Enum.Parse<SolutionDomainType>(PlotParameters.SolutionDomain),
+                    Enum.Parse<ForwardSolverType>(plotParameters.InverseSolverEngine),
+                    Enum.Parse<OptimizerType>(plotParameters.OptimizerType),
+                    Enum.Parse<SolutionDomainType>(plotParameters.SolutionDomain),
                     meas,
                     meas, // set standard deviation to measured to match WPF
-                    Enum.Parse<InverseFitType>(PlotParameters.OptimizationParameters),
+                    Enum.Parse<InverseFitType>(plotParameters.OptimizationParameters),
                     igparmsConvert,
                     lbs,
                     ubs);
                 var fitops = ComputationFactory.UnFlattenOpticalProperties(fit);
                 //var fitparms =
                 //    GetParametersInOrder(fitops, independentValues, sd, independentAxis, independentAxisValue);
-                PlotParameters.ForwardSolverType = Enum.Parse<ForwardSolverType>(ins);
-                PlotParameters.XAxis = xaxis;
-                PlotParameters.OpticalProperties = fitops[0]; // not sure [0] is always going to work here
-                PlotParameters.NoiseValue = 0;
-                var msg = _plotFactory.GetPlot(PlotType.SolutionDomain, PlotParameters);
+                plotParameters.ForwardSolverType = Enum.Parse<ForwardSolverType>(ins);
+                plotParameters.OpticalProperties = fitops[0]; // not sure [0] is always going to work here
+                plotParameters.NoiseValue = 0;
+                var msg = _plotFactory.GetPlot(PlotType.SolutionDomain, plotParameters);
                 return msg;
             }
             catch (Exception e)

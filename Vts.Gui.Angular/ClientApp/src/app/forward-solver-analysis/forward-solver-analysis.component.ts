@@ -71,7 +71,7 @@ export class ForwardSolverAnalysisComponent implements OnInit {
       forwardSolverEngine: this.forwardSolverEngine.value,
       solutionDomain: this.solutionDomain.value,
       independentAxes: this.independentAxes,
-      range: this.range,
+      xAxis: this.range,
       opticalProperties: this.opticalProperties,
       modelAnalysis: this.modelAnalysisType.value,
       noiseValue: this.noiseValue

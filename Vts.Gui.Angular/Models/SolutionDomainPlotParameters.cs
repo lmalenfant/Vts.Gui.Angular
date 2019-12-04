@@ -15,7 +15,6 @@ namespace Vts.Api.Models
         public string OptimizationParameters { get; set; }
         public LabelValuePair IndependentAxes { get; set; }
         public double NoiseValue { get; set; }
-        public DoubleRange Range { get; set; }
         public string ModelAnalysis { get; set; }
         public List<double[]> MeasuredData { get; set; }
     }

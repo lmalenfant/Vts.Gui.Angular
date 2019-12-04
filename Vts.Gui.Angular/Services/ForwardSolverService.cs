@@ -22,7 +22,6 @@ namespace Vts.Api.Services
             try
             {
                 PlotParameters.ForwardSolverType = Enum.Parse<ForwardSolverType>(PlotParameters.ForwardSolverEngine, true);
-                PlotParameters.XAxis = PlotParameters.Range;
                 var msg = _plotFactory.GetPlot(PlotType.SolutionDomain, PlotParameters);
                 return msg;
             }

@@ -53,7 +53,7 @@ export class SpectralComponent {
       powerLawScatterer: this.powerLaw,
       intralipidScatterer: this.intralipid,
       mieScatterer: this.mieParticle,
-      range: this.range
+      xAxis: this.range
     };
     console.log(spectralSettings);
     console.log(JSON.stringify(spectralSettings));
@@ -77,7 +77,7 @@ export class SpectralComponent {
       powerLawScatterer: this.powerLaw,
       intralipidScatterer: this.intralipid,
       mieScatterer: this.mieParticle,
-      range: this.range
+      xAxis: this.range
     };
     console.log(spectralSettings);
     console.log(JSON.stringify(spectralSettings));

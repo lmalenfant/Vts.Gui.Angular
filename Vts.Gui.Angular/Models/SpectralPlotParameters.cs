@@ -20,7 +20,6 @@ namespace Vts.Api.Models
         public Tissue Tissue { get; set; }
         public double[] Wavelengths { get; set; }
         public string TissueType { get; set; }
-        public DoubleRange Range { get; set; }
         public string ScattererType { get; set; }
         public ScatteringType ScatteringType { get; set; }
         public List<LabelValuePair> AbsorberConcentration { get; set; }
