@@ -12,8 +12,7 @@ import * as $ from 'jquery';
 
 @Component({
   selector: 'app-forward-solver-analysis',
-  templateUrl: './forward-solver-analysis.component.html',
-  styleUrls: ['./forward-solver-analysis.component.css']
+  templateUrl: './forward-solver-analysis.component.html'
 })
 /** forward-solver-analysis component*/
 export class ForwardSolverAnalysisComponent implements OnInit {

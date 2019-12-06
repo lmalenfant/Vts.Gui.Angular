@@ -22,14 +22,14 @@ export class PlotService {
   newPlotObject = this.singlePlotDataSource.asObservable();
 
   baseUrl = "api/v1/";
-  //url = "https://vtsapi.azurewebsites.net/api/v1/values";
+  //baseUrl = "https://vtsapi.azurewebsites.net/api/v1/";
 
   getPlotData(settings, endpoint) {
     const options = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'dataType': 'JSON',
-        'X-API-KEY': '$RFGT%^H',
+        'X-API-KEY': '',
       }),
     }
     let url = this.baseUrl + endpoint;

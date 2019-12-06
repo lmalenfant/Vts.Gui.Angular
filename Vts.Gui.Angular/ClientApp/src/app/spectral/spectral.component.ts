@@ -12,8 +12,7 @@ import * as $ from 'jquery';
 
 @Component({
     selector: 'app-spectral',
-    templateUrl: './spectral.component.html',
-    styleUrls: ['./spectral.component.css']
+    templateUrl: './spectral.component.html'
 })
 /** spectral component*/
 export class SpectralComponent {
@@ -41,35 +40,19 @@ export class SpectralComponent {
   }
 
   plotMuspSpectrum() {
-    // need to update the absorber values because the input to not recognise the change
-    this.updateAbsorberValues(this.tissueTypeDropdown.value);
-    let spectralSettings = {
-      spectralPlotType: "mua",
-      plotName: "μa",
-      tissueType: this.tissueTypeDropdown.value,
-      absorberConcentration: this.absorberConcentration,
-      bloodConcentration: this.bloodConcentration,
-      scatteringType: this.scattererTypeDropdown.value,
-      powerLawScatterer: this.powerLaw,
-      intralipidScatterer: this.intralipid,
-      mieScatterer: this.mieParticle,
-      xAxis: this.range
-    };
-    console.log(spectralSettings);
-    console.log(JSON.stringify(spectralSettings));
-    this.plotData.getPlotData(spectralSettings, "spectral").subscribe((data: any) => {
-      //set the plot grouping based on the checkbox value
-      this.plotData.groupPlots = $("#group-plots").is(":checked");
-      this.plotData.addNewPlot(data);
-    });
+    this.plotSpectralData("mua", "μa");
   }
 
   plotMuaSpectrum() {
+    this.plotSpectralData("musp", "μs'");
+  }
+
+  plotSpectralData(plotType, plotName){
     // need to update the absorber values because the input to not recognize the change
     this.updateAbsorberValues(this.tissueTypeDropdown.value);
     let spectralSettings = {
-      spectralPlotType: "musp",
-      plotName: "μs'",
+      spectralPlotType: plotType,
+      plotName: plotName,
       tissueType: this.tissueTypeDropdown.value,
       absorberConcentration: this.absorberConcentration,
       bloodConcentration: this.bloodConcentration,

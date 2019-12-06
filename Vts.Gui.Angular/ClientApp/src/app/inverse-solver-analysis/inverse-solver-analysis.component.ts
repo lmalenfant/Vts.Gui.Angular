@@ -15,8 +15,7 @@ import { PlotObject } from '../plot/plot-object.model';
 
 @Component({
   selector: 'app-inverse-solver-analysis',
-  templateUrl: './inverse-solver-analysis.component.html',
-  styleUrls: ['./inverse-solver-analysis.component.css']
+  templateUrl: './inverse-solver-analysis.component.html'
 }) 
 
 /** inverse-solver-analysis component*/

@@ -2,7 +2,7 @@
   <ul id="plot-tabs" class="nav nav-tabs">
     <li *ngFor="let plotObject of plotObjects" id="tab-{{plotObject.Id}}" class="nav-item">
       <a class="nav-link" role="tab" data-toggle="tab" href="#pane-{{plotObject.Id}}">
-        {{plotObject.Detector}}&nbsp;&nbsp;<i class="fas fa-times" (click)="closeTab(plotObject)"></i>
+        {{plotObject.Detector}}&nbsp;&nbsp;<i aria-hidden="true" class="fas fa-times" (click)="closeTab(plotObject)"></i>
       </a>
     </li>
   </ul>
@@ -15,6 +15,8 @@
       <div id="choices-{{plotObject.Id}}" class="plot-choices col">
         <p>{{plotObject.Legend}}</p>
         <table>
+          <caption style="display: none;">The list of plots</caption>
+          <tr style="display: none;"><th scope="col">Plot Color</th><th scope="col">Display checkbox</th><th scope="col">Plot Name</th></tr>
           <tr class="{{plotObject.Id}}" *ngFor="let plot of plotObject.PlotList; let i = index" #plotChoices>
             <td style="padding-right: 5px; vertical-align: top;">
               <div style="padding: 1px; border: 1px solid lightgrey; border-image: none;">
@@ -25,7 +27,7 @@
               <input type="checkbox" name="{{i}}" checked="checked" id="id{{i}}">
             </td>
             <td style="padding-right: 5px; vertical-align: top;">
-              <label for="id{{i}}">{{plot.Label}}</label>&nbsp;&nbsp;<i class="fas fa-times" (click)="deletePlot(plotObject, i);"></i>
+              <label for="id{{i}}">{{plot.Label}}</label>&nbsp;&nbsp;<i aria-hidden="true" class="fas fa-times" (click)="deletePlot(plotObject, i);"></i>
             </td>
           </tr>
         </table>

@@ -7,8 +7,7 @@ import { MieScatterer as MieParticle } from './mie-particle.model';
 
 @Component({
     selector: 'app-scatterer-type',
-    templateUrl: './scatterer-type.component.html',
-    styleUrls: ['./scatterer-type.component.css']
+    templateUrl: './scatterer-type.component.html'
 })
 /** scatterer-type component*/
 export class ScattererTypeComponent {

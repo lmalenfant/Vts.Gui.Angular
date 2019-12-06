@@ -3,8 +3,7 @@ import { OpticalProperties } from './optical-properties.model'
 
 @Component({
   selector: 'app-optical-properties',
-  templateUrl: './optical-properties.component.html',
-  styleUrls: ['./optical-properties.component.css']
+  templateUrl: './optical-properties.component.html'
 })
 /** optical-properties component*/
 export class OpticalPropertiesComponent {

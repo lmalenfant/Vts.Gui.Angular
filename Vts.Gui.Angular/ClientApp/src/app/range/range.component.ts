@@ -3,8 +3,7 @@ import { Range } from './range.model';
 
 @Component({
   selector: 'app-range',
-  templateUrl: './range.component.html',
-  styleUrls: ['./range.component.css'],
+  templateUrl: './range.component.html'
 })
 /** range component*/
 export class RangeComponent implements OnInit {

@@ -1,5 +1,4 @@
 <div class="reset">
-  <!--<div class="heading">{{title}}</div> -->
   <select id="tissue-type" class="form-control form-control-sm" [ngModel]="tissueType.value" (ngModelChange)="onChange($event)">
     <option *ngFor="let tissue of tissueTypeList" [value]="tissue.value">{{tissue.display}}</option>
   </select>

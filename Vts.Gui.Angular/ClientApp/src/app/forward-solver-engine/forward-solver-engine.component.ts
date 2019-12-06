@@ -5,8 +5,7 @@ import { ForwardSolverEngineList } from './forward-solver-engine-list';
 
 @Component({
     selector: 'app-forward-solver-engine',
-    templateUrl: './forward-solver-engine.component.html',
-    styleUrls: ['./forward-solver-engine.component.css']
+    templateUrl: './forward-solver-engine.component.html'
 })
 /** forward-solver-engine component*/
 export class ForwardSolverEngineComponent {

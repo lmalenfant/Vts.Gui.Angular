@@ -5,8 +5,7 @@ import { SolutionDomain } from './solution-domain.model';
 
 @Component({
   selector: 'app-solution-domain',
-  templateUrl: './solution-domain.component.html',
-  styleUrls: ['./solution-domain.component.css'],
+  templateUrl: './solution-domain.component.html'
 })
 /** solution-domain component*/
 export class SolutionDomainComponent {

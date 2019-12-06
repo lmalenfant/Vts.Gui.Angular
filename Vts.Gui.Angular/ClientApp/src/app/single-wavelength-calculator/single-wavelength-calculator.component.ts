@@ -2,8 +2,7 @@
 
 @Component({
     selector: 'app-single-wavelength-calculator',
-    templateUrl: './single-wavelength-calculator.component.html',
-    styleUrls: ['./single-wavelength-calculator.component.css']
+    templateUrl: './single-wavelength-calculator.component.html'
 })
 /** single-wavelength-calculator component*/
 export class SingleWavelengthCalculatorComponent {

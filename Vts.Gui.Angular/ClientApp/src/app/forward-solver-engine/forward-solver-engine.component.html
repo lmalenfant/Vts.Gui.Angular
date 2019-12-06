@@ -1,5 +1,4 @@
 <div class="reset">
-  <!--<div class="heading">{{title}}</div> -->
   <select id="forwardSolverEngine" class="form-control form-control-sm" [ngModel]="forwardSolverEngine.value" (ngModelChange)="onChange($event)">
     <option *ngFor="let fs of forwardSolverEngineList" [value]="fs.value">{{fs.display}}</option>
   </select><br *ngIf="gaussianBeam.show" />
