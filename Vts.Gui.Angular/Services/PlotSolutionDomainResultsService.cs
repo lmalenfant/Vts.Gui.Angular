@@ -104,7 +104,7 @@ namespace Vts.Api.Services
                         {
                             var rho = xAxis;
                             var ft = independentValue;
-                            complexResults = ROfRhoAndFt(fs, op, rho, ft, noise);
+                            complexResults = ROfRhoAndFt(fs, op, rho, ft, noise).ToArray();
                             xs = independentValues;
                             xyPointsReal = xs.Zip(complexResults, (x, y) => new Point(x, y.Real));
                             xyPointsImaginary = xs.Zip(complexResults, (x, y) => new Point(x, y.Imaginary));
@@ -130,7 +130,7 @@ namespace Vts.Api.Services
                         else
                         {
                             var rho = independentValue;
-                            complexResults = ROfRhoAndFt(fs, op, rho, xAxis, noise);
+                            complexResults = ROfRhoAndFt(fs, op, rho, xAxis, noise).ToArray();
                             xs = independentValues;
                             xyPointsReal = xs.Zip(complexResults, (x, y) => new Point(x, y.Real));
                             xyPointsImaginary = xs.Zip(complexResults, (x, y) => new Point(x, y.Imaginary));
@@ -215,7 +215,7 @@ namespace Vts.Api.Services
                         if (independentAxis == "ft")
                         {
                             var ft = independentValue;
-                            complexResults = ROfFxAndFt(fs, op, xAxis, ft, noise);
+                            complexResults = ROfFxAndFt(fs, op, xAxis, ft, noise).ToArray();
                             xs = independentValues;
                             xyPointsReal = xs.Zip(complexResults, (x, y) => new Point(x, y.Real));
                             xyPointsImaginary = xs.Zip(complexResults, (x, y) => new Point(x, y.Imaginary));
@@ -241,7 +241,7 @@ namespace Vts.Api.Services
                         else
                         {
                             var fx = independentValue;
-                            complexResults = ROfFxAndFt(fs, op, fx, xAxis, noise);
+                            complexResults = ROfFxAndFt(fs, op, fx, xAxis, noise).ToArray();
                             xs = independentValues;
                             xyPointsReal = xs.Zip(complexResults, (x, y) => new Point(x, y.Real));
                             xyPointsImaginary = xs.Zip(complexResults, (x, y) => new Point(x, y.Imaginary));
@@ -255,12 +255,12 @@ namespace Vts.Api.Services
                             plot.PlotList.Add(new PlotDataJson
                             {
                                 Data = plotDataReal.Data.Select(item => new List<double> {item.X, item.Y}).ToList(),
-                                Label = fs.ToString() + " μa=" + op.Mua + " μs'=" + op.Musp + " fx=" + fx + "(real)"
+                                Label = fs + " μa=" + op.Mua + " μs'=" + op.Musp + " fx=" + fx + "(real)"
                             });
                             plot.PlotList.Add(new PlotDataJson
                             {
                                 Data = plotDataImaginary.Data.Select(item => new List<double> {item.X, item.Y}).ToList(),
-                                Label = fs.ToString() + " μa=" + op.Mua + " μs'=" + op.Musp + " fx=" + fx + "(imag)"
+                                Label = fs + " μa=" + op.Mua + " μs'=" + op.Musp + " fx=" + fx + "(imag)"
                             });
                             msg = JsonConvert.SerializeObject(plot);
                         }
@@ -275,11 +275,11 @@ namespace Vts.Api.Services
             }
         }
 
-        private IEnumerable<double> ROfRho(ForwardSolverType fst, OpticalProperties op, DoubleRange rho, double noise)
+        private IEnumerable<double> ROfRho(ForwardSolverType forwardSolverType, OpticalProperties opticalProperties, DoubleRange rho, double noise)
         {
-            var ops = op.AsEnumerable();
+            var ops = opticalProperties.AsEnumerable();
             var rhos = rho.AsEnumerable();
-            var fs = SolverFactory.GetForwardSolver(fst);
+            var fs = SolverFactory.GetForwardSolver(forwardSolverType);
             if (noise > 0.0)
             {
                 return fs.ROfRho(ops, rhos).AddNoise(noise);
@@ -287,12 +287,12 @@ namespace Vts.Api.Services
             return fs.ROfRho(ops, rhos);
         }
 
-        private IEnumerable<double> ROfRhoAndTime(ForwardSolverType fst, OpticalProperties op, DoubleRange rho, double time, double noise)
+        private IEnumerable<double> ROfRhoAndTime(ForwardSolverType forwardSolverType, OpticalProperties opticalProperties, DoubleRange rho, double time, double noise)
         {
-            var ops = op.AsEnumerable();
+            var ops = opticalProperties.AsEnumerable();
             var rhos = rho.AsEnumerable();
             var times = time.AsEnumerable();
-            var fs = SolverFactory.GetForwardSolver(fst);
+            var fs = SolverFactory.GetForwardSolver(forwardSolverType);
             if (noise > 0.0)
             {
                 return fs.ROfRhoAndTime(ops, rhos, times).AddNoise(noise);
@@ -300,12 +300,12 @@ namespace Vts.Api.Services
             return fs.ROfRhoAndTime(ops, rhos, times);
         }
 
-        private IEnumerable<double> ROfRhoAndTime(ForwardSolverType fst, OpticalProperties op, double rho, DoubleRange time, double noise)
+        private IEnumerable<double> ROfRhoAndTime(ForwardSolverType forwardSolverType, OpticalProperties opticalProperties, double rho, DoubleRange time, double noise)
         {
-            var ops = op.AsEnumerable();
+            var ops = opticalProperties.AsEnumerable();
             var rhos = rho.AsEnumerable();
             var times = time.AsEnumerable();
-            var fs = SolverFactory.GetForwardSolver(fst);
+            var fs = SolverFactory.GetForwardSolver(forwardSolverType);
             if (noise > 0.0)
             {
                 return fs.ROfRhoAndTime(ops, rhos, times).AddNoise(noise);
@@ -313,47 +313,47 @@ namespace Vts.Api.Services
             return fs.ROfRhoAndTime(ops, rhos, times);
         }
 
-        private IEnumerable<Complex> ROfRhoAndFt(ForwardSolverType fst, OpticalProperties op, DoubleRange rho, double ft, double noise)
+        private IEnumerable<Complex> ROfRhoAndFt(ForwardSolverType forwardSolverType, OpticalProperties opticalProperties, DoubleRange rho, double ft, double noise)
         {
-            var ops = op.AsEnumerable();
-            var rhos = rho.AsEnumerable();
-            var fts = ft.AsEnumerable();
-            var fs = SolverFactory.GetForwardSolver(fst);
-            var results = fs.ROfRhoAndFt(ops, rhos, fts);
+            var ops = opticalProperties.AsEnumerable().ToArray();
+            var rhos = rho.AsEnumerable().ToArray();
+            var fts = ft.AsEnumerable().ToArray();
+            var fs = SolverFactory.GetForwardSolver(forwardSolverType);
+            var results = fs.ROfRhoAndFt(ops, rhos, fts).ToArray();
             if (noise > 0.0)
             {
-                var realsWithNoise = DataExtensions.AddNoise(results.Select(r => r.Real).ToList(), noise);
-                var imagsWithNoise = DataExtensions.AddNoise(results.Select(i => i.Imaginary).ToList(), noise);
+                var realsWithNoise = results.Select(r => r.Real).AddNoise(noise);
+                var imagsWithNoise = results.Select(i => i.Imaginary).AddNoise(noise);
                 IEnumerable<Complex> resultsWithNoise = realsWithNoise.Zip(imagsWithNoise, (a, b) => new Complex(a,b));
                 return resultsWithNoise;
             }
             return fs.ROfRhoAndFt(ops, rhos, fts);
         }
 
-        private IEnumerable<Complex> ROfRhoAndFt(ForwardSolverType fst, OpticalProperties op, double rho, DoubleRange ft, double noise)
+        private IEnumerable<Complex> ROfRhoAndFt(ForwardSolverType forwardSolverType, OpticalProperties opticalProperties, double rho, DoubleRange ft, double noise)
         {
-            var ops = op.AsEnumerable();
-            var rhos = rho.AsEnumerable();
-            var fts = ft.AsEnumerable();
-            var fs = SolverFactory.GetForwardSolver(fst);
-            var results = fs.ROfRhoAndFt(ops, rhos, fts);
+            var ops = opticalProperties.AsEnumerable().ToArray();
+            var rhos = rho.AsEnumerable().ToArray();
+            var fts = ft.AsEnumerable().ToArray();
+            var fs = SolverFactory.GetForwardSolver(forwardSolverType);
+            var results = fs.ROfRhoAndFt(ops, rhos, fts).ToArray();
             if (noise > 0.0)
             {
-                var realsWithNoise = DataExtensions.AddNoise(results.Select(r => r.Real).ToList(), noise);
-                var imagsWithNoise = DataExtensions.AddNoise(results.Select(i => i.Imaginary).ToList(), noise);
+                var realsWithNoise = results.Select(r => r.Real).AddNoise(noise);
+                var imagsWithNoise = results.Select(i => i.Imaginary).AddNoise(noise);
                 IEnumerable<Complex> resultsWithNoise = realsWithNoise.Zip(imagsWithNoise, (a, b) => new Complex(a, b));
                 return resultsWithNoise;
             }
             return fs.ROfRhoAndFt(ops, rhos, fts);
         }
 
-        private IEnumerable<double> ROfFx(ForwardSolverType fst, OpticalProperties op, DoubleRange fx, double noise)
+        private IEnumerable<double> ROfFx(ForwardSolverType forwardSolverType, OpticalProperties opticalProperties, DoubleRange fx, double noise)
         {
             try
             {
-                var ops = op.AsEnumerable();
+                var ops = opticalProperties.AsEnumerable();
                 var fxs = fx.AsEnumerable();
-                var fs = SolverFactory.GetForwardSolver(fst);
+                var fs = SolverFactory.GetForwardSolver(forwardSolverType);
                 if (noise > 0.0)
                 {
                     return fs.ROfFx(ops, fxs).AddNoise(noise);
@@ -362,17 +362,17 @@ namespace Vts.Api.Services
             }
             catch (Exception e)
             {
-                _logger.LogError("Error in call to ROfFx: " + e.Message + "values fst: " + fst + ", op: " + op + ", rho:" + fx + " source: " + e.Source + " inner: " + e.InnerException);
+                _logger.LogError("Error in call to ROfFx: " + e.Message + "values fst: " + forwardSolverType + ", op: " + opticalProperties + ", rho:" + fx + " source: " + e.Source + " inner: " + e.InnerException);
                 throw;
             }
         }
 
-        private IEnumerable<double> ROfFxAndTime(ForwardSolverType fst, OpticalProperties op, DoubleRange fx, double time, double noise)
+        private IEnumerable<double> ROfFxAndTime(ForwardSolverType forwardSolverType, OpticalProperties opticalProperties, DoubleRange fx, double time, double noise)
         {
-            var ops = op.AsEnumerable();
+            var ops = opticalProperties.AsEnumerable();
             var fxs = fx.AsEnumerable();
             var times = time.AsEnumerable();
-            var fs = SolverFactory.GetForwardSolver(fst);
+            var fs = SolverFactory.GetForwardSolver(forwardSolverType);
             if (noise > 0.0)
             {
                 return fs.ROfFxAndTime(ops, fxs, times).AddNoise(noise);
@@ -380,12 +380,12 @@ namespace Vts.Api.Services
             return fs.ROfFxAndTime(ops, fxs, times);
         }
 
-        private IEnumerable<double> ROfFxAndTime(ForwardSolverType fst, OpticalProperties op, double fx, DoubleRange time, double noise)
+        private IEnumerable<double> ROfFxAndTime(ForwardSolverType forwardSolverType, OpticalProperties opticalProperties, double fx, DoubleRange time, double noise)
         {
-            var ops = op.AsEnumerable();
+            var ops = opticalProperties.AsEnumerable();
             var fxs = fx.AsEnumerable();
             var times = time.AsEnumerable();
-            var fs = SolverFactory.GetForwardSolver(fst);
+            var fs = SolverFactory.GetForwardSolver(forwardSolverType);
             if (noise > 0.0)
             {
                 return fs.ROfFxAndTime(ops, fxs, times).AddNoise(noise);
@@ -393,34 +393,34 @@ namespace Vts.Api.Services
             return fs.ROfFxAndTime(ops, fxs, times);
         }
 
-        private IEnumerable<Complex> ROfFxAndFt(ForwardSolverType fst, OpticalProperties op, DoubleRange fx, double ft, double noise)
+        private IEnumerable<Complex> ROfFxAndFt(ForwardSolverType forwardSolverType, OpticalProperties opticalProperties, DoubleRange fx, double ft, double noise)
         {
-            var ops = op.AsEnumerable();
-            var fxs = fx.AsEnumerable();
-            var fts = ft.AsEnumerable();
-            var fs = SolverFactory.GetForwardSolver(fst);
-            var results = fs.ROfRhoAndFt(ops, fxs, fts);
+            var ops = opticalProperties.AsEnumerable().ToArray();
+            var fxs = fx.AsEnumerable().ToArray();
+            var fts = ft.AsEnumerable().ToArray();
+            var fs = SolverFactory.GetForwardSolver(forwardSolverType);
+            var results = fs.ROfRhoAndFt(ops, fxs, fts).ToArray();
             if (noise > 0.0)
             {
-                var realsWithNoise = DataExtensions.AddNoise(results.Select(r => r.Real).ToList(), noise);
-                var imagsWithNoise = DataExtensions.AddNoise(results.Select(i => i.Imaginary).ToList(), noise);
+                var realsWithNoise = results.Select(r => r.Real).AddNoise(noise);
+                var imagsWithNoise = results.Select(i => i.Imaginary).AddNoise(noise);
                 IEnumerable<Complex> resultsWithNoise = realsWithNoise.Zip(imagsWithNoise, (a, b) => new Complex(a, b));
                 return resultsWithNoise;
             }
             return fs.ROfFxAndFt(ops, fxs, fts);
         }
 
-        private IEnumerable<Complex> ROfFxAndFt(ForwardSolverType fst, OpticalProperties op, double fx, DoubleRange ft, double noise)
+        private IEnumerable<Complex> ROfFxAndFt(ForwardSolverType forwardSolverType, OpticalProperties opticalProperties, double fx, DoubleRange ft, double noise)
         {
-            var ops = op.AsEnumerable();
-            var fxs = fx.AsEnumerable();
-            var fts = ft.AsEnumerable();
-            var fs = SolverFactory.GetForwardSolver(fst);
-            var results = fs.ROfRhoAndFt(ops, fxs, fts);
+            var ops = opticalProperties.AsEnumerable().ToArray();
+            var fxs = fx.AsEnumerable().ToArray();
+            var fts = ft.AsEnumerable().ToArray();
+            var fs = SolverFactory.GetForwardSolver(forwardSolverType);
+            var results = fs.ROfRhoAndFt(ops, fxs, fts).ToArray();
             if (noise > 0.0)
             {
-                var realsWithNoise = DataExtensions.AddNoise(results.Select(r => r.Real).ToList(), noise);
-                var imagsWithNoise = DataExtensions.AddNoise(results.Select(i => i.Imaginary).ToList(), noise);
+                var realsWithNoise = results.Select(r => r.Real).AddNoise(noise);
+                var imagsWithNoise = results.Select(i => i.Imaginary).AddNoise(noise);
                 IEnumerable<Complex> resultsWithNoise = realsWithNoise.Zip(imagsWithNoise, (a, b) => new Complex(a, b));
                 return resultsWithNoise;
             }
