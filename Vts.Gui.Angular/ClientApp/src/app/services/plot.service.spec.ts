@@ -27,7 +27,8 @@ describe('plot service', () => {
           expect(data.XAxis).toBe("ρ");
           expect(data.YAxis).toBe("Reflectance");
         });
-        let baseApiUrl = "https://vtsapi.azurewebsites.net/api/v1/";
+        let baseApiUrl = "api/v1/";
+        //let baseApiUrl = "https://vtsapi.azurewebsites.net/api/v1/";
 
         // set the expectations for the HttpClient mock
         const req = httpMock.expectOne(baseApiUrl + 'forward');
