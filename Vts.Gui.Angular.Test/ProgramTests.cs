@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using Vts.Gui.Angular;
 
-namespace Vts.Api.Test
+namespace Vts.Api.Tests
 {
     class ProgramTests
     {

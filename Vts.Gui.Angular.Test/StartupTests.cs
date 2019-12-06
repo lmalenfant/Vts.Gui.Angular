@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -8,7 +7,7 @@ using NUnit.Framework;
 using Vts.Api.Services;
 using Vts.Gui.Angular;
 
-namespace Vts.Api.Test
+namespace Vts.Api.Tests
 {
     class StartupTests
     {

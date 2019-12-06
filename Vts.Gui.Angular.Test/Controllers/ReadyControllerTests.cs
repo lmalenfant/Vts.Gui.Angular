@@ -10,7 +10,7 @@ using NUnit.Framework;
 using Vts.Api.Controllers;
 using Vts.Gui.Angular;
 
-namespace Vts.Api.Test.Controllers
+namespace Vts.Api.Tests.Controllers
 {
     class ReadyControllerTests
     {
